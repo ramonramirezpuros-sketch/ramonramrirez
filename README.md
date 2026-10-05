@@ -12,7 +12,7 @@ Venta durante 24 horas o hasta agotar, con lista de espera previa.
 | Producto en Shopify | 🟡 Borrador, sin precio ni stock | `bicapa-edicion-especial` |
 | Fecha del drop | 🔴 Sin definir | Se carga en el editor del tema (sección "Drop Bicapa") |
 | Precio | 🔴 Sin definir | Producto en Shopify |
-| Funnel del drop (Miro) | 🟡 Etapas pasadas; faltan los post-its | [plan y mensajes](estrategia/funnel-drop.md) |
+| Funnel del drop (Miro) | 🟡 Plan completo pasado; faltan Typeform, ManyChat y pop-up | [plan y mensajes](estrategia/funnel-drop.md) |
 | Legal (Ley 26.687) | 🟡 Base cubierta en la landing, falta revisión | [notas legales](legal/ley-26687-tabaco.md) |
 
 ## Pendientes
@@ -25,7 +25,7 @@ Venta durante 24 horas o hasta agotar, con lista de espera previa.
 - [ ] Confirmar con el abogado el mensaje sanitario y la verificación de edad en la entrega
 - [ ] Aprobar los mensajes de email y WhatsApp por etapa (borradores en estrategia/funnel-drop.md)
 - [ ] Revisar con el abogado los anuncios pagos del funnel (tabaco prohibido en Meta/Google/TikTok)
-- [ ] Pasar el contenido de los post-its del tablero de Miro
+- [ ] Decidir Typeform o formulario de la landing para anotarse (una sola lista)
 - [ ] Opcional: app de límite de compra (1 por persona)
 
 ## Estructura del repo

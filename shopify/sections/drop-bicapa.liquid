@@ -115,6 +115,16 @@
   #drop-{{ section.id }} .db-video video,
   #drop-{{ section.id }} .db-video iframe,
   #drop-{{ section.id }} .db-video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
+  #drop-{{ section.id }} .db-unmute {
+    position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; border: 0; cursor: pointer; background: rgba(5, 10, 20, .35); color: #fff;
+    font: 700 clamp(16px, 2.6vw, 22px)/1.2 var(--db-sans); letter-spacing: .04em; text-shadow: 0 2px 10px rgba(0,0,0,.6);
+  }
+  #drop-{{ section.id }} .db-unmute[hidden] { display: none; }
+  #drop-{{ section.id }} .db-unmute-icon {
+    display: grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; font-size: 34px;
+    background: rgba(201,163,90,.92); box-shadow: 0 0 0 10px rgba(201,163,90,.25); animation: db-pulse 1.6s infinite;
+  }
   #drop-{{ section.id }} .db-video-ph { position: absolute; inset: 0; display: grid; place-items: center; color: var(--db-muted); font-size: 14px; padding: 16px; text-align: center; }
 
   /* Caja de acción (cambia según la fase) */
@@ -263,15 +273,25 @@
 
       <div class="db-video">
         {%- if section.settings.video != blank -%}
-          {{ section.settings.video | video_tag: controls: true, playsinline: true, preload: 'metadata', image_size: '1600x' }}
+          {%- if section.settings.autoplay -%}
+            {{ section.settings.video | video_tag: autoplay: true, muted: true, playsinline: true, preload: 'auto', image_size: '1600x' }}
+          {%- else -%}
+            {{ section.settings.video | video_tag: controls: true, playsinline: true, preload: 'metadata', image_size: '1600x' }}
+          {%- endif -%}
         {%- elsif section.settings.video_mp4 != blank -%}
-          <video controls playsinline preload="metadata"{% if section.settings.poster != blank %} poster="{{ section.settings.poster | image_url: width: 1600 }}"{% endif %}>
+          <video playsinline{% if section.settings.autoplay %} autoplay muted preload="auto"{% else %} controls preload="metadata"{% endif %}{% if section.settings.poster != blank %} poster="{{ section.settings.poster | image_url: width: 1600 }}"{% endif %}>
             <source src="{{ section.settings.video_mp4 | escape }}" type="video/mp4">
           </video>
         {%- elsif section.settings.poster != blank -%}
           {{ section.settings.poster | image_url: width: 1600 | image_tag: loading: 'eager', alt: 'Puros bicapa Ramón Ramírez' }}
         {%- else -%}
           <div class="db-video-ph">Cargá el video del VSL en la configuración de la sección.</div>
+        {%- endif -%}
+        {%- if section.settings.autoplay -%}
+          <button type="button" class="db-unmute" data-db-unmute hidden>
+            <span class="db-unmute-icon" aria-hidden="true">🔊</span>
+            <span>Tocá para escuchar</span>
+          </button>
         {%- endif -%}
       </div>
 
@@ -565,6 +585,58 @@
       });
     });
 
+    // Video VSL: intenta arrancar con sonido; si el navegador lo bloquea (lo normal sin un toque previo),
+    // sigue sin sonido y el primer toque en cualquier parte de la página activa el sonido desde el inicio.
+    var vsl = root.querySelector('.db-video video');
+    var unmuteBtn = root.querySelector('[data-db-unmute]');
+    if (vsl && unmuteBtn) {
+      var activated = false;
+      var safePlay = function () {
+        var p = vsl.play();
+        return p && p.then ? p : Promise.resolve();
+      };
+      var onFirstTouch = function (e) {
+        if (e.target.closest && e.target.closest('[data-db-unmute]')) return;
+        activate(true);
+      };
+      var activate = function (restart) {
+        if (activated) return;
+        activated = true;
+        document.removeEventListener('pointerdown', onFirstTouch, true);
+        document.removeEventListener('keydown', onFirstTouch, true);
+        vsl.muted = false;
+        vsl.loop = false;
+        if (restart) vsl.currentTime = 0;
+        vsl.controls = true;
+        unmuteBtn.hidden = true;
+        safePlay().catch(function () {});
+        root.dispatchEvent(new CustomEvent('db:vsl-sound'));
+      };
+      var fellBack = false;
+      var mutedFallback = function () {
+        if (activated || fellBack) return;
+        fellBack = true;
+        vsl.muted = true;
+        vsl.loop = true;
+        unmuteBtn.hidden = false;
+        safePlay().catch(function () {});
+        document.addEventListener('pointerdown', onFirstTouch, true);
+        document.addEventListener('keydown', onFirstTouch, true);
+      };
+      vsl.removeAttribute('controls');
+      vsl.pause();
+      vsl.muted = false;
+      var settle = function () {
+        if (!vsl.muted && !vsl.paused) activate(false); else mutedFallback();
+      };
+      safePlay().then(settle).catch(mutedFallback);
+      // Algunos navegadores tardan en confirmar la reproducción: a los 1,5 s se decide igual.
+      setTimeout(function () { if (!activated && !fellBack) settle(); }, 1500);
+      unmuteBtn.addEventListener('click', function () { activate(true); });
+    } else if (vsl) {
+      vsl.controls = true;
+    }
+
     // Envío de visitas y datos a Google Sheets (conector de Apps Script).
     var sheetsUrl = (root.dataset.sheetsUrl || '').trim();
     if (sheetsUrl) {
@@ -611,11 +683,14 @@
       if (video) {
         var seen = {};
         var once = function (name) { if (!seen[name]) { seen[name] = true; track(name); } };
-        video.addEventListener('play', function () { once('video_play'); });
+        // Con autoplay, "video_play" cuenta cuando la persona activa el sonido; el 50 % y el final, solo si lo mira con sonido.
+        var watching = !unmuteBtn;
+        root.addEventListener('db:vsl-sound', function () { watching = true; once('video_play'); });
+        video.addEventListener('play', function () { if (watching) once('video_play'); });
         video.addEventListener('timeupdate', function () {
-          if (video.duration && video.currentTime / video.duration >= 0.5) once('video_50');
+          if (watching && video.duration && video.currentTime / video.duration >= 0.5) once('video_50');
         });
-        video.addEventListener('ended', function () { once('video_completo'); });
+        video.addEventListener('ended', function () { if (watching) once('video_completo'); });
       }
 
       root.querySelectorAll('form[data-db-form]').forEach(function (form) {
@@ -698,6 +773,7 @@
     { "type": "header", "content": "Video y textos" },
     { "type": "video", "id": "video", "label": "Video VSL (subido a Shopify)" },
     { "type": "url", "id": "video_mp4", "label": "o link directo a un .mp4", "info": "Se usa solo si no elegiste un video arriba." },
+    { "type": "checkbox", "id": "autoplay", "label": "Reproducir el video automáticamente (sin sonido hasta que lo toquen)", "default": true },
     { "type": "image_picker", "id": "poster", "label": "Imagen de portada del video" },
     { "type": "text", "id": "kicker", "label": "Frase de apertura", "default": "Si estás acá es porque sabés reconocer un puro de calidad." },
     {

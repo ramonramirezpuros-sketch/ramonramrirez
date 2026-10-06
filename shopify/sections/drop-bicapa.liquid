@@ -170,6 +170,8 @@
   #drop-{{ section.id }} .db-btn[disabled] { opacity: .5; cursor: not-allowed; }
   #drop-{{ section.id }} .db-btn--ghost { background: transparent; color: var(--db-ink); border: 1px solid var(--db-line); box-shadow: none; }
   #drop-{{ section.id }} .db-note { font-size: 12px; color: var(--db-muted); text-align: center; margin-top: 10px; }
+  #drop-{{ section.id }} .db-privacy { font-size: 11px; opacity: .8; }
+  #drop-{{ section.id }} .db-privacy a { color: inherit; }
   #drop-{{ section.id }} .db-ok { padding: 14px; border-radius: 10px; background: rgba(76, 175, 80, .12); border: 1px solid rgba(76,175,80,.4); color: #cfe9d0; text-align: center; }
   #drop-{{ section.id }} .db-err { padding: 10px 14px; border-radius: 10px; background: rgba(200,16,46,.12); border: 1px solid rgba(200,16,46,.45); color: #ffc2cb; font-size: 14px; margin-bottom: 10px; }
 
@@ -239,6 +241,7 @@
   data-start="{{ section.settings.drop_start | escape }}"
   data-hours="{{ section.settings.duration_hours }}"
   data-product-state="{{ product_state }}"
+  data-sheets-url="{{ section.settings.sheets_url | escape }}"
 >
   {%- if section.settings.health_message != blank -%}
     <div class="db-health" role="note">
@@ -289,7 +292,7 @@
           </div>
           <p class="db-when" data-when hidden></p>
 
-          {%- form 'customer', id: waitlist_form_id, class: 'db-waitlist', data-db-waitlist: 'true' -%}
+          {%- form 'customer', id: waitlist_form_id, class: 'db-waitlist', data-db-waitlist: 'true', data-db-form: 'lista' -%}
             {%- if form.posted_successfully? -%}
               <div class="db-ok">¡Listo! Ya estás en la lista. Te avisamos antes que a nadie cuando abra el drop.</div>
             {%- else -%}
@@ -299,7 +302,7 @@
               <input type="hidden" name="contact[tags]" value="{{ section.settings.waitlist_tag | escape }}" data-db-tags data-base="{{ section.settings.waitlist_tag | escape }}">
               <div class="db-field">
                 <label for="{{ waitlist_form_id }}-name">Nombre</label>
-                <input type="text" id="{{ waitlist_form_id }}-name" name="contact[first_name]" autocomplete="given-name" required>
+                <input type="text" id="{{ waitlist_form_id }}-name" name="contact[first_name]" autocomplete="given-name" required data-db-name>
               </div>
               <div class="db-field">
                 <label for="{{ waitlist_form_id }}-email">Email</label>
@@ -315,6 +318,9 @@
               </label>
               <button type="submit" class="db-btn">Anotarme ahora</button>
               <p class="db-note">Sin pago ahora. Anotarte no reserva una unidad: te da aviso prioritario.</p>
+              {%- if section.settings.privacy_note != blank -%}
+                <p class="db-note db-privacy">{{ section.settings.privacy_note }}</p>
+              {%- endif -%}
             {%- endif -%}
           {%- endform -%}
         </div>
@@ -362,7 +368,7 @@
           <span class="db-badge">Edición cerrada</span>
           <h3>Los {{ total_units }} ya tienen dueño</h3>
           <p>No sabemos cuándo vuelve el bicapa: cada tanda lleva meses de selección y reposo. Anotate para enterarte primero del próximo.</p>
-          {%- form 'customer', id: next_form_id, class: 'db-waitlist', data-db-waitlist: 'true' -%}
+          {%- form 'customer', id: next_form_id, class: 'db-waitlist', data-db-waitlist: 'true', data-db-form: 'proximo-drop' -%}
             {%- if form.posted_successfully? -%}
               <div class="db-ok">¡Anotado! Sos de los primeros en saber cuándo vuelve.</div>
             {%- else -%}
@@ -380,6 +386,9 @@
                 <span>Declaro ser mayor de 18 años y acepto recibir comunicaciones de Ramón Ramírez.</span>
               </label>
               <button type="submit" class="db-btn db-btn--ghost">Avisarme del próximo drop</button>
+              {%- if section.settings.privacy_note != blank -%}
+                <p class="db-note db-privacy">{{ section.settings.privacy_note }}</p>
+              {%- endif -%}
             {%- endif -%}
           {%- endform -%}
         </div>
@@ -556,6 +565,102 @@
       });
     });
 
+    // Envío de visitas y datos a Google Sheets (conector de Apps Script).
+    var sheetsUrl = (root.dataset.sheetsUrl || '').trim();
+    if (sheetsUrl) {
+      var store = function (kind, key, value) {
+        try {
+          var s = window[kind];
+          if (value === undefined) return s.getItem(key);
+          s.setItem(key, value);
+        } catch (e) { return null; }
+      };
+      var vid = store('localStorage', 'rr_drop_vid');
+      if (!vid) {
+        vid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        store('localStorage', 'rr_drop_vid', vid);
+      }
+      var params = new URLSearchParams(window.location.search);
+      var utm = {};
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
+        var v = params.get(k) || store('sessionStorage', 'rr_drop_' + k) || '';
+        if (params.get(k)) store('sessionStorage', 'rr_drop_' + k, v);
+        utm[k] = v;
+      });
+      var device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'celular' : 'compu';
+      var send = function (payload) {
+        payload.vid = vid;
+        payload.utm = utm;
+        payload.referrer = document.referrer;
+        payload.dispositivo = device;
+        payload.pagina = window.location.pathname;
+        payload.fase = root.dataset.phase;
+        try {
+          fetch(sheetsUrl, {
+            method: 'POST', mode: 'no-cors', keepalive: true,
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          }).catch(function () {});
+        } catch (e) {}
+      };
+      var track = function (evento) { send({ tipo: 'evento', evento: evento }); };
+
+      track('visita');
+
+      var video = root.querySelector('.db-video video');
+      if (video) {
+        var seen = {};
+        var once = function (name) { if (!seen[name]) { seen[name] = true; track(name); } };
+        video.addEventListener('play', function () { once('video_play'); });
+        video.addEventListener('timeupdate', function () {
+          if (video.duration && video.currentTime / video.duration >= 0.5) once('video_50');
+        });
+        video.addEventListener('ended', function () { once('video_completo'); });
+      }
+
+      root.querySelectorAll('form[data-db-form]').forEach(function (form) {
+        var formName = form.dataset.dbForm;
+        var started = false;
+        var timer = null;
+        var read = function () {
+          var name = form.querySelector('[data-db-name]');
+          var email = form.querySelector('input[type="email"]');
+          var phone = form.querySelector('[data-db-phone]');
+          return {
+            nombre: name ? name.value : '',
+            email: email ? email.value : '',
+            whatsapp: phone ? phone.value.replace(/\D/g, '') : ''
+          };
+        };
+        var sendLead = function (estado) {
+          var data = read();
+          if (estado === 'parcial' && !data.nombre && !data.email && !data.whatsapp) return;
+          data.tipo = 'lead';
+          data.formulario = formName;
+          data.estado = estado;
+          data.consentimiento = estado === 'completo';
+          send(data);
+        };
+        form.addEventListener('input', function () {
+          if (!started) { started = true; track('formulario_iniciado'); }
+          clearTimeout(timer);
+          timer = setTimeout(function () { sendLead('parcial'); }, 1200);
+        });
+        form.addEventListener('focusout', function () {
+          clearTimeout(timer);
+          sendLead('parcial');
+        });
+        form.addEventListener('submit', function () {
+          clearTimeout(timer);
+          sendLead('completo');
+          track('formulario_enviado');
+        });
+      });
+
+      var buy = root.querySelector('form.db-buy');
+      if (buy) buy.addEventListener('submit', function () { track('click_comprar'); });
+    }
+
     // Barra fija en mobile cuando la caja de acción sale de pantalla.
     var panel = root.querySelector('.db-panel');
     if ('IntersectionObserver' in window && panel) {
@@ -606,6 +711,18 @@
     { "type": "header", "content": "Lista de espera" },
     { "type": "text", "id": "waitlist_tag", "label": "Etiqueta para los anotados", "default": "drop-bicapa" },
     { "type": "text", "id": "next_tag", "label": "Etiqueta para el próximo drop", "default": "drop-bicapa-proximo" },
+    {
+      "type": "text",
+      "id": "sheets_url",
+      "label": "Link del conector de Google Sheets",
+      "info": "URL de la aplicación web de Apps Script (termina en /exec). Vacío = no se envían datos a la planilla."
+    },
+    {
+      "type": "richtext",
+      "id": "privacy_note",
+      "label": "Aviso de datos bajo el formulario",
+      "default": "<p>Lo que escribas en este formulario se guarda para avisarte del drop, aunque no lo envíes. Podés pedir que lo borremos cuando quieras. <a href=\"/policies/privacy-policy\">Política de privacidad</a>.</p>"
+    },
     { "type": "header", "content": "Legal (Ley 26.687)" },
     {
       "type": "text",

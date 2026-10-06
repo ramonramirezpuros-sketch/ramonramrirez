@@ -13,10 +13,12 @@ Venta durante 24 horas o hasta agotar, con lista de espera previa.
 | Fecha del drop | 🔴 Sin definir | Se carga en el editor del tema (sección "Drop Bicapa") |
 | Precio | 🔴 Sin definir | Producto en Shopify |
 | Funnel del drop (Miro) | 🟡 Plan completo pasado; faltan Typeform, ManyChat y pop-up | [plan y mensajes](estrategia/funnel-drop.md) |
+| Leads y visitas → Google Sheets | 🟡 Planilla y landing listas; falta publicar el conector de Apps Script | [planilla](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit) · [cómo activarlo](google-sheets/README.md) |
 | Legal (Ley 26.687) | 🟡 Base cubierta en la landing, falta revisión | [notas legales](legal/ley-26687-tabaco.md) |
 
 ## Pendientes
 
+- [ ] Publicar el conector de Apps Script y pegar su URL en la sección (ver google-sheets/README.md)
 - [ ] Definir **precio** y cargarlo en el producto
 - [ ] Definir **fecha y hora de apertura** y cargarla en la sección (`2026-10-11T20:00-03:00`)
 - [ ] Revisar la landing en el editor del tema borrador y aprobar textos
@@ -42,6 +44,9 @@ shopify/
   preview/                        ← capturas de la landing
 estrategia/
   funnel-drop.md                  ← etapas del tablero de Miro + mensajes por etapa
+google-sheets/
+  README.md                       ← cómo activar el envío de datos a la planilla
+  apps-script-landing.gs          ← conector que escribe en la planilla
 legal/
   ley-26687-tabaco.md             ← publicidad, venta a distancia y plataformas
 ```

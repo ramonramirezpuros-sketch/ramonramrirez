@@ -127,6 +127,23 @@
   }
   #drop-{{ section.id }} .db-video-ph { position: absolute; inset: 0; display: grid; place-items: center; color: var(--db-muted); font-size: 14px; padding: 16px; text-align: center; }
 
+  /* Pantalla de gracias (después de anotarse) */
+  #drop-{{ section.id }} .db-thanks { display: none; max-width: 680px; margin: 0 auto; padding: clamp(24px, 5vw, 40px); text-align: center;
+    border: 1px solid rgba(201,163,90,.45); border-radius: 18px; background: linear-gradient(180deg, rgba(201,163,90,.12), rgba(255,255,255,.02)); }
+  #drop-{{ section.id }}[data-thanks] .db-thanks { display: block; }
+  #drop-{{ section.id }}[data-thanks] .db-kicker,
+  #drop-{{ section.id }}[data-thanks] .db-title,
+  #drop-{{ section.id }}[data-thanks] .db-sub,
+  #drop-{{ section.id }}[data-thanks] .db-panel,
+  #drop-{{ section.id }}[data-thanks] .db-final,
+  #drop-{{ section.id }}[data-thanks] .db-sticky { display: none !important; }
+  #drop-{{ section.id }} .db-thanks-check { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 50%;
+    background: var(--db-gold); color: #1a1206; font-size: 32px; font-weight: 700; }
+  #drop-{{ section.id }} .db-thanks h2 { font-family: var(--db-serif); font-size: clamp(34px, 6vw, 56px); font-weight: 600; line-height: 1.05; margin: 0 0 12px; color: var(--db-ink); text-shadow: var(--db-glow); }
+  #drop-{{ section.id }} .db-thanks-text { color: var(--db-muted); font-size: clamp(15px, 2.1vw, 18px); line-height: 1.6; }
+  #drop-{{ section.id }} .db-thanks-text strong { color: var(--db-ink); }
+  #drop-{{ section.id }} .db-thanks .db-btn { max-width: 360px; margin: 20px auto 0; }
+
   /* Caja de acción (cambia según la fase) */
   #drop-{{ section.id }} .db-panel {
     margin: 28px auto 0; max-width: 620px; padding: clamp(20px, 4vw, 32px);
@@ -267,6 +284,13 @@
   {%- comment -%} ============ HERO + VSL ============ {%- endcomment -%}
   <div class="db-hero">
     <div class="db-wrap">
+      <div class="db-thanks" id="gracias-{{ section.id }}" role="status">
+        <div class="db-thanks-check" aria-hidden="true">✓</div>
+        <h2>{{ section.settings.thanks_title | escape }}</h2>
+        <div class="db-thanks-text" data-thanks-text="lista">{{ section.settings.thanks_text }}</div>
+        <div class="db-thanks-text" data-thanks-text="proximo-drop" hidden>{{ section.settings.thanks_text_next }}</div>
+        <a href="#bicapa-{{ section.id }}" class="db-btn db-btn--ghost">Conocé tu bicapa</a>
+      </div>
       <p class="db-kicker">{{ section.settings.kicker | escape }}</p>
       <h1 class="db-title">Bicapa <em>Edición Especial</em></h1>
       <div class="db-sub">{{ section.settings.subheading }}</div>
@@ -417,7 +441,7 @@
   </div>
 
   {%- comment -%} ============ NO ES SOLO ESTÉTICA ============ {%- endcomment -%}
-  <div class="db-section">
+  <div class="db-section" id="bicapa-{{ section.id }}">
     <div class="db-wrap">
       <h2 class="db-h2">No es solo estética</h2>
       <p class="db-lead">Dos capas de distinto color que se ven a simple vista. Pero el contraste empieza mucho antes: en la mesa, hoja por hoja.</p>
@@ -514,6 +538,20 @@
     var root = document.getElementById('drop-{{ section.id }}');
     if (!root) return;
 
+    // Después de anotarse, Shopify recarga la página con ?customer_posted=true: mostramos la pantalla de gracias.
+    var thanks = /[?&]customer_posted=true/.test(window.location.search);
+    if (thanks) {
+      root.setAttribute('data-thanks', '');
+      var lastForm = '';
+      try { lastForm = sessionStorage.getItem('rr_drop_last_form') || ''; } catch (e) {}
+      if (lastForm === 'proximo-drop') {
+        root.querySelector('[data-thanks-text="lista"]').hidden = true;
+        root.querySelector('[data-thanks-text="proximo-drop"]').hidden = false;
+      }
+      var thanksBox = document.getElementById('gracias-{{ section.id }}');
+      if (thanksBox) setTimeout(function () { thanksBox.scrollIntoView({ block: 'center' }); }, 50);
+    }
+
     var startRaw = (root.dataset.start || '').trim();
     var hours = parseFloat(root.dataset.hours) || 24;
     var productState = root.dataset.productState;
@@ -575,6 +613,7 @@
     // El WhatsApp se guarda como etiqueta del cliente (ej. "wa-5491123456789"), porque el formulario de clientes de Shopify no guarda teléfono.
     root.querySelectorAll('form[data-db-waitlist]').forEach(function (form) {
       form.addEventListener('submit', function () {
+        try { sessionStorage.setItem('rr_drop_last_form', form.dataset.dbForm || ''); } catch (e) {}
         var tags = form.querySelector('[data-db-tags]');
         var phone = form.querySelector('[data-db-phone]');
         if (!tags) return;
@@ -589,7 +628,12 @@
     // sigue sin sonido y el primer toque en cualquier parte de la página activa el sonido desde el inicio.
     var vsl = root.querySelector('.db-video video');
     var unmuteBtn = root.querySelector('[data-db-unmute]');
-    if (vsl && unmuteBtn) {
+    if (vsl && thanks) {
+      vsl.pause();
+      vsl.muted = false;
+      vsl.loop = false;
+      vsl.controls = true;
+    } else if (vsl && unmuteBtn) {
       var activated = false;
       var safePlay = function () {
         var p = vsl.play();
@@ -677,14 +721,14 @@
       };
       var track = function (evento) { send({ tipo: 'evento', evento: evento }); };
 
-      track('visita');
+      if (!thanks) track('visita');
 
       var video = root.querySelector('.db-video video');
       if (video) {
         var seen = {};
         var once = function (name) { if (!seen[name]) { seen[name] = true; track(name); } };
         // Con autoplay, "video_play" cuenta cuando la persona activa el sonido; el 50 % y el final, solo si lo mira con sonido.
-        var watching = !unmuteBtn;
+        var watching = !unmuteBtn || thanks;
         root.addEventListener('db:vsl-sound', function () { watching = true; once('video_play'); });
         video.addEventListener('play', function () { if (watching) once('video_play'); });
         video.addEventListener('timeupdate', function () {
@@ -798,6 +842,20 @@
       "id": "privacy_note",
       "label": "Aviso de datos bajo el formulario",
       "default": "<p>Lo que escribas en este formulario se guarda para avisarte del drop, aunque no lo envíes. Podés pedir que lo borremos cuando quieras. <a href=\"/policies/privacy-policy\">Política de privacidad</a>.</p>"
+    },
+    { "type": "header", "content": "Pantalla de gracias" },
+    { "type": "text", "id": "thanks_title", "label": "Título", "default": "¡Gracias por anotarte!" },
+    {
+      "type": "richtext",
+      "id": "thanks_text",
+      "label": "Texto para los anotados al drop",
+      "default": "<p>Ya estás en la lista del <strong>Bicapa Edición Especial</strong>. Te vamos a estar contactando por WhatsApp y email con todo sobre el bicapa exclusivo, antes que a nadie, cuando abra el drop.</p><p>Mientras tanto, conocé lo que hace único a tu bicapa.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "thanks_text_next",
+      "label": "Texto para los anotados al próximo drop",
+      "default": "<p>Ya estás en la lista. Te vamos a avisar antes que a nadie cuando vuelva el bicapa.</p>"
     },
     { "type": "header", "content": "Legal (Ley 26.687)" },
     {

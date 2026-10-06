@@ -93,6 +93,16 @@
     font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--db-gold);
   }
   #drop-{{ section.id }} .db-topbar b { color: var(--db-ink); font-weight: 600; }
+  #drop-{{ section.id }} .db-topcount {
+    display: flex; flex-wrap: wrap; gap: 8px 14px; justify-content: center; align-items: center;
+    padding: 12px 16px; background: linear-gradient(90deg, rgba(200,16,46,.22), rgba(201,163,90,.18)); border-bottom: 1px solid var(--db-line);
+  }
+  #drop-{{ section.id }} .db-topcount[hidden] { display: none; }
+  #drop-{{ section.id }} .db-topcount-label { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--db-ink); }
+  #drop-{{ section.id }} .db-topcount-time { display: flex; gap: 6px; font-variant-numeric: tabular-nums; }
+  #drop-{{ section.id }} .db-topcount-time span { min-width: 46px; padding: 4px 6px; border-radius: 8px; background: rgba(0,0,0,.35); text-align: center;
+    font: 700 20px/1.1 var(--db-serif); color: var(--db-ink); }
+  #drop-{{ section.id }} .db-topcount-time small { display: block; font: 400 9px/1.2 var(--db-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--db-muted); }
 
   #drop-{{ section.id }} .db-hero { padding: clamp(36px, 7vw, 72px) 0 24px; text-align: center; }
   #drop-{{ section.id }} .db-kicker { font-size: clamp(14px, 2vw, 17px); color: var(--db-muted); margin: 0 0 10px; }
@@ -266,7 +276,7 @@
   class="drop-bicapa"
   data-phase="waitlist"
   data-start="{{ section.settings.drop_start | escape }}"
-  data-hours="{{ section.settings.duration_hours }}"
+  data-hours="{% if section.settings.no_time_limit %}0{% else %}{{ section.settings.duration_hours }}{% endif %}"
   data-product-state="{{ product_state }}"
   data-sheets-url="{{ section.settings.sheets_url | escape }}"
 >
@@ -279,6 +289,16 @@
 
   <div class="db-topbar">
     <span>Edición especial</span>·<b>{{ total_units }} unidades</b>·<span>Reposados 6 meses en ron</span>
+  </div>
+
+  <div class="db-topcount" data-topcount hidden aria-live="off">
+    <span class="db-topcount-label" data-topcount-label>El drop abre en</span>
+    <span class="db-topcount-time">
+      <span><b data-d>00</b><small>días</small></span>
+      <span><b data-h>00</b><small>hs</small></span>
+      <span><b data-m>00</b><small>min</small></span>
+      <span><b data-s>00</b><small>seg</small></span>
+    </span>
   </div>
 
   {%- comment -%} ============ HERO + VSL ============ {%- endcomment -%}
@@ -326,7 +346,11 @@
         <div data-phase-panel="waitlist">
           <span class="db-badge"><span class="db-dot"></span> Lista de espera abierta</span>
           <h3>Anotate y sé uno de los {{ total_units }}</h3>
-          <p>El día del drop te avisamos primero. La venta dura <b>{{ section.settings.duration_hours }} horas</b> o hasta que se terminen los {{ total_units }} puros.</p>
+          {%- if section.settings.no_time_limit -%}
+            <p>El día del drop te avisamos primero. La venta queda abierta <b>hasta que se terminen los {{ total_units }} puros</b>.</p>
+          {%- else -%}
+            <p>El día del drop te avisamos primero. La venta dura <b>{{ section.settings.duration_hours }} horas</b> o hasta que se terminen los {{ total_units }} puros.</p>
+          {%- endif -%}
 
           <div class="db-count" data-countdown hidden aria-live="polite">
             <div><span data-d>00</span><small>días</small></div>
@@ -390,7 +414,7 @@
             <div><span data-m>00</span><small>min</small></div>
             <div><span data-s>00</span><small>seg</small></div>
           </div>
-          <p class="db-when">Cierra en el tiempo indicado o al agotarse.</p>
+          <p class="db-when">{% if section.settings.no_time_limit %}Abierto hasta agotar los {{ total_units }}.{% else %}Cierra en el tiempo indicado o al agotarse.{% endif %}</p>
 
           {%- if product_state == 'available' -%}
             {%- form 'product', p, id: buy_form_id, class: 'db-buy', novalidate: 'novalidate' -%}
@@ -497,7 +521,11 @@
       <div class="db-steps">
         <div class="db-step"><div><h3>Anotate ahora</h3><p>Dejás tu nombre, email y WhatsApp. Es gratis y no te compromete a nada.</p></div></div>
         <div class="db-step"><div><h3>Te avisamos primero</h3><p>El día del drop la lista recibe el aviso antes que nadie, con el link directo para comprar.</p></div></div>
-        <div class="db-step"><div><h3>{{ section.settings.duration_hours }} horas o {{ total_units }} puros</h3><p>La venta cierra a las {{ section.settings.duration_hours }} horas o cuando se vende el último. Lo que pase primero.</p></div></div>
+        {%- if section.settings.no_time_limit -%}
+          <div class="db-step"><div><h3>Hasta agotar los {{ total_units }}</h3><p>La venta queda abierta hasta que se vende el último puro. Cuando se terminan, se termina la edición.</p></div></div>
+        {%- else -%}
+          <div class="db-step"><div><h3>{{ section.settings.duration_hours }} horas o {{ total_units }} puros</h3><p>La venta cierra a las {{ section.settings.duration_hours }} horas o cuando se vende el último. Lo que pase primero.</p></div></div>
+        {%- endif -%}
       </div>
     </div>
   </div>
@@ -553,12 +581,16 @@
     }
 
     var startRaw = (root.dataset.start || '').trim();
-    var hours = parseFloat(root.dataset.hours) || 24;
+    var hours = parseFloat(root.dataset.hours);
+    if (isNaN(hours)) hours = 24;
     var productState = root.dataset.productState;
     var start = startRaw ? Date.parse(startRaw) : NaN;
-    var end = isNaN(start) ? NaN : start + hours * 3600 * 1000;
+    // hours = 0 → sin límite de tiempo: cierra solo al agotarse el stock.
+    var end = isNaN(start) ? NaN : (hours > 0 ? start + hours * 3600 * 1000 : Infinity);
     var pad = function (n) { return String(n).padStart(2, '0'); };
 
+    // Antes de la fecha: lista de espera con cuenta regresiva (no se puede comprar).
+    // Desde la fecha: venta habilitada mientras el producto tenga stock; sin stock pasa a "Edición cerrada".
     function phaseAt(now) {
       if (isNaN(start) || now < start) return 'waitlist';
       if (now >= end || productState === 'soldout') return 'closed';
@@ -594,6 +626,17 @@
         root.dataset.phase = phase;
         root.querySelectorAll('[data-db-cta]').forEach(function (a) { a.textContent = ctaLabel[phase]; });
       }
+      var top = root.querySelector('[data-topcount]');
+      if (top) {
+        if (phase !== 'live' && !isNaN(start) && now < start) {
+          fill(top, start - now, true);
+        } else if (phase === 'live' && end !== Infinity) {
+          root.querySelector('[data-topcount-label]').textContent = 'El drop cierra en';
+          fill(top, end - now, true);
+        } else {
+          top.hidden = true;
+        }
+      }
       if (phase === 'waitlist' && !isNaN(start) && now < start) {
         fill(root.querySelector('[data-countdown]'), start - now, true);
         var when = root.querySelector('[data-when]');
@@ -605,7 +648,7 @@
           when.hidden = false;
         }
       }
-      if (phase === 'live') fill(root.querySelector('[data-countdown-end]'), end - now, false);
+      if (phase === 'live' && end !== Infinity) fill(root.querySelector('[data-countdown-end]'), end - now, false);
     }
     tick();
     setInterval(tick, 1000);
@@ -810,7 +853,8 @@
       "label": "Apertura del drop",
       "info": "Formato AAAA-MM-DDTHH:MM-03:00 (hora Argentina). Ej: 2026-10-11T20:00-03:00. Vacío = solo lista de espera."
     },
-    { "type": "range", "id": "duration_hours", "label": "Duración de la venta (horas)", "min": 1, "max": 72, "step": 1, "default": 24 },
+    { "type": "checkbox", "id": "no_time_limit", "label": "Venta sin límite de tiempo (cierra solo al agotarse)", "default": true },
+    { "type": "range", "id": "duration_hours", "label": "Duración de la venta (horas, si tiene límite)", "min": 1, "max": 72, "step": 1, "default": 24 },
     { "type": "number", "id": "total_units", "label": "Unidades totales de la edición", "default": 100 },
     { "type": "number", "id": "max_per_order", "label": "Máximo por compra (texto informativo)", "default": 1 },
     { "type": "checkbox", "id": "direct_checkout", "label": "Ir directo al checkout al comprar", "default": true },

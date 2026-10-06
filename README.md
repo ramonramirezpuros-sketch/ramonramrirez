@@ -10,7 +10,7 @@ Venta durante 24 horas o hasta agotar, con lista de espera previa.
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
 | Landing en Shopify | ✅ Armada, sin publicar | Tema `RR - Drop Bicapa (borrador)` · página oculta `/pages/drop-bicapa` · [código y guía](shopify/README-drop-bicapa.md) |
 | Producto en Shopify | 🟡 Borrador, sin precio ni stock | `bicapa-edicion-especial` |
-| Fecha del drop | 🔴 Sin definir | Se carga en el editor del tema (sección "Drop Bicapa") |
+| Fecha del drop | ✅ Domingo 18/10 00:00 hs, con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Editor del tema (sección "Drop Bicapa") |
 | Precio | 🔴 Sin definir | Producto en Shopify |
 | Funnel del drop (Miro) | 🟡 Plan completo pasado; faltan Typeform, ManyChat y pop-up | [plan y mensajes](estrategia/funnel-drop.md) |
 | Leads y visitas → Google Sheets | ✅ Conectado y probado de punta a punta | [planilla](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit) · [cómo activarlo](google-sheets/README.md) |
@@ -19,7 +19,6 @@ Venta durante 24 horas o hasta agotar, con lista de espera previa.
 ## Pendientes
 
 - [ ] Definir **precio** y cargarlo en el producto
-- [ ] Definir **fecha y hora de apertura** y cargarla en la sección (`2026-10-11T20:00-03:00`)
 - [ ] Revisar la landing en el editor del tema borrador y aprobar textos
 - [ ] Publicar el tema borrador (o copiar los 2 archivos al tema actual) y poner visible la página
 - [ ] Sumar el mensaje sanitario al VSL y a las piezas de redes

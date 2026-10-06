@@ -15,6 +15,7 @@
         "image_case": "shopify://shop_images/bicapa-estuche.jpg",
         "waitlist_tag": "drop-bicapa",
         "next_tag": "drop-bicapa-proximo",
+        "sheets_url": "https://script.google.com/macros/s/AKfycbwlrPDYiEhTENkT0NRz79ppUwyTYHwcEVi7abumozBCVa-gnty2hH-MDlkpSlELKqQy/exec",
         "health_message": "Fumar causa cáncer",
         "health_footer": "Prohibida su venta a menores de 18 años."
       }

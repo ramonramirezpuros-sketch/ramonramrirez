@@ -32,6 +32,9 @@ Venta durante 24 horas o hasta agotar, con lista de espera previa.
 
 ```
 README.md                         ← este archivo: estado y pendientes
+docs/
+  Drop-Bicapa-Paso-a-paso.pdf     ← plan completo paso a paso (equipo, calendario, ManyChat, email, WhatsApp)
+  paso-a-paso/                    ← fuente HTML del PDF
 vsl/
   transcripcion-vsl-final.md      ← lo que dice el video final, con tiempos
   VSL_drop_bicapa_edicion_especial.md  ← guion de referencia inicial (estilo Davidoff) + teoría de VSL

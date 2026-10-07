@@ -45,6 +45,7 @@ shopify/
   preview/                        ← capturas de la landing
 estrategia/
   funnel-drop.md                  ← etapas del tablero de Miro + mensajes por etapa
+  anuncios-transcripciones.md     ← los 8 anuncios: qué dicen y cuándo corren
 google-sheets/
   README.md                       ← cómo activar el envío de datos a la planilla
   apps-script-landing.gs          ← conector que escribe en la planilla

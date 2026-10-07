@@ -33,7 +33,7 @@ Venta durante 24 horas o hasta agotar, con lista de espera previa.
 ```
 README.md                         ← este archivo: estado y pendientes
 docs/
-  Drop-Bicapa-Paso-a-paso.pdf     ← plan completo paso a paso (equipo, calendario, ManyChat, email, WhatsApp)
+  Drop-Bicapa-Paso-a-paso.pdf     ← plan de ejecución: cronograma, historias de Ramón, ManyChat, email y WhatsApp
   paso-a-paso/                    ← fuente HTML del PDF
 vsl/
   transcripcion-vsl-final.md      ← lo que dice el video final, con tiempos

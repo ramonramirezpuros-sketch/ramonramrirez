@@ -1,0 +1,929 @@
+{% comment %}
+  Drop Bicapa — Edición Especial (landing basada en el VSL "Giuliano VSL_Corregido 1")
+  Fases (se calculan en el navegador con la fecha del drop):
+    1. Lista de espera  → antes de la fecha de apertura (o si no hay fecha / producto activo)
+    2. Venta abierta    → desde la apertura durante N horas, mientras haya stock
+    3. Edición cerrada  → pasadas las N horas o sin stock; vuelve a anotar para el próximo drop
+{% endcomment %}
+
+{%- liquid
+  assign p = section.settings.product
+  if p == blank and product
+    assign p = product
+  endif
+  if p != blank
+    assign v = p.selected_or_first_available_variant
+  endif
+
+  assign total_units = section.settings.total_units | default: 100 | at_least: 1
+  assign max_qty = section.settings.max_per_order | default: 1 | at_least: 1
+  assign has_price = false
+  if v and v.price > 0
+    assign has_price = true
+  endif
+  assign stock_left = -1
+  if v and v.inventory_management == 'shopify'
+    assign stock_left = v.inventory_quantity
+    if stock_left < 0
+      assign stock_left = 0
+    endif
+  endif
+  assign sold = 0
+  assign sold_pct = 0
+  if stock_left >= 0
+    assign sold = total_units | minus: stock_left
+    if sold < 0
+      assign sold = 0
+    endif
+    assign sold_pct = sold | times: 100 | divided_by: total_units
+  endif
+
+  assign product_state = 'none'
+  if p != blank
+    if p.available and has_price
+      assign product_state = 'available'
+    elsif p.available == false
+      assign product_state = 'soldout'
+    else
+      assign product_state = 'noprice'
+    endif
+  endif
+
+  assign waitlist_form_id = 'DropWaitlist-' | append: section.id
+  assign next_form_id = 'DropNext-' | append: section.id
+  assign buy_form_id = 'DropBuy-' | append: section.id
+-%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+
+<style>
+  #drop-{{ section.id }} {
+    --db-bg: #0a1222;
+    --db-bg-2: #0f1a30;
+    --db-ink: #f4efe6;
+    --db-muted: #b9b3a8;
+    --db-gold: #c9a35a;
+    --db-red: #c8102e;
+    --db-line: rgba(244, 239, 230, 0.14);
+    --db-glow: 0 0 24px rgba(160, 190, 255, 0.35);
+    --db-serif: 'Cormorant Garamond', var(--font-heading-family), serif;
+    --db-sans: var(--font-body-family), sans-serif;
+    background: radial-gradient(120% 80% at 50% 0%, #142443 0%, var(--db-bg) 55%) var(--db-bg);
+    color: var(--db-ink);
+    font-family: var(--db-sans);
+    overflow: hidden;
+  }
+  #drop-{{ section.id }} * { box-sizing: border-box; }
+  #drop-{{ section.id }} .db-wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+  #drop-{{ section.id }} .db-narrow { max-width: 760px; margin: 0 auto; }
+
+  /* Mensaje sanitario (Ley 26.687, art. 7: fondo blanco, letras negras, legible y prominente) */
+  #drop-{{ section.id }} .db-health {
+    background: #fff; color: #000; text-align: center;
+    font: 700 clamp(15px, 2.4vw, 20px)/1.25 Arial, Helvetica, sans-serif;
+    padding: 14px 16px; border-bottom: 3px solid #000; letter-spacing: .02em; text-transform: uppercase;
+  }
+  #drop-{{ section.id }} .db-health small { display: block; font-weight: 400; font-size: 12px; text-transform: none; margin-top: 4px; }
+
+  #drop-{{ section.id }} .db-topbar {
+    display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap;
+    padding: 10px 16px; border-bottom: 1px solid var(--db-line);
+    font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--db-gold);
+  }
+  #drop-{{ section.id }} .db-topbar b { color: var(--db-ink); font-weight: 600; }
+  #drop-{{ section.id }} .db-topcount {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    padding: clamp(18px, 3vw, 26px) 16px clamp(20px, 3.2vw, 28px);
+    background: radial-gradient(80% 140% at 50% 0%, rgba(201,163,90,.18), rgba(10,18,34,0) 70%), #0c1528;
+    border-top: 1px solid rgba(201,163,90,.35); border-bottom: 1px solid rgba(201,163,90,.35);
+  }
+  #drop-{{ section.id }} .db-topcount[hidden] { display: none; }
+  #drop-{{ section.id }} .db-topcount-label {
+    font: italic 500 clamp(19px, 2.8vw, 26px)/1.1 var(--db-serif); letter-spacing: .03em; color: var(--db-gold);
+  }
+  #drop-{{ section.id }} .db-topcount-time { display: flex; gap: clamp(6px, 1.6vw, 14px); font-variant-numeric: tabular-nums; }
+  #drop-{{ section.id }} .db-topcount-time > span {
+    min-width: clamp(68px, 15vw, 104px); padding: clamp(10px, 1.6vw, 14px) 8px clamp(8px, 1.2vw, 12px); border-radius: 12px; text-align: center;
+    border: 1px solid rgba(201,163,90,.5);
+    background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(0,0,0,.38));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 10px 28px rgba(0,0,0,.45), 0 0 22px rgba(201,163,90,.12);
+  }
+  #drop-{{ section.id }} .db-topcount-time b {
+    display: block; font: 700 clamp(34px, 7vw, 54px)/1 var(--db-serif); color: var(--db-ink); text-shadow: 0 0 18px rgba(201,163,90,.35); font-variant-numeric: lining-nums tabular-nums;
+  }
+  #drop-{{ section.id }} .db-topcount-time small {
+    display: block; margin-top: 6px; font: 600 clamp(9px, 1.3vw, 11px)/1.2 var(--db-sans); letter-spacing: .2em; text-transform: uppercase; color: var(--db-gold);
+  }
+
+  #drop-{{ section.id }} .db-hero { padding: clamp(36px, 7vw, 72px) 0 24px; text-align: center; }
+  #drop-{{ section.id }} .db-kicker { font-size: clamp(14px, 2vw, 17px); color: var(--db-muted); margin: 0 0 10px; }
+  #drop-{{ section.id }} h1.db-title,
+  #drop-{{ section.id }} h2.db-h2 {
+    font-family: var(--db-serif); font-weight: 600; letter-spacing: .01em; color: var(--db-ink);
+    text-shadow: var(--db-glow); margin: 0;
+  }
+  #drop-{{ section.id }} h1.db-title { font-size: clamp(40px, 8vw, 84px); line-height: 1; }
+  #drop-{{ section.id }} h1.db-title em { font-style: italic; color: var(--db-gold); text-shadow: none; }
+  #drop-{{ section.id }} .db-sub { max-width: 640px; margin: 16px auto 0; font-size: clamp(15px, 2.1vw, 18px); line-height: 1.6; color: var(--db-muted); }
+  #drop-{{ section.id }} .db-sub strong { color: var(--db-ink); }
+
+  #drop-{{ section.id }} .db-video {
+    position: relative; margin: 28px auto 0; max-width: 920px; aspect-ratio: 16 / 9;
+    border-radius: 14px; overflow: hidden; border: 1px solid var(--db-line);
+    box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(201,163,90,.18);
+    background: #000;
+  }
+  #drop-{{ section.id }} .db-video video,
+  #drop-{{ section.id }} .db-video iframe,
+  #drop-{{ section.id }} .db-video img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border: 0; }
+  #drop-{{ section.id }} .db-unmute {
+    position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; border: 0; cursor: pointer; background: rgba(5, 10, 20, .35); color: #fff;
+    font: 700 clamp(16px, 2.6vw, 22px)/1.2 var(--db-sans); letter-spacing: .04em; text-shadow: 0 2px 10px rgba(0,0,0,.6);
+  }
+  #drop-{{ section.id }} .db-unmute[hidden] { display: none; }
+  #drop-{{ section.id }} .db-unmute-icon {
+    display: grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; font-size: 34px;
+    background: rgba(201,163,90,.92); box-shadow: 0 0 0 10px rgba(201,163,90,.25); animation: db-pulse 1.6s infinite;
+  }
+  #drop-{{ section.id }} .db-video-ph { position: absolute; inset: 0; display: grid; place-items: center; color: var(--db-muted); font-size: 14px; padding: 16px; text-align: center; }
+
+  /* Pantalla de gracias (después de anotarse) */
+  #drop-{{ section.id }} .db-thanks { display: none; max-width: 680px; margin: 0 auto; padding: clamp(24px, 5vw, 40px); text-align: center;
+    border: 1px solid rgba(201,163,90,.45); border-radius: 18px; background: linear-gradient(180deg, rgba(201,163,90,.12), rgba(255,255,255,.02)); }
+  #drop-{{ section.id }}[data-thanks] .db-thanks { display: block; }
+  #drop-{{ section.id }}[data-thanks] .db-kicker,
+  #drop-{{ section.id }}[data-thanks] .db-title,
+  #drop-{{ section.id }}[data-thanks] .db-sub,
+  #drop-{{ section.id }}[data-thanks] .db-panel,
+  #drop-{{ section.id }}[data-thanks] .db-final,
+  #drop-{{ section.id }}[data-thanks] .db-sticky { display: none !important; }
+  #drop-{{ section.id }} .db-thanks-check { display: grid; place-items: center; width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 50%;
+    background: var(--db-gold); color: #1a1206; font-size: 32px; font-weight: 700; }
+  #drop-{{ section.id }} .db-thanks h2 { font-family: var(--db-serif); font-size: clamp(34px, 6vw, 56px); font-weight: 600; line-height: 1.05; margin: 0 0 12px; color: var(--db-ink); text-shadow: var(--db-glow); }
+  #drop-{{ section.id }} .db-thanks-text { color: var(--db-muted); font-size: clamp(15px, 2.1vw, 18px); line-height: 1.6; }
+  #drop-{{ section.id }} .db-thanks-text strong { color: var(--db-ink); }
+  #drop-{{ section.id }} .db-thanks .db-btn { max-width: 360px; margin: 20px auto 0; }
+
+  /* Caja de acción (cambia según la fase) */
+  #drop-{{ section.id }} .db-panel {
+    margin: 28px auto 0; max-width: 620px; padding: clamp(20px, 4vw, 32px);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    border: 1px solid var(--db-line); border-radius: 16px; text-align: center;
+  }
+  #drop-{{ section.id }} [data-phase-panel] { display: none; }
+  #drop-{{ section.id }}[data-phase="waitlist"] [data-phase-panel="waitlist"],
+  #drop-{{ section.id }}[data-phase="live"] [data-phase-panel="live"],
+  #drop-{{ section.id }}[data-phase="closed"] [data-phase-panel="closed"] { display: block; }
+
+  #drop-{{ section.id }} .db-badge {
+    display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid rgba(201,163,90,.5); color: var(--db-gold); font-size: 12px; letter-spacing: .18em; text-transform: uppercase;
+  }
+  #drop-{{ section.id }} .db-badge--live { border-color: rgba(200,16,46,.7); color: #ff6b81; }
+  #drop-{{ section.id }} .db-dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; animation: db-pulse 1.4s infinite; }
+  @keyframes db-pulse { 50% { opacity: .25; } }
+  @media (prefers-reduced-motion: reduce) { #drop-{{ section.id }} .db-dot { animation: none; } }
+
+  #drop-{{ section.id }} .db-panel h3 { font-family: var(--db-serif); font-size: clamp(26px, 4vw, 34px); font-weight: 600; margin: 14px 0 6px; color: var(--db-ink); }
+  #drop-{{ section.id }} .db-panel p { color: var(--db-muted); margin: 0 0 6px; line-height: 1.55; }
+
+  #drop-{{ section.id }} .db-count { display: flex; justify-content: center; gap: 10px; margin: 18px 0 6px; }
+  #drop-{{ section.id }} .db-count[hidden] { display: none; }
+  #drop-{{ section.id }} .db-count div { min-width: 64px; padding: 10px 6px; border: 1px solid var(--db-line); border-radius: 10px; background: rgba(0,0,0,.25); }
+  #drop-{{ section.id }} .db-count span { display: block; font-family: var(--db-serif); font-size: 32px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+  #drop-{{ section.id }} .db-count small { font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--db-muted); }
+  #drop-{{ section.id }} .db-when { font-size: 13px; color: var(--db-gold); letter-spacing: .06em; }
+
+  #drop-{{ section.id }} form { margin-top: 16px; text-align: left; }
+  #drop-{{ section.id }} .db-field { margin-bottom: 10px; }
+  #drop-{{ section.id }} .db-field label { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--db-muted); margin-bottom: 4px; }
+  #drop-{{ section.id }} .db-field input[type="text"],
+  #drop-{{ section.id }} .db-field input[type="email"],
+  #drop-{{ section.id }} .db-field input[type="tel"] {
+    width: 100%; padding: 13px 14px; font-size: 16px; color: var(--db-ink);
+    background: rgba(0,0,0,.35); border: 1px solid var(--db-line); border-radius: 10px; outline: none;
+  }
+  #drop-{{ section.id }} .db-field input:focus { border-color: var(--db-gold); box-shadow: 0 0 0 3px rgba(201,163,90,.2); }
+  #drop-{{ section.id }} .db-check { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--db-muted); margin: 10px 0; line-height: 1.45; }
+  #drop-{{ section.id }} .db-check input { margin-top: 3px; width: 18px; height: 18px; accent-color: var(--db-gold); flex: none; }
+
+  #drop-{{ section.id }} .db-btn {
+    display: block; width: 100%; padding: 16px 20px; margin-top: 8px; border: 0; border-radius: 12px; cursor: pointer;
+    background: linear-gradient(180deg, #e0bd72, var(--db-gold)); color: #1a1206;
+    font: 700 15px/1 var(--db-sans); letter-spacing: .16em; text-transform: uppercase; text-align: center; text-decoration: none;
+    box-shadow: 0 10px 30px rgba(201,163,90,.25);
+  }
+  #drop-{{ section.id }} .db-btn:hover { filter: brightness(1.06); }
+  #drop-{{ section.id }} .db-btn[disabled] { opacity: .5; cursor: not-allowed; }
+  #drop-{{ section.id }} .db-btn--ghost { background: transparent; color: var(--db-ink); border: 1px solid var(--db-line); box-shadow: none; }
+  #drop-{{ section.id }} .db-note { font-size: 12px; color: var(--db-muted); text-align: center; margin-top: 10px; }
+  #drop-{{ section.id }} .db-privacy { font-size: 11px; opacity: .8; }
+  #drop-{{ section.id }} .db-privacy a { color: inherit; }
+  #drop-{{ section.id }} .db-ok { padding: 14px; border-radius: 10px; background: rgba(76, 175, 80, .12); border: 1px solid rgba(76,175,80,.4); color: #cfe9d0; text-align: center; }
+  #drop-{{ section.id }} .db-err { padding: 10px 14px; border-radius: 10px; background: rgba(200,16,46,.12); border: 1px solid rgba(200,16,46,.45); color: #ffc2cb; font-size: 14px; margin-bottom: 10px; }
+
+  #drop-{{ section.id }} .db-price { font-family: var(--db-serif); font-size: 44px; font-weight: 700; margin: 8px 0 2px; color: var(--db-ink); }
+  #drop-{{ section.id }} .db-stock { margin: 14px 0 4px; text-align: left; }
+  #drop-{{ section.id }} .db-stock-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--db-muted); margin-bottom: 6px; }
+  #drop-{{ section.id }} .db-stock-row b { color: var(--db-ink); }
+  #drop-{{ section.id }} .db-bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+  #drop-{{ section.id }} .db-bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--db-red), #ff6b81); }
+
+  /* Bloques de contenido */
+  #drop-{{ section.id }} .db-section { padding: clamp(44px, 7vw, 80px) 0; border-top: 1px solid var(--db-line); }
+  #drop-{{ section.id }} h2.db-h2 { font-size: clamp(30px, 5vw, 48px); line-height: 1.08; text-align: center; }
+  #drop-{{ section.id }} .db-lead { text-align: center; color: var(--db-muted); max-width: 620px; margin: 12px auto 0; line-height: 1.6; }
+  #drop-{{ section.id }} .db-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+  #drop-{{ section.id }} .db-card { padding: 22px; border: 1px solid var(--db-line); border-radius: 14px; background: rgba(255,255,255,.03); }
+  #drop-{{ section.id }} .db-card .db-num { font-family: var(--db-serif); font-size: 40px; color: var(--db-gold); line-height: 1; }
+  #drop-{{ section.id }} .db-card h3 { font-family: var(--db-serif); font-size: 24px; font-weight: 600; margin: 10px 0 6px; color: var(--db-ink); }
+  #drop-{{ section.id }} .db-card p { color: var(--db-muted); margin: 0; line-height: 1.55; font-size: 15px; }
+
+  #drop-{{ section.id }} .db-split { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; margin-top: 32px; }
+  #drop-{{ section.id }} .db-split img { width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--db-line); display: block; }
+
+  #drop-{{ section.id }} .db-chats { display: grid; gap: 12px; margin: 32px auto 0; max-width: 520px; }
+  #drop-{{ section.id }} .db-bubble {
+    justify-self: start; max-width: 85%; padding: 12px 16px; border-radius: 16px 16px 16px 4px;
+    background: rgba(255,255,255,.08); border: 1px solid var(--db-line); box-shadow: var(--db-glow); font-size: 15px;
+  }
+  #drop-{{ section.id }} .db-bubble:nth-child(even) { justify-self: end; border-radius: 16px 16px 4px 16px; }
+  #drop-{{ section.id }} .db-quote { text-align: center; font-family: var(--db-serif); font-size: clamp(22px, 3.4vw, 30px); margin: 32px auto 0; max-width: 700px; color: var(--db-ink); }
+
+  #drop-{{ section.id }} .db-steps { counter-reset: s; display: grid; gap: 12px; margin-top: 28px; }
+  #drop-{{ section.id }} .db-step { display: grid; grid-template-columns: 48px 1fr; gap: 14px; align-items: start; padding: 16px; border: 1px solid var(--db-line); border-radius: 14px; }
+  #drop-{{ section.id }} .db-step::before { counter-increment: s; content: counter(s); display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--db-gold); color: var(--db-gold); font-family: var(--db-serif); font-size: 24px; }
+  #drop-{{ section.id }} .db-step h3 { margin: 2px 0 4px; font-size: 17px; color: var(--db-ink); font-family: var(--db-sans); font-weight: 600; }
+  #drop-{{ section.id }} .db-step p { margin: 0; color: var(--db-muted); line-height: 1.5; font-size: 15px; }
+
+  #drop-{{ section.id }} details { border-bottom: 1px solid var(--db-line); padding: 16px 0; }
+  #drop-{{ section.id }} summary { cursor: pointer; font-size: 17px; font-weight: 600; color: var(--db-ink); list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+  #drop-{{ section.id }} summary::-webkit-details-marker { display: none; }
+  #drop-{{ section.id }} summary::after { content: '+'; color: var(--db-gold); font-size: 22px; line-height: 1; }
+  #drop-{{ section.id }} details[open] summary::after { content: '–'; }
+  #drop-{{ section.id }} details p { color: var(--db-muted); line-height: 1.6; margin: 10px 0 0; }
+
+  #drop-{{ section.id }} .db-final { text-align: center; }
+  #drop-{{ section.id }} .db-legal { text-align: center; font-size: 12px; color: var(--db-muted); padding: 20px 16px 28px; border-top: 1px solid var(--db-line); }
+
+  #drop-{{ section.id }} .db-sticky {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(10,18,34,.94); border-top: 1px solid var(--db-line); backdrop-filter: blur(8px);
+    display: none;
+  }
+  #drop-{{ section.id }} .db-sticky .db-btn { margin: 0; max-width: 520px; margin-inline: auto; padding: 14px; }
+  #drop-{{ section.id }}.db-show-sticky .db-sticky { display: block; }
+
+  @media (max-width: 749px) {
+    #drop-{{ section.id }} .db-grid, #drop-{{ section.id }} .db-split { grid-template-columns: 1fr; }
+    #drop-{{ section.id }} .db-count div { min-width: 0; flex: 1; }
+    #drop-{{ section.id }} .db-count span { font-size: 26px; }
+  }
+</style>
+
+<div
+  id="drop-{{ section.id }}"
+  class="drop-bicapa"
+  data-phase="waitlist"
+  data-start="{{ section.settings.drop_start | escape }}"
+  data-hours="{% if section.settings.no_time_limit %}0{% else %}{{ section.settings.duration_hours }}{% endif %}"
+  data-product-state="{{ product_state }}"
+  data-sheets-url="{{ section.settings.sheets_url | escape }}"
+>
+  {%- if section.settings.health_message != blank -%}
+    <div class="db-health" role="note">
+      {{ section.settings.health_message | escape }}
+      {%- if section.settings.health_footer != blank -%}<small>{{ section.settings.health_footer | escape }}</small>{%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="db-topbar">
+    <span>Edición especial</span>·<b>{{ total_units }} unidades</b>·<span>Reposados 6 meses en ron</span>
+  </div>
+
+  <div class="db-topcount" data-topcount hidden aria-live="off">
+    <span class="db-topcount-label" data-topcount-label>El drop abre en</span>
+    <span class="db-topcount-time">
+      <span><b data-d>00</b><small>días</small></span>
+      <span><b data-h>00</b><small>hs</small></span>
+      <span><b data-m>00</b><small>min</small></span>
+      <span><b data-s>00</b><small>seg</small></span>
+    </span>
+  </div>
+
+  {%- comment -%} ============ HERO + VSL ============ {%- endcomment -%}
+  <div class="db-hero">
+    <div class="db-wrap">
+      <div class="db-thanks" id="gracias-{{ section.id }}" role="status">
+        <div class="db-thanks-check" aria-hidden="true">✓</div>
+        <h2>{{ section.settings.thanks_title | escape }}</h2>
+        <div class="db-thanks-text" data-thanks-text="lista">{{ section.settings.thanks_text }}</div>
+        <div class="db-thanks-text" data-thanks-text="proximo-drop" hidden>{{ section.settings.thanks_text_next }}</div>
+        <a href="#bicapa-{{ section.id }}" class="db-btn db-btn--ghost">Conocé tu bicapa</a>
+      </div>
+      <p class="db-kicker">{{ section.settings.kicker | escape }}</p>
+      <h1 class="db-title">Bicapa <em>Edición Especial</em></h1>
+      <div class="db-sub">{{ section.settings.subheading }}</div>
+
+      <div class="db-video">
+        {%- if section.settings.video != blank -%}
+          {%- if section.settings.autoplay -%}
+            {{ section.settings.video | video_tag: autoplay: true, muted: true, playsinline: true, preload: 'auto', image_size: '1600x' }}
+          {%- else -%}
+            {{ section.settings.video | video_tag: controls: true, playsinline: true, preload: 'metadata', image_size: '1600x' }}
+          {%- endif -%}
+        {%- elsif section.settings.video_mp4 != blank -%}
+          <video playsinline{% if section.settings.autoplay %} autoplay muted preload="auto"{% else %} controls preload="metadata"{% endif %}{% if section.settings.poster != blank %} poster="{{ section.settings.poster | image_url: width: 1600 }}"{% endif %}>
+            <source src="{{ section.settings.video_mp4 | escape }}" type="video/mp4">
+          </video>
+        {%- elsif section.settings.poster != blank -%}
+          {{ section.settings.poster | image_url: width: 1600 | image_tag: loading: 'eager', alt: 'Puros bicapa Ramón Ramírez' }}
+        {%- else -%}
+          <div class="db-video-ph">Cargá el video del VSL en la configuración de la sección.</div>
+        {%- endif -%}
+        {%- if section.settings.autoplay -%}
+          <button type="button" class="db-unmute" data-db-unmute hidden>
+            <span class="db-unmute-icon" aria-hidden="true">🔊</span>
+            <span>Tocá para escuchar</span>
+          </button>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ============ CAJA DE ACCIÓN POR FASE ============ {%- endcomment -%}
+      <div class="db-panel" id="anotate-{{ section.id }}">
+
+        {%- comment -%} --- Fase 1: lista de espera --- {%- endcomment -%}
+        <div data-phase-panel="waitlist">
+          <span class="db-badge"><span class="db-dot"></span> Lista de espera abierta</span>
+          <h3>Anotate y sé uno de los {{ total_units }}</h3>
+          {%- if section.settings.no_time_limit -%}
+            <p>El día del drop te avisamos primero. La venta queda abierta <b>hasta que se terminen los {{ total_units }} puros</b>.</p>
+          {%- else -%}
+            <p>El día del drop te avisamos primero. La venta dura <b>{{ section.settings.duration_hours }} horas</b> o hasta que se terminen los {{ total_units }} puros.</p>
+          {%- endif -%}
+
+          <div class="db-count" data-countdown hidden aria-live="polite">
+            <div><span data-d>00</span><small>días</small></div>
+            <div><span data-h>00</span><small>horas</small></div>
+            <div><span data-m>00</span><small>min</small></div>
+            <div><span data-s>00</span><small>seg</small></div>
+          </div>
+          <p class="db-when" data-when hidden></p>
+
+          {%- form 'customer', id: waitlist_form_id, class: 'db-waitlist', data-db-waitlist: 'true', data-db-form: 'lista' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="db-ok">¡Listo! Ya estás en la lista. Te avisamos antes que a nadie cuando abra el drop.</div>
+            {%- else -%}
+              {%- if form.errors -%}
+                <div class="db-err">{{ form.errors | default_errors }}</div>
+              {%- endif -%}
+              <input type="hidden" name="contact[tags]" value="{{ section.settings.waitlist_tag | escape }}" data-db-tags data-base="{{ section.settings.waitlist_tag | escape }}">
+              <div class="db-field">
+                <label for="{{ waitlist_form_id }}-name">Nombre</label>
+                <input type="text" id="{{ waitlist_form_id }}-name" name="contact[first_name]" autocomplete="given-name" required data-db-name>
+              </div>
+              <div class="db-field">
+                <label for="{{ waitlist_form_id }}-email">Email</label>
+                <input type="email" id="{{ waitlist_form_id }}-email" name="contact[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required>
+              </div>
+              <div class="db-field">
+                <label for="{{ waitlist_form_id }}-wa">WhatsApp (para avisarte del drop)</label>
+                <input type="tel" id="{{ waitlist_form_id }}-wa" autocomplete="tel" inputmode="tel" placeholder="Ej: 11 2345 6789" data-db-phone>
+              </div>
+              <label class="db-check">
+                <input type="checkbox" required>
+                <span>Declaro ser mayor de 18 años y acepto recibir comunicaciones de Ramón Ramírez sobre este lanzamiento.</span>
+              </label>
+              <button type="submit" class="db-btn">Anotarme ahora</button>
+              <p class="db-note">Sin pago ahora. Anotarte no reserva una unidad: te da aviso prioritario.</p>
+              {%- if section.settings.privacy_note != blank -%}
+                <p class="db-note db-privacy">{{ section.settings.privacy_note }}</p>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+
+        {%- comment -%} --- Fase 2: venta abierta --- {%- endcomment -%}
+        <div data-phase-panel="live">
+          <span class="db-badge db-badge--live"><span class="db-dot"></span> Drop abierto</span>
+          <h3>{% if p != blank %}{{ p.title | escape }}{% else %}Bicapa Edición Especial{% endif %}</h3>
+          {%- if has_price -%}
+            <div class="db-price">{{ v.price | money }}</div>
+            <p>Precio por puro · máximo {{ max_qty }} por compra</p>
+          {%- endif -%}
+
+          {%- if stock_left >= 0 -%}
+            <div class="db-stock">
+              <div class="db-stock-row"><span>Vendidos: <b>{{ sold }}</b></span><span>Quedan <b>{{ stock_left }}</b> de {{ total_units }}</span></div>
+              <div class="db-bar"><i style="width: {{ sold_pct }}%"></i></div>
+            </div>
+          {%- endif -%}
+
+          <div class="db-count" data-countdown-end hidden aria-live="polite">
+            <div><span data-h>00</span><small>horas</small></div>
+            <div><span data-m>00</span><small>min</small></div>
+            <div><span data-s>00</span><small>seg</small></div>
+          </div>
+          <p class="db-when">{% if section.settings.no_time_limit %}Abierto hasta agotar los {{ total_units }}.{% else %}Cierra en el tiempo indicado o al agotarse.{% endif %}</p>
+
+          {%- if product_state == 'available' -%}
+            {%- form 'product', p, id: buy_form_id, class: 'db-buy', novalidate: 'novalidate' -%}
+              <input type="hidden" name="id" value="{{ v.id }}">
+              <input type="hidden" name="quantity" value="1">
+              {%- if section.settings.direct_checkout -%}
+                <input type="hidden" name="return_to" value="/checkout">
+              {%- endif -%}
+              <button type="submit" class="db-btn">Comprar mi bicapa</button>
+              <p class="db-note">Venta exclusiva a mayores de 18 años.</p>
+            {%- endform -%}
+          {%- else -%}
+            <p class="db-note">Estamos abriendo el drop, actualizá la página en unos segundos.</p>
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} --- Fase 3: cerrado / agotado --- {%- endcomment -%}
+        <div data-phase-panel="closed">
+          <span class="db-badge">Edición cerrada</span>
+          <h3>Los {{ total_units }} ya tienen dueño</h3>
+          <p>No sabemos cuándo vuelve el bicapa: cada tanda lleva meses de selección y reposo. Anotate para enterarte primero del próximo.</p>
+          {%- form 'customer', id: next_form_id, class: 'db-waitlist', data-db-waitlist: 'true', data-db-form: 'proximo-drop' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="db-ok">¡Anotado! Sos de los primeros en saber cuándo vuelve.</div>
+            {%- else -%}
+              <input type="hidden" name="contact[tags]" value="{{ section.settings.next_tag | escape }}" data-db-tags data-base="{{ section.settings.next_tag | escape }}">
+              <div class="db-field">
+                <label for="{{ next_form_id }}-email">Email</label>
+                <input type="email" id="{{ next_form_id }}-email" name="contact[email]" autocomplete="email" required>
+              </div>
+              <div class="db-field">
+                <label for="{{ next_form_id }}-wa">WhatsApp (opcional)</label>
+                <input type="tel" id="{{ next_form_id }}-wa" autocomplete="tel" inputmode="tel" data-db-phone>
+              </div>
+              <label class="db-check">
+                <input type="checkbox" required>
+                <span>Declaro ser mayor de 18 años y acepto recibir comunicaciones de Ramón Ramírez.</span>
+              </label>
+              <button type="submit" class="db-btn db-btn--ghost">Avisarme del próximo drop</button>
+              {%- if section.settings.privacy_note != blank -%}
+                <p class="db-note db-privacy">{{ section.settings.privacy_note }}</p>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ============ NO ES SOLO ESTÉTICA ============ {%- endcomment -%}
+  <div class="db-section" id="bicapa-{{ section.id }}">
+    <div class="db-wrap">
+      <h2 class="db-h2">No es solo estética</h2>
+      <p class="db-lead">Dos capas de distinto color que se ven a simple vista. Pero el contraste empieza mucho antes: en la mesa, hoja por hoja.</p>
+      <div class="db-grid">
+        <div class="db-card">
+          <div class="db-num">01</div>
+          <h3>Hoja por hoja</h3>
+          <p>Nada de proceso industrial donde se agarra cualquier hoja al voleo. Elegimos cada capa a mano para lograr el contraste justo.</p>
+        </div>
+        <div class="db-card">
+          <div class="db-num">02</div>
+          <h3>Dos maduraciones</h3>
+          <p>Cuanto más oscura la hoja, más madura. Al combinar dos niveles de fermentación, la fumada es más completa y cambia a medida que avanza.</p>
+        </div>
+        <div class="db-card">
+          <div class="db-num">03</div>
+          <h3>6 meses en ron</h3>
+          <p>Por ser una edición especial, los dejamos reposar seis meses en ron antes de liberarlos. Por eso no se pueden apurar.</p>
+        </div>
+      </div>
+      {%- if section.settings.image_detail != blank or section.settings.image_case != blank -%}
+        <div class="db-split">
+          {%- if section.settings.image_detail != blank -%}
+            {{ section.settings.image_detail | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 50vw, 100vw', alt: 'Detalle de las dos capas del puro bicapa' }}
+          {%- endif -%}
+          {%- if section.settings.image_case != blank -%}
+            {{ section.settings.image_case | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 750px) 50vw, 100vw', alt: 'Estuche Ramón Ramírez Orgullo Argentino' }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} ============ PRUEBA SOCIAL ============ {%- endcomment -%}
+  <div class="db-section">
+    <div class="db-wrap">
+      <h2 class="db-h2">Cada vez que salen, se agotan en horas</h2>
+      <p class="db-lead">Y después llegan siempre los mismos mensajes:</p>
+      <div class="db-chats" aria-label="Mensajes de clientes">
+        <div class="db-bubble">¿Cuándo vuelven los de dos colores?</div>
+        <div class="db-bubble">¡Guárdenme una caja!</div>
+        <div class="db-bubble">¿Cuándo vuelven los bicapa?</div>
+        <div class="db-bubble">¿Todavía te quedan algunos bicapa por el costado, amigo?</div>
+      </div>
+      <p class="db-quote">Hasta nos ofrecieron pagar por adelantado, y el doble, para conseguirlos. Así que esta vez hicimos algo diferente.</p>
+    </div>
+  </div>
+
+  {%- comment -%} ============ CÓMO FUNCIONA EL DROP ============ {%- endcomment -%}
+  <div class="db-section">
+    <div class="db-wrap db-narrow">
+      <h2 class="db-h2">Así funciona el drop</h2>
+      <div class="db-steps">
+        <div class="db-step"><div><h3>Anotate ahora</h3><p>Dejás tu nombre, email y WhatsApp. Es gratis y no te compromete a nada.</p></div></div>
+        <div class="db-step"><div><h3>Te avisamos primero</h3><p>El día del drop la lista recibe el aviso antes que nadie, con el link directo para comprar.</p></div></div>
+        {%- if section.settings.no_time_limit -%}
+          <div class="db-step"><div><h3>Hasta agotar los {{ total_units }}</h3><p>La venta queda abierta hasta que se vende el último puro. Cuando se terminan, se termina la edición.</p></div></div>
+        {%- else -%}
+          <div class="db-step"><div><h3>{{ section.settings.duration_hours }} horas o {{ total_units }} puros</h3><p>La venta cierra a las {{ section.settings.duration_hours }} horas o cuando se vende el último. Lo que pase primero.</p></div></div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} ============ FAQ ============ {%- endcomment -%}
+  <div class="db-section">
+    <div class="db-wrap db-narrow">
+      <h2 class="db-h2">Preguntas frecuentes</h2>
+      <div style="margin-top: 20px;">
+        <details><summary>¿Qué compro exactamente?</summary><p>Un puro bicapa de la Edición Especial: dos capas de distinto color seleccionadas a mano y seis meses de reposo en ron. Son {{ total_units }} unidades en total.</p></details>
+        <details><summary>¿Cuántos puedo comprar?</summary><p>Hasta {{ max_qty }} por compra, para que lleguen a la mayor cantidad de personas posible.</p></details>
+        <details><summary>¿Anotarme me asegura un puro?</summary><p>No. La lista te da aviso prioritario. Las unidades se asignan por orden de compra durante el drop.</p></details>
+        <details><summary>¿Cuándo vuelven a estar?</summary><p>No lo podemos garantizar: seleccionar las hojas y el reposo de seis meses llevan mucho más tiempo que un puro normal.</p></details>
+        <details><summary>¿Tengo que ser mayor de edad?</summary><p>Sí. La venta de productos de tabaco es exclusiva para mayores de 18 años, tanto para quien compra como para quien recibe el pedido.</p></details>
+      </div>
+    </div>
+  </div>
+
+  <div class="db-section db-final">
+    <div class="db-wrap db-narrow">
+      <h2 class="db-h2">Dos capas. {{ total_units }} puros. Una sola vez.</h2>
+      <p class="db-lead">Si todavía ves la opción para anotarte, no la dejes pasar.</p>
+      <div style="max-width: 420px; margin: 24px auto 0;">
+        <a href="#anotate-{{ section.id }}" class="db-btn" data-db-cta>Anotarme ahora</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="db-legal">Prohibida la venta de productos de tabaco a menores de 18 años. Ley 26.687.</div>
+
+  <div class="db-sticky" aria-hidden="true">
+    <a href="#anotate-{{ section.id }}" class="db-btn" data-db-cta tabindex="-1">Anotarme ahora</a>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('drop-{{ section.id }}');
+    if (!root) return;
+
+    // Después de anotarse, Shopify recarga la página con ?customer_posted=true: mostramos la pantalla de gracias.
+    var thanks = /[?&]customer_posted=true/.test(window.location.search);
+    if (thanks) {
+      root.setAttribute('data-thanks', '');
+      var lastForm = '';
+      try { lastForm = sessionStorage.getItem('rr_drop_last_form') || ''; } catch (e) {}
+      if (lastForm === 'proximo-drop') {
+        root.querySelector('[data-thanks-text="lista"]').hidden = true;
+        root.querySelector('[data-thanks-text="proximo-drop"]').hidden = false;
+      }
+      var thanksBox = document.getElementById('gracias-{{ section.id }}');
+      if (thanksBox) setTimeout(function () { thanksBox.scrollIntoView({ block: 'center' }); }, 50);
+    }
+
+    var startRaw = (root.dataset.start || '').trim();
+    var hours = parseFloat(root.dataset.hours);
+    if (isNaN(hours)) hours = 24;
+    var productState = root.dataset.productState;
+    var start = startRaw ? Date.parse(startRaw) : NaN;
+    // hours = 0 → sin límite de tiempo: cierra solo al agotarse el stock.
+    var end = isNaN(start) ? NaN : (hours > 0 ? start + hours * 3600 * 1000 : Infinity);
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+
+    // Antes de la fecha: lista de espera con cuenta regresiva (no se puede comprar).
+    // Desde la fecha: venta habilitada mientras el producto tenga stock; sin stock pasa a "Edición cerrada".
+    function phaseAt(now) {
+      if (isNaN(start) || now < start) return 'waitlist';
+      if (now >= end || productState === 'soldout') return 'closed';
+      if (productState === 'available') return 'live';
+      return 'waitlist';
+    }
+
+    function fill(el, ms, withDays) {
+      if (!el) return;
+      ms = Math.max(0, ms);
+      var s = Math.floor(ms / 1000);
+      var d = Math.floor(s / 86400);
+      var h = Math.floor((s % 86400) / 3600);
+      if (!withDays) h += d * 24;
+      var q = function (sel) { return el.querySelector(sel); };
+      if (q('[data-d]')) q('[data-d]').textContent = pad(d);
+      q('[data-h]').textContent = pad(h);
+      q('[data-m]').textContent = pad(Math.floor((s % 3600) / 60));
+      q('[data-s]').textContent = pad(s % 60);
+      el.hidden = false;
+    }
+
+    var ctaLabel = { waitlist: 'Anotarme ahora', live: 'Comprar mi bicapa', closed: 'Avisarme del próximo drop' };
+    var current = null;
+
+    function tick() {
+      var now = Date.now();
+      var phase = phaseAt(now);
+      if (phase !== current) {
+        // Si cambia de fase con la página abierta, recargamos al abrir para traer stock actualizado.
+        if (current === 'waitlist' && phase === 'live') { window.location.reload(); return; }
+        current = phase;
+        root.dataset.phase = phase;
+        root.querySelectorAll('[data-db-cta]').forEach(function (a) { a.textContent = ctaLabel[phase]; });
+      }
+      var top = root.querySelector('[data-topcount]');
+      if (top) {
+        if (phase !== 'live' && !isNaN(start) && now < start) {
+          fill(top, start - now, true);
+        } else if (phase === 'live' && end !== Infinity) {
+          root.querySelector('[data-topcount-label]').textContent = 'El drop cierra en';
+          fill(top, end - now, true);
+        } else {
+          top.hidden = true;
+        }
+      }
+      if (phase === 'waitlist' && !isNaN(start) && now < start) {
+        fill(root.querySelector('[data-countdown]'), start - now, true);
+        var when = root.querySelector('[data-when]');
+        if (when && when.hidden) {
+          when.textContent = 'Abre el ' + new Date(start).toLocaleString('es-AR', {
+            weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+            timeZone: 'America/Argentina/Buenos_Aires'
+          }) + ' hs';
+          when.hidden = false;
+        }
+      }
+      if (phase === 'live' && end !== Infinity) fill(root.querySelector('[data-countdown-end]'), end - now, false);
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    // El WhatsApp se guarda como etiqueta del cliente (ej. "wa-5491123456789"), porque el formulario de clientes de Shopify no guarda teléfono.
+    root.querySelectorAll('form[data-db-waitlist]').forEach(function (form) {
+      form.addEventListener('submit', function () {
+        try { sessionStorage.setItem('rr_drop_last_form', form.dataset.dbForm || ''); } catch (e) {}
+        var tags = form.querySelector('[data-db-tags]');
+        var phone = form.querySelector('[data-db-phone]');
+        if (!tags) return;
+        var value = tags.dataset.base;
+        var digits = phone ? phone.value.replace(/\D/g, '') : '';
+        if (digits.length >= 8) value += ', wa-' + digits;
+        tags.value = value;
+      });
+    });
+
+    // Video VSL: intenta arrancar con sonido; si el navegador lo bloquea (lo normal sin un toque previo),
+    // sigue sin sonido y el primer toque en cualquier parte de la página activa el sonido desde el inicio.
+    var vsl = root.querySelector('.db-video video');
+    var unmuteBtn = root.querySelector('[data-db-unmute]');
+    if (vsl && thanks) {
+      vsl.pause();
+      vsl.muted = false;
+      vsl.loop = false;
+      vsl.controls = true;
+    } else if (vsl && unmuteBtn) {
+      var activated = false;
+      var safePlay = function () {
+        var p = vsl.play();
+        return p && p.then ? p : Promise.resolve();
+      };
+      var onFirstTouch = function (e) {
+        if (e.target.closest && e.target.closest('[data-db-unmute]')) return;
+        activate(true);
+      };
+      var activate = function (restart) {
+        if (activated) return;
+        activated = true;
+        document.removeEventListener('pointerdown', onFirstTouch, true);
+        document.removeEventListener('keydown', onFirstTouch, true);
+        vsl.muted = false;
+        vsl.loop = false;
+        if (restart) vsl.currentTime = 0;
+        vsl.controls = true;
+        unmuteBtn.hidden = true;
+        safePlay().catch(function () {});
+        root.dispatchEvent(new CustomEvent('db:vsl-sound'));
+      };
+      var fellBack = false;
+      var mutedFallback = function () {
+        if (activated || fellBack) return;
+        fellBack = true;
+        vsl.muted = true;
+        vsl.loop = true;
+        unmuteBtn.hidden = false;
+        safePlay().catch(function () {});
+        document.addEventListener('pointerdown', onFirstTouch, true);
+        document.addEventListener('keydown', onFirstTouch, true);
+      };
+      vsl.removeAttribute('controls');
+      vsl.pause();
+      vsl.muted = false;
+      var settle = function () {
+        if (!vsl.muted && !vsl.paused) activate(false); else mutedFallback();
+      };
+      safePlay().then(settle).catch(mutedFallback);
+      // Algunos navegadores tardan en confirmar la reproducción: a los 1,5 s se decide igual.
+      setTimeout(function () { if (!activated && !fellBack) settle(); }, 1500);
+      unmuteBtn.addEventListener('click', function () { activate(true); });
+    } else if (vsl) {
+      vsl.controls = true;
+    }
+
+    // Envío de visitas y datos a Google Sheets (conector de Apps Script).
+    var sheetsUrl = (root.dataset.sheetsUrl || '').trim();
+    if (sheetsUrl) {
+      var store = function (kind, key, value) {
+        try {
+          var s = window[kind];
+          if (value === undefined) return s.getItem(key);
+          s.setItem(key, value);
+        } catch (e) { return null; }
+      };
+      var vid = store('localStorage', 'rr_drop_vid');
+      if (!vid) {
+        vid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+        store('localStorage', 'rr_drop_vid', vid);
+      }
+      var params = new URLSearchParams(window.location.search);
+      var utm = {};
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
+        var v = params.get(k) || store('sessionStorage', 'rr_drop_' + k) || '';
+        if (params.get(k)) store('sessionStorage', 'rr_drop_' + k, v);
+        utm[k] = v;
+      });
+      var device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'celular' : 'compu';
+      var send = function (payload) {
+        payload.vid = vid;
+        payload.utm = utm;
+        payload.referrer = document.referrer;
+        payload.dispositivo = device;
+        payload.pagina = window.location.pathname;
+        payload.fase = root.dataset.phase;
+        try {
+          fetch(sheetsUrl, {
+            method: 'POST', mode: 'no-cors', keepalive: true,
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          }).catch(function () {});
+        } catch (e) {}
+      };
+      var track = function (evento) { send({ tipo: 'evento', evento: evento }); };
+
+      if (!thanks) track('visita');
+
+      var video = root.querySelector('.db-video video');
+      if (video) {
+        var seen = {};
+        var once = function (name) { if (!seen[name]) { seen[name] = true; track(name); } };
+        // Con autoplay, "video_play" cuenta cuando la persona activa el sonido; el 50 % y el final, solo si lo mira con sonido.
+        var watching = !unmuteBtn || thanks;
+        root.addEventListener('db:vsl-sound', function () { watching = true; once('video_play'); });
+        video.addEventListener('play', function () { if (watching) once('video_play'); });
+        video.addEventListener('timeupdate', function () {
+          if (watching && video.duration && video.currentTime / video.duration >= 0.5) once('video_50');
+        });
+        video.addEventListener('ended', function () { if (watching) once('video_completo'); });
+      }
+
+      root.querySelectorAll('form[data-db-form]').forEach(function (form) {
+        var formName = form.dataset.dbForm;
+        var started = false;
+        var timer = null;
+        var read = function () {
+          var name = form.querySelector('[data-db-name]');
+          var email = form.querySelector('input[type="email"]');
+          var phone = form.querySelector('[data-db-phone]');
+          return {
+            nombre: name ? name.value : '',
+            email: email ? email.value : '',
+            whatsapp: phone ? phone.value.replace(/\D/g, '') : ''
+          };
+        };
+        var sendLead = function (estado) {
+          var data = read();
+          if (estado === 'parcial' && !data.nombre && !data.email && !data.whatsapp) return;
+          data.tipo = 'lead';
+          data.formulario = formName;
+          data.estado = estado;
+          data.consentimiento = estado === 'completo';
+          send(data);
+        };
+        form.addEventListener('input', function () {
+          if (!started) { started = true; track('formulario_iniciado'); }
+          clearTimeout(timer);
+          timer = setTimeout(function () { sendLead('parcial'); }, 1200);
+        });
+        form.addEventListener('focusout', function () {
+          clearTimeout(timer);
+          sendLead('parcial');
+        });
+        form.addEventListener('submit', function () {
+          clearTimeout(timer);
+          sendLead('completo');
+          track('formulario_enviado');
+        });
+      });
+
+      var buy = root.querySelector('form.db-buy');
+      if (buy) buy.addEventListener('submit', function () { track('click_comprar'); });
+    }
+
+    // Barra fija en mobile cuando la caja de acción sale de pantalla.
+    var panel = root.querySelector('.db-panel');
+    if ('IntersectionObserver' in window && panel) {
+      new IntersectionObserver(function (entries) {
+        var e = entries[0];
+        root.classList.toggle('db-show-sticky', !e.isIntersecting && e.boundingClientRect.top < 0 && window.innerWidth < 750);
+      }).observe(panel);
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Drop Bicapa",
+  "tag": "section",
+  "class": "section-drop-bicapa",
+  "settings": [
+    { "type": "header", "content": "Producto y drop" },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Producto del drop",
+      "info": "Mientras el producto esté en borrador o sin precio, la página solo muestra la lista de espera."
+    },
+    {
+      "type": "text",
+      "id": "drop_start",
+      "label": "Apertura del drop",
+      "info": "Formato AAAA-MM-DDTHH:MM-03:00 (hora Argentina). Ej: 2026-10-11T20:00-03:00. Vacío = solo lista de espera."
+    },
+    { "type": "checkbox", "id": "no_time_limit", "label": "Venta sin límite de tiempo (cierra solo al agotarse)", "default": true },
+    { "type": "range", "id": "duration_hours", "label": "Duración de la venta (horas, si tiene límite)", "min": 1, "max": 72, "step": 1, "default": 24 },
+    { "type": "number", "id": "total_units", "label": "Unidades totales de la edición", "default": 100 },
+    { "type": "number", "id": "max_per_order", "label": "Máximo por compra (texto informativo)", "default": 1 },
+    { "type": "checkbox", "id": "direct_checkout", "label": "Ir directo al checkout al comprar", "default": true },
+    { "type": "header", "content": "Video y textos" },
+    { "type": "video", "id": "video", "label": "Video VSL (subido a Shopify)" },
+    { "type": "url", "id": "video_mp4", "label": "o link directo a un .mp4", "info": "Se usa solo si no elegiste un video arriba." },
+    { "type": "checkbox", "id": "autoplay", "label": "Reproducir el video automáticamente (sin sonido hasta que lo toquen)", "default": true },
+    { "type": "image_picker", "id": "poster", "label": "Imagen de portada del video" },
+    { "type": "text", "id": "kicker", "label": "Frase de apertura", "default": "Si estás acá es porque sabés reconocer un puro de calidad." },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Bajada",
+      "default": "<p>Dos capas de distinto color, elegidas <strong>hoja por hoja</strong>. Seis meses de reposo en ron. <strong>Solo 100 puros</strong> y no sabemos cuándo vuelven.</p>"
+    },
+    { "type": "image_picker", "id": "image_detail", "label": "Foto detalle de las dos capas" },
+    { "type": "image_picker", "id": "image_case", "label": "Foto del estuche / presentación" },
+    { "type": "header", "content": "Lista de espera" },
+    { "type": "text", "id": "waitlist_tag", "label": "Etiqueta para los anotados", "default": "drop-bicapa" },
+    { "type": "text", "id": "next_tag", "label": "Etiqueta para el próximo drop", "default": "drop-bicapa-proximo" },
+    {
+      "type": "text",
+      "id": "sheets_url",
+      "label": "Link del conector de Google Sheets",
+      "info": "URL de la aplicación web de Apps Script (termina en /exec). Vacío = no se envían datos a la planilla."
+    },
+    {
+      "type": "richtext",
+      "id": "privacy_note",
+      "label": "Aviso de datos bajo el formulario",
+      "default": "<p>Lo que escribas en este formulario se guarda para avisarte del drop, aunque no lo envíes. Podés pedir que lo borremos cuando quieras. <a href=\"/policies/privacy-policy\">Política de privacidad</a>.</p>"
+    },
+    { "type": "header", "content": "Pantalla de gracias" },
+    { "type": "text", "id": "thanks_title", "label": "Título", "default": "¡Gracias por anotarte!" },
+    {
+      "type": "richtext",
+      "id": "thanks_text",
+      "label": "Texto para los anotados al drop",
+      "default": "<p>Ya estás en la lista del <strong>Bicapa Edición Especial</strong>. Te vamos a estar contactando por WhatsApp y email con todo sobre el bicapa exclusivo, antes que a nadie, cuando abra el drop.</p><p>Mientras tanto, conocé lo que hace único a tu bicapa.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "thanks_text_next",
+      "label": "Texto para los anotados al próximo drop",
+      "default": "<p>Ya estás en la lista. Te vamos a avisar antes que a nadie cuando vuelva el bicapa.</p>"
+    },
+    { "type": "header", "content": "Legal (Ley 26.687)" },
+    {
+      "type": "text",
+      "id": "health_message",
+      "label": "Mensaje sanitario",
+      "default": "Fumar causa cáncer",
+      "info": "La ley exige uno de los mensajes sanitarios oficiales en toda publicidad. Confirmalo con tu asesor legal."
+    },
+    { "type": "text", "id": "health_footer", "label": "Texto bajo el mensaje sanitario", "default": "Prohibida su venta a menores de 18 años." }
+  ],
+  "presets": [{ "name": "Drop Bicapa" }]
+}
+{% endschema %}

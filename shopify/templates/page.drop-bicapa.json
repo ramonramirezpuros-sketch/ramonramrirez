@@ -1,0 +1,26 @@
+{
+  "sections": {
+    "drop": {
+      "type": "drop-bicapa",
+      "settings": {
+        "product": "bicapa-edicion-especial",
+        "drop_start": "2026-10-18T00:00-03:00",
+        "no_time_limit": true,
+        "duration_hours": 24,
+        "total_units": 100,
+        "max_per_order": 1,
+        "direct_checkout": true,
+        "video": "shopify://files/videos/vsl-drop-bicapa.mp4",
+        "poster": "shopify://shop_images/bicapa-portada.jpg",
+        "image_detail": "shopify://shop_images/bicapa-portada.jpg",
+        "image_case": "shopify://shop_images/bicapa-estuche.jpg",
+        "waitlist_tag": "drop-bicapa",
+        "next_tag": "drop-bicapa-proximo",
+        "sheets_url": "https://script.google.com/macros/s/AKfycbwlrPDYiEhTENkT0NRz79ppUwyTYHwcEVi7abumozBCVa-gnty2hH-MDlkpSlELKqQy/exec",
+        "health_message": "Fumar causa cáncer",
+        "health_footer": "Prohibida su venta a menores de 18 años."
+      }
+    }
+  },
+  "order": ["drop"]
+}

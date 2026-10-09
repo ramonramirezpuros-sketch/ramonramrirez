@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Meta Ads · Drop Bicapa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 16mm 15mm 18mm; }
+  :root { --navy: #0c1528; --navy2: #142443; --gold: #b8913f; --gold-l: #f4ead3; --ink: #1d2433; --muted: #5d6474; --line: #dfe2e8; --red: #b3122b; --red-l: #fdecee; --green: #1f7a45; --green-l: #e7f5ec; --blue-l: #eaf0fb; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; color: var(--ink); font: 9.3pt/1.45 'Poppins', Arial, sans-serif; }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--navy); margin: 0; }
+  h2 { font-size: 23pt; line-height: 1.05; margin: 0 0 3mm; padding-bottom: 2mm; border-bottom: 1.5px solid var(--gold); }
+  h3 { font-size: 13.5pt; margin: 4mm 0 1.5mm; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 5.5mm; }
+  li { margin-bottom: .8mm; }
+  a { color: #1b4fa8; text-decoration: none; word-break: break-all; }
+  b, strong { font-weight: 600; }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .kicker { font-size: 8pt; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 1.5mm; }
+  .lead { font-size: 10pt; color: var(--muted); margin-bottom: 3.5mm; }
+
+  /* Portada */
+  .cover { height: 263mm; margin: -16mm -15mm 0; padding: 26mm 20mm 18mm; color: #f4efe6;
+    background: radial-gradient(120% 70% at 50% 0%, #1c3260 0%, #0c1528 60%) #0c1528; display: flex; flex-direction: column; }
+  .cover .kicker { color: #d9b56a; }
+  .cover h1 { color: #f4efe6; font-size: 50pt; line-height: .95; margin: 3mm 0 5mm; }
+  .cover h1 em { color: #d9b56a; font-style: italic; }
+  .cover .sub { font-size: 13pt; color: #c9c3b8; max-width: 140mm; }
+  .cover-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 12mm 0 10mm; }
+  .cover-facts div { border: 1px solid rgba(217,181,106,.55); border-radius: 3mm; padding: 4mm; background: rgba(255,255,255,.04); }
+  .cover-facts b { display: block; font: 700 22pt/1 'Cormorant Garamond', serif; color: #fff; margin-bottom: 1.5mm; }
+  .cover-facts span { font-size: 8.5pt; color: #c9c3b8; }
+  .cover img { width: 100%; border-radius: 3mm; border: 1px solid rgba(217,181,106,.4); }
+  .cover .foot { margin-top: auto; font-size: 8.5pt; color: #9aa3b5; display: flex; justify-content: space-between; }
+  .health { background: #fff; color: #000; text-align: center; font: 700 9pt/1.3 Arial, sans-serif; padding: 2mm; border-radius: 1.5mm; margin-top: 5mm; }
+
+  /* Bloques */
+  .box { border: 1px solid var(--line); border-radius: 2.5mm; padding: 2.6mm 3.4mm; margin: 0 0 2.8mm; break-inside: avoid; }
+  .warn { background: var(--red-l); border-color: #f2b8c1; }
+  .warn .t { color: var(--red); }
+  .ok { background: var(--green-l); border-color: #b5dfc5; }
+  .ok .t { color: var(--green); }
+  .info { background: var(--blue-l); border-color: #c9d7f2; }
+  .gold { background: var(--gold-l); border-color: #e6d3a6; }
+  .t { font-weight: 700; font-size: 9pt; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.2mm; display: block; }
+
+  .steps { counter-reset: st; list-style: none; padding: 0; margin: 0 0 3mm; }
+  .steps > li { counter-increment: st; position: relative; padding: 0 0 0 9mm; margin-bottom: 1.6mm; min-height: 6.6mm; break-inside: avoid; }
+  .steps > li::before { content: counter(st); position: absolute; left: 0; top: .2mm; width: 6.5mm; height: 6.5mm; border-radius: 50%;
+    background: var(--navy); color: #fff; font: 700 8.5pt/6.5mm 'Poppins', sans-serif; text-align: center; }
+  .path { display: inline-block; background: #f1f3f7; border: 1px solid var(--line); border-radius: 1.2mm; padding: 0 1.6mm; font-size: 8.8pt; font-weight: 500; }
+  .check { list-style: none; padding: 0; }
+  .check li { padding-left: 7mm; position: relative; break-inside: avoid; }
+  .check li::before { content: ''; position: absolute; left: 0; top: .9mm; width: 3.6mm; height: 3.6mm; border: 1.3px solid var(--navy); border-radius: .8mm; }
+
+  table { width: 100%; border-collapse: collapse; margin: 0 0 3mm; font-size: 8.5pt; break-inside: auto; }
+  th { background: var(--navy); color: #fff; text-align: left; font-weight: 600; padding: 1.6mm 2.2mm; }
+  td { border-bottom: 1px solid var(--line); padding: 1.5mm 2.2mm; vertical-align: top; }
+  tr { break-inside: avoid; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .who { display: inline-block; font-size: 7.8pt; font-weight: 600; padding: .3mm 1.8mm; border-radius: 10mm; background: var(--gold-l); color: #7a5b16; white-space: nowrap; }
+  .date { font-weight: 700; color: var(--navy); white-space: nowrap; }
+
+  .msg { border-left: 3px solid var(--gold); background: #fbfaf6; padding: 2.2mm 3.2mm; margin: 0 0 2.4mm; break-inside: avoid; font-size: 9pt; }
+  .msg .meta { font-size: 7.8pt; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 1mm; }
+  .msg .san { display: block; margin-top: 1.5mm; font-size: 8.5pt; font-style: italic; color: var(--muted); }
+
+  .flow { display: grid; grid-template-columns: 1fr; gap: 0; margin: 0 0 4mm; }
+  .node { border: 1px solid var(--line); border-radius: 2mm; padding: 1.8mm 2.8mm; background: #fff; position: relative; break-inside: avoid; }
+  .node + .node { margin-top: 4.2mm; }
+  .node + .node::before { content: '↓'; position: absolute; top: -4.4mm; left: 50%; transform: translateX(-50%); color: var(--gold); font-weight: 700; font-size: 11pt; line-height: 5mm; }
+  .node .k { font-size: 7.6pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .small { font-size: 8.6pt; color: var(--muted); }
+  .toc { columns: 2; column-gap: 8mm; font-size: 10pt; }
+  .toc li { margin-bottom: 1.6mm; }
+  .compact table { font-size: 7.9pt; }
+  .compact td { padding: 1.1mm 1.8mm; }
+  .compact .steps > li { margin-bottom: 1mm; font-size: 8.8pt; min-height: 5mm; padding-left: 7mm; }
+  .compact .steps > li::before { width: 4.8mm; height: 4.8mm; font-size: 7.5pt; line-height: 4.8mm; }
+  .compact h3 { margin-top: 2.5mm; }
+</style>
+
+</head>
+<body>
+<!-- ============ 1. MAPA + PREPARACIÓN ============ -->
+<section class="page">
+  <div class="kicker">Meta Ads · Drop Bicapa</div>
+  <h2>Cómo subir y manejar los anuncios</h2>
+  <p class="lead">No hay que subir anuncios todos los días. El lunes se sube todo con fecha de inicio y de fin, y Meta los prende y los apaga solo. Después son 10 minutos de control por día y 3 cambios puntuales: mié 14, vie 16 y sáb 17.</p>
+
+  <table>
+    <tr><th style="width:21%">Campaña</th><th style="width:16%">Anuncios</th><th style="width:19%">Objetivo</th><th style="width:20%">Cuándo</th><th>Público</th></tr>
+    <tr><td><b>1 · DROP Captación</b></td><td>9n · 11N · 13N · 14N</td><td>Clientes potenciales</td><td class="date">Lun 12 → Sáb 17 23:30</td><td>Argentina 18+, sin anotados</td></tr>
+    <tr><td><b>2 · DROP Follow me</b></td><td>6n · 5n</td><td>Tráfico al perfil de Instagram</td><td class="date">Lun 12 → Mié 14</td><td>Argentina 18+</td></tr>
+    <tr><td><b>3 · DROP Calentamiento</b></td><td>3n · 1n · 6n · 5n</td><td>Reconocimiento (alcance)</td><td class="date">Jue 15 → Sáb 17 23:30</td><td>Visitantes de la landing + anotados</td></tr>
+    <tr><td><b>4 · DROP Domingo</b></td><td>Estáticos</td><td>Ventas</td><td class="date">Dom 18 00:00 → agotado</td><td>50 % amplio / 50 % visitantes + anotados</td></tr>
+  </table>
+
+  <div class="box gold">
+    <span class="t">Presupuesto por día: $________ (lo define Ramón)</span>
+    Captación se lleva el <b>75 %</b> toda la semana. El otro <b>25 %</b> es de follow me de lunes a miércoles y de calentamiento de jueves a sábado: se pasan la posta solos por las fechas. Ejemplo con $40.000 por día: captación $30.000; follow me $10.000 y después calentamiento $10.000.
+  </div>
+
+  <h3>Antes de arrancar (domingo 11, con la landing ya publicada)</h3>
+  <ol class="steps">
+    <li><b>Entrá</b> a <span class="path">adsmanager.facebook.com</span> con un usuario que administre la página <b>Ramonramirezcomar</b>. Arriba a la izquierda, elegí la cuenta publicitaria de la marca.</li>
+    <li><b>Revisá la cuenta</b> (⚙️ Configuración): que tenga <b>medio de pago</b> y que la <b>zona horaria</b> sea Buenos Aires. Si es otra, avisame: todos los horarios de esta guía son de Argentina.</li>
+    <li><b>Conversión "Anotado drop"</b>, para que Meta busque gente que se anota y no gente que solo hace clic: <span class="path">☰ → Administrador de eventos → Conversiones personalizadas → Crear</span>. Nombre <b>Anotado drop</b> · origen: el píxel de la tienda (ID 5245138529043861) · evento <b>Todo el tráfico de URL</b> · regla: URL contiene <span class="path">customer_posted=true</span> · categoría <b>Cliente potencial</b>.</li>
+    <li><b>Dos públicos</b>: <span class="path">☰ → Públicos → Crear público → Público personalizado → Sitio web</span>, con el mismo píxel y 30 días.<br>
+      · <b>Visitantes landing</b>: personas que visitaron páginas específicas → URL contiene <span class="path">drop-bicapa</span>.<br>
+      · <b>Anotados web</b>: URL contiene <span class="path">customer_posted=true</span>. Se llena solo con cada persona que se anota.</li>
+    <li><b>Probá:</b> anotate una vez en la landing. En un rato, "Anotado drop" tiene que figurar como <b>Activa</b>.</li>
+    <li><b>Bajá los 8 videos</b> del Drive a la compu con su nombre: 9n, 11N, 13N, 14N, 6n, 5n, 3n, 1n.</li>
+  </ol>
+</section>
+
+<!-- ============ 2. LUNES: SUBIR ============ -->
+<section class="page">
+  <div class="kicker">Lunes 12 · 9:00 · una hora</div>
+  <h2>Subir las 3 campañas</h2>
+  <p class="lead">En cada una: botón verde <b>Crear</b> → objetivo → completás <b>campaña</b>, <b>conjunto de anuncios</b> y <b>anuncio</b> → <b>Publicar</b>. Lo que no figura acá, dejalo como viene.</p>
+
+  <h3>1 · DROP Captación (9n, 11N, 13N, 14N)</h3>
+  <ol class="steps">
+    <li><b>Objetivo:</b> Clientes potenciales. Si ofrece la configuración Advantage+, dejala.</li>
+    <li><b>Campaña:</b> nombre "DROP Captación" · presupuesto diario de la campaña: 75 % del total.</li>
+    <li><b>Conjunto:</b> ubicación de la conversión <b>Sitio web</b> · objetivo de rendimiento <b>Maximizar el número de conversiones</b> · evento <b>Anotado drop</b> · fecha de finalización <b>sáb 17/10 23:30</b> · público: Argentina, edad mínima 18, <b>excluir "Anotados web"</b> · ubicaciones Advantage+.</li>
+    <li><b>Anuncio:</b> nombre "9n" · identidad: página Ramonramirezcomar + Instagram <b>@ramonramirez.arg</b> · formato <b>Imagen o video único</b> → subir 9n.mp4 · texto, título y botón de la pág. 4 · URL del sitio web:<br><span class="path">https://ramonramirez.com.ar/pages/drop-bicapa?utm_source=meta&amp;utm_medium=paid&amp;utm_campaign=drop-bicapa&amp;utm_content=9n</span></li>
+    <li>En <b>Mejoras de contenido Advantage+</b>, destildá las que cambian el video (música, retoques).</li>
+    <li><b>Los otros 3:</b> en el panel de la izquierda, <b>⋯</b> del anuncio → <b>Duplicar</b> → cambiá nombre, video y el final del link (<span class="path">utm_content=11N</span>, etc.) → <b>Publicar</b>.</li>
+  </ol>
+
+  <h3>2 · DROP Follow me (6n, 5n)</h3>
+  <ol class="steps">
+    <li><b>Objetivo:</b> Tráfico · ubicación de la conversión <b>Perfil de Instagram</b> · presupuesto: 25 %.</li>
+    <li><b>Conjunto:</b> fecha de finalización <b>mié 14/10 23:59</b> · Argentina, 18+.</li>
+    <li><b>Anuncios</b> 6n y 5n con sus textos de la pág. 4 (el botón sale solo) → <b>Publicar</b>.</li>
+  </ol>
+
+  <h3>3 · DROP Calentamiento (3n, 1n, 6n, 5n): se arma hoy y queda programada</h3>
+  <ol class="steps">
+    <li><b>Objetivo:</b> Reconocimiento · objetivo de rendimiento <b>Maximizar el alcance</b> · límite de frecuencia <b>2 veces cada 1 día</b> · presupuesto: 25 %.</li>
+    <li><b>Conjunto:</b> fecha de inicio <b>jue 15/10 00:00</b> · finalización <b>sáb 17/10 23:30</b> · público: <b>incluir</b> "Visitantes landing" y "Anotados web".</li>
+    <li><b>Anuncios:</b> 3n → <span class="path">ramonramirez.com.ar/collections/accesorios</span> · 1n → <span class="path">ramonramirez.com.ar/search?q=tubo</span> · 6n y 5n → la landing con <span class="path">utm_content=6n</span> o <span class="path">5n</span> → <b>Publicar</b>.</li>
+  </ol>
+
+  <div class="box info"><span class="t">Revisión de Meta</span>Cada anuncio pasa por revisión (minutos u horas). Si alguno queda <b>Rechazado</b>, no lo reenvíes igual: avisá a Justo y mandame captura.</div>
+</section>
+
+<!-- ============ 3. CONTROL + DOMINGO ============ -->
+<section class="page">
+  <div class="kicker">Control</div>
+  <h2>Todos los días y los días puntuales</h2>
+
+  <h3>Todos los días a las 10:00 (10 minutos)</h3>
+  <ol class="steps">
+    <li>Administrador de anuncios → pestaña <b>Anuncios</b> → período <b>Hoy</b> (y <b>Máximo</b> para ver el acumulado).</li>
+    <li>Mirá 3 columnas por anuncio: <b>Resultados</b> (anotados), <b>Costo por resultado</b> e <b>Importe gastado</b>. Mandá captura al grupo y a mí.</li>
+    <li>Columna <b>Entrega</b>: todo tiene que decir <b>Activo</b> o <b>Programado</b>. Si dice <b>Rechazado</b>, avisá.</li>
+    <li><b>No cambies nada más.</b> Cada cambio de presupuesto o de público reinicia el aprendizaje de Meta y encarece el anotado. Solo se toca en las fechas de abajo.</li>
+  </ol>
+
+  <h3>Días puntuales</h3>
+  <table>
+    <tr><th style="width:19%">Cuándo</th><th>Qué hacer</th></tr>
+    <tr><td class="date">Mié 14 · 10:00</td><td>En <b>DROP Captación</b>, apagá con el interruptor los 2 anuncios con mayor <b>costo por resultado</b>. El presupuesto pasa solo a los otros 2.<br>Creá el público <b>Anotados lista</b> (Público personalizado → <b>Lista de clientes</b> → CSV que manda Justo) y sumalo: <b>excluido</b> en Captación, <b>incluido</b> en Calentamiento.</td></tr>
+    <tr><td class="date">Vie 16</td><td>Públicos → <b>Anotados lista</b> → editar → subir la lista nueva de Justo.</td></tr>
+    <tr><td class="date">Sáb 17 · antes de 12</td><td>Armar la campaña <b>4 · DROP Domingo</b> (abajo).</td></tr>
+    <tr><td class="date">Sáb 17 · 23:35</td><td>Captación y Calentamiento se apagan solas por la fecha de fin. Verificá que figuren como <b>Finalizadas</b>.</td></tr>
+    <tr><td class="date">Dom 18 · 00:05</td><td>Verificá que <b>DROP Domingo</b> esté <b>Activa</b>.</td></tr>
+    <tr><td class="date">Quedan 10</td><td>Cuando Justo avisa: conjunto <b>Quedan 10</b> → editar → fecha de inicio: <b>ahora</b>.</td></tr>
+    <tr><td class="date">Agotado</td><td>Apagá la campaña <b>DROP Domingo</b> entera.</td></tr>
+  </table>
+
+  <h3>4 · DROP Domingo (se arma el sábado 17, antes de las 12)</h3>
+  <ol class="steps">
+    <li><b>Objetivo:</b> Ventas · evento <b>Compra</b>. <b>Sin</b> presupuesto de campaña: el presupuesto va en cada conjunto.</li>
+    <li><b>Conjunto "Amplio":</b> Argentina 18+ · mitad del presupuesto · inicio <b>dom 18/10 00:00</b>, sin fecha de fin.</li>
+    <li><b>Conjunto "Calientes":</b> Visitantes landing + Anotados web + Anotados lista · la otra mitad · inicio dom 18/10 00:00.</li>
+    <li><b>Anuncio</b> estático "YA ESTÁN DISPONIBLES" en los dos conjuntos · botón <b>Comprar</b> · landing con <span class="path">utm_content=ya-disponibles</span>.</li>
+    <li><b>Conjunto "Quedan 10":</b> público Calientes · mismo presupuesto · estático "SOLAMENTE QUEDAN 10" · fecha de inicio <b>31/12</b>, así Meta lo aprueba antes y no sale por error. Se adelanta solo cuando de verdad quedan 10.</li>
+  </ol>
+</section>
+
+<!-- ============ 4. TEXTOS ============ -->
+<section class="page">
+  <div class="kicker">Para copiar y pegar</div>
+  <h2>Textos de los anuncios</h2>
+  <p class="lead">Todos terminan con: <b>"Fumar causa cáncer. Prohibida su venta a menores de 18 años."</b></p>
+
+  <div class="msg"><div class="meta">Captación · 9n, 11N, 13N, 14N · botón Registrarte</div><b>Texto:</b> Hicimos solo 100 bicapa Edición Especial: dos capas elegidas hoja por hoja y 6 meses de reposo en ron. Salen el domingo 18 a las 00:00 y los anotados se enteran primero.<br><b>Título:</b> Anotate al drop del Bicapa</div>
+  <div class="msg"><div class="meta">Follow me · 6n</div><b>Texto:</b> Me cansé de que lo importado fuera una lotería. Por eso hago mis puros acá, con amor, esmero y ganas. Seguime y te muestro cómo.<br><b>Título:</b> Ramón Ramírez</div>
+  <div class="msg"><div class="meta">Follow me · 5n</div><b>Texto:</b> ¿Manchas blancas, verdes u "ojos de maduración"? Qué significa cada una en tu puro. Seguinos para más.<br><b>Título:</b> Ramón Ramírez</div>
+  <div class="msg"><div class="meta">Calentamiento · 3n · botón Comprar</div><b>Texto:</b> En un puro de dos capas: guillotina en la cabeza y corte seco. Las guillotinas están en la tienda.<br><b>Título:</b> Cortalo como corresponde</div>
+  <div class="msg"><div class="meta">Calentamiento · 1n · botón Comprar</div><b>Texto:</b> El tubo de aluminio conserva la humedad y te deja llevar el puro fuera del humidor. Mirá los que vienen en tubo.<br><b>Título:</b> Puros en tubo de aluminio</div>
+  <div class="msg"><div class="meta">Calentamiento · 6n y 5n · botón Más información</div>Los mismos textos de follow me.</div>
+  <div class="msg"><div class="meta">Domingo · "YA ESTÁN DISPONIBLES" · botón Comprar</div><b>Texto:</b> Ya están disponibles los 100 bicapa Edición Especial. Uno por persona, hasta agotar.<br><b>Título:</b> Ya están disponibles</div>
+  <div class="msg"><div class="meta">Domingo · "SOLAMENTE QUEDAN 10" · botón Comprar</div><b>Texto:</b> Solamente quedan 10. Cuando se terminen, no sabemos cuándo vuelven.<br><b>Título:</b> Quedan 10</div>
+
+  <div class="box info"><span class="t">Si algo no aparece igual</span>Meta cambia nombres y botones seguido. Si una pantalla no coincide con esta guía, mandame captura y te digo qué tocar.</div>
+</section>
+
+</body>
+</html>

@@ -49,7 +49,7 @@
   .t { font-weight: 700; font-size: 9pt; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.2mm; display: block; }
 
   .steps { counter-reset: st; list-style: none; padding: 0; margin: 0 0 3mm; }
-  .steps > li { counter-increment: st; position: relative; padding: 0 0 0 9mm; margin-bottom: 1.6mm; break-inside: avoid; }
+  .steps > li { counter-increment: st; position: relative; padding: 0 0 0 9mm; margin-bottom: 1.6mm; min-height: 6.6mm; break-inside: avoid; }
   .steps > li::before { content: counter(st); position: absolute; left: 0; top: .2mm; width: 6.5mm; height: 6.5mm; border-radius: 50%;
     background: var(--navy); color: #fff; font: 700 8.5pt/6.5mm 'Poppins', sans-serif; text-align: center; }
   .path { display: inline-block; background: #f1f3f7; border: 1px solid var(--line); border-radius: 1.2mm; padding: 0 1.6mm; font-size: 8.8pt; font-weight: 500; }
@@ -179,10 +179,10 @@
   <h3>Reglas</h3>
   <ol class="steps">
     <li><b>Lun 12, 9:00: se suben los 8.</b> Captación y follow me salen ya; 3n y 1n, programados para el jue 15 (así llegan aprobados).</li>
-    <li><b>Objetivos:</b> captación → <i>Clientes potenciales</i> con la conversión personalizada "Anotado drop" (Administrador de eventos → Conversiones personalizadas → URL contiene <span class="path">drop-bicapa</span> y <span class="path">customer_posted=true</span>). Follow me → visitas al perfil. Calentamiento → <i>Alcance</i> (que lo vean todos los días). Domingo → <i>Ventas</i>.</li>
-    <li><b>Presupuesto:</b> lun a mié 75 % captación / 25 % follow me · jue a sáb 80 % captación / 20 % calentamiento.</li>
+    <li><b>Objetivos:</b> captación → <i>Clientes potenciales</i> con la conversión personalizada "Anotado drop" (Administrador de eventos → Conversiones personalizadas → URL contiene <span class="path">customer_posted=true</span>). Follow me → visitas al perfil. Calentamiento → <i>Alcance</i> (que lo vean todos los días). Domingo → <i>Ventas</i>.</li>
+    <li><b>Presupuesto:</b> captación 75 % toda la semana. El otro 25 % es de follow me (lun a mié) y después de calentamiento (jue a sáb). Clic por clic: <b>Meta-Ads-Paso-a-paso.pdf</b>.</li>
     <li><b>UTM en cada link</b> (así Justo ve qué anuncio trae anotados): <span class="path">…/pages/drop-bicapa?utm_source=meta&amp;utm_medium=paid&amp;utm_campaign=drop-bicapa&amp;utm_content=9n</span> (cambiar 9n por el código de cada anuncio).</li>
-    <li><b>Anotados:</b> excluirlos de captación y sumarlos a calentamiento con la lista que pasa Justo (mié 14 y vie 16).</li>
+    <li><b>Anotados:</b> público automático "Anotados web" + la lista que pasa Justo (mié 14 y vie 16): excluidos de captación, incluidos en calentamiento.</li>
     <li><b>Mié 14:</b> apagar los 2 de captación con mayor costo por anotado; su presupuesto pasa a los 2 mejores.</li>
     <li><b>Si Meta rechaza uno:</b> no reenviarlo igual (arriesga la cuenta). Avisar a Justo y mover ese presupuesto a los aprobados.</li>
     <li><b>Sáb 17 23:30:</b> pausar todo (los anuncios dicen "anotate"; desde las 00:00 la landing vende).</li>

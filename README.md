@@ -1,7 +1,7 @@
 # Ramón Ramírez: proyecto Drop Bicapa Edición Especial
 
 Base de trabajo del lanzamiento de **100 puros bicapa reposados 6 meses en ron**.
-Venta durante 24 horas o hasta agotar, con lista de espera previa.
+Lista de espera hasta el domingo 18/10 a las 00:00; desde ahí, venta abierta hasta agotar stock.
 
 ## Estado
 
@@ -9,23 +9,22 @@ Venta durante 24 horas o hasta agotar, con lista de espera previa.
 |---|---|---|
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
 | Landing en Shopify | ✅ Armada, sin publicar | Tema `RR - Drop Bicapa (borrador)` · página oculta `/pages/drop-bicapa` · [código y guía](shopify/README-drop-bicapa.md) |
-| Producto en Shopify | 🟡 Borrador, sin precio ni stock | `bicapa-edicion-especial` |
+| Producto en Shopify | 🟡 Precio cargado, todavía fuera de la tienda online. Stock en 1000: pasarlo a 100 el sáb 17 | `bicapa-edicion-especial` |
 | Fecha del drop | ✅ Domingo 18/10 00:00 hs, con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Editor del tema (sección "Drop Bicapa") |
-| Precio | 🔴 Sin definir | Producto en Shopify |
-| Funnel del drop (Miro) | 🟡 Plan completo pasado; faltan Typeform, ManyChat y pop-up | [plan y mensajes](estrategia/funnel-drop.md) |
+| Precio | ✅ $28.000 | Producto en Shopify |
+| Funnel del drop (Miro) | 🟡 Plan de ejecución en el PDF; falta armar ManyChat | [plan y mensajes](estrategia/funnel-drop.md) · [PDF](docs/Drop-Bicapa-Paso-a-paso.pdf) |
+| Anuncios (8) | ✅ Transcriptos y con fecha: arrancan el lunes 12/10 | [anuncios](estrategia/anuncios-transcripciones.md) · PDF pág. 3 |
 | Leads y visitas → Google Sheets | ✅ Conectado y probado de punta a punta | [planilla](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit) · [cómo activarlo](google-sheets/README.md) |
-| Legal (Ley 26.687) | 🟡 Base cubierta en la landing, falta revisión | [notas legales](legal/ley-26687-tabaco.md) |
+| Legal (Ley 26.687) | ✅ Resuelto por el equipo | [notas legales](legal/ley-26687-tabaco.md) |
 
 ## Pendientes
 
-- [ ] Definir **precio** y cargarlo en el producto
-- [ ] Revisar la landing en el editor del tema borrador y aprobar textos
-- [ ] Publicar el tema borrador (o copiar los 2 archivos al tema actual) y poner visible la página
-- [ ] Sumar el mensaje sanitario al VSL y a las piezas de redes
-- [ ] Confirmar con el abogado el mensaje sanitario y la verificación de edad en la entrega
-- [ ] Aprobar los mensajes de email y WhatsApp por etapa (borradores en estrategia/funnel-drop.md)
-- [ ] Revisar con el abogado los anuncios pagos del funnel (tabaco prohibido en Meta/Google/TikTok)
-- [ ] Decidir Typeform o formulario de la landing para anotarse (una sola lista)
+- [ ] **Antes del lunes 12:** publicar el tema borrador y poner visible la página (los anuncios arrancan ese día)
+- [ ] Nombres de los responsables de ManyChat, Email y WhatsApp
+- [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 17 antes de las 12)
+- [ ] Sáb 17, 22:00: producto activo en la tienda online con stock 100
+- [ ] Borrar de la planilla las filas de prueba
+- [ ] Opcional: pop-up de escasez en la tienda
 - [ ] Opcional: app de límite de compra (1 por persona)
 
 ## Estructura del repo

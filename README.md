@@ -13,13 +13,13 @@ Lista de espera hasta el domingo 18/10 a las 00:00; desde ahí, venta abierta ha
 | Fecha del drop | ✅ Domingo 18/10 00:00 hs, con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Editor del tema (sección "Drop Bicapa") |
 | Precio | ✅ $28.000 | Producto en Shopify |
 | Funnel del drop (Miro) | 🟡 Plan de ejecución en el PDF; falta armar ManyChat | [plan y mensajes](estrategia/funnel-drop.md) · [PDF](docs/Drop-Bicapa-Paso-a-paso.pdf) |
-| Anuncios (8) | ✅ Transcriptos y con fecha: arrancan el lunes 12/10 | [anuncios](estrategia/anuncios-transcripciones.md) · PDF pág. 3 |
+| Anuncios (8) | ✅ Transcriptos y con fecha: arrancan el miércoles 14/10 a las 00:00 | [anuncios](estrategia/anuncios-transcripciones.md) · PDF pág. 3 |
 | Leads y visitas → Google Sheets | ✅ Conectado y probado de punta a punta | [planilla](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit) · [cómo activarlo](google-sheets/README.md) |
 | Legal (Ley 26.687) | ✅ Resuelto por el equipo | [notas legales](legal/ley-26687-tabaco.md) |
 
 ## Pendientes
 
-- [ ] **Antes del lunes 12:** publicar el tema borrador y poner visible la página (los anuncios arrancan ese día)
+- [ ] **Hoy martes 13, antes de las 21:** publicar el tema borrador y poner visible la página (los anuncios arrancan el miércoles a las 00:00)
 - [ ] Nombres de los responsables de ManyChat, Email y WhatsApp
 - [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 17 antes de las 12)
 - [ ] Sáb 17, 22:00: producto activo en la tienda online con stock 100

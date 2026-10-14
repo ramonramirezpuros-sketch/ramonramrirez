@@ -10,7 +10,7 @@ Landing de Shopify basada en el VSL **"Giuliano VSL_Corregido 1.mp4"** (Drive �
 | `sections/drop-bicapa.liquid` | En el tema borrador | Sección completa de la landing |
 | `templates/page.drop-bicapa.json` | En el tema borrador | Plantilla de página que usa la sección |
 | Página `Drop Bicapa · Edición Especial` (`/pages/drop-bicapa`) | Tienda online → Páginas | **Visible** (13/10), usa la plantilla `drop-bicapa` |
-| Banner de la página de inicio ([`banner-home-drop-bicapa.liquid`](banner-home-drop-bicapa.liquid)) | Personalizar → Página de inicio → sección "Liquid personalizado" | Se pega a mano: el tema publicado no se puede editar por API. Cambia solo el domingo 00:00 y al agotarse |
+| Banner de la página de inicio ([`banner-home-drop-bicapa.liquid`](banner-home-drop-bicapa.liquid)) | Tema `RR - Drop Bicapa + banner` (copia del publicado, sección "Banner Drop Bicapa" arriba de todo) | **Falta publicar ese tema**. El tema publicado no se puede editar por API. Cambia solo el domingo 00:00 y al agotarse |
 | Producto `Bicapa Edición Especial · Reposado en Ron` (`bicapa-edicion-especial`) | Productos | **Borrador**, precio $0, stock 0 (inventario controlado, no vende sin stock) |
 | Video `vsl-drop-bicapa.mp4` + fotos `bicapa-portada.jpg`, `bicapa-estuche.jpg` | Contenido → Archivos | Subidos |
 

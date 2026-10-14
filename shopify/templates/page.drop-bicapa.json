@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "drop": {
@@ -6,21 +15,31 @@
         "product": "bicapa-edicion-especial",
         "drop_start": "2026-10-18T00:00-03:00",
         "no_time_limit": true,
-        "duration_hours": 24,
+        "duration_hours": 72,
         "total_units": 100,
-        "max_per_order": 1,
+        "max_per_order": 0,
         "direct_checkout": true,
         "video": "shopify://files/videos/vsl-drop-bicapa.mp4",
+        "video_mp4": "",
+        "autoplay": true,
         "poster": "shopify://shop_images/bicapa-portada.jpg",
+        "kicker": "Si estás acá es porque sabés reconocer un puro de calidad.",
+        "subheading": "<p>Dos capas de distinto color, elegidas <strong>hoja por hoja</strong>. Seis meses de reposo en ron. <strong>Solo 100 puros</strong> y no sabemos cuándo vuelven.</p>",
         "image_detail": "shopify://shop_images/bicapa-portada.jpg",
         "image_case": "shopify://shop_images/bicapa-estuche.jpg",
         "waitlist_tag": "drop-bicapa",
         "next_tag": "drop-bicapa-proximo",
         "sheets_url": "https://script.google.com/macros/s/AKfycbwlrPDYiEhTENkT0NRz79ppUwyTYHwcEVi7abumozBCVa-gnty2hH-MDlkpSlELKqQy/exec",
+        "privacy_note": "<p>Lo que escribas en este formulario se guarda para avisarte del drop, aunque no lo envíes. Podés pedir que lo borremos cuando quieras. <a href=\"/policies/privacy-policy\">Política de privacidad</a>.</p>",
+        "thanks_title": "¡Gracias por anotarte!",
+        "thanks_text": "<p>Ya estás en la lista del <strong>Bicapa Edición Especial</strong>. Te vamos a estar contactando por WhatsApp y email con todo sobre el bicapa exclusivo, antes que a nadie, cuando abra el drop.</p><p>Mientras tanto, conocé lo que hace único a tu bicapa.</p>",
+        "thanks_text_next": "<p>Ya estás en la lista. Te vamos a avisar antes que a nadie cuando vuelva el bicapa.</p>",
         "health_message": "Fumar causa cáncer",
         "health_footer": "Prohibida su venta a menores de 18 años."
       }
     }
   },
-  "order": ["drop"]
+  "order": [
+    "drop"
+  ]
 }

@@ -9,7 +9,7 @@ Lista de espera hasta el domingo 18/10 a las 00:00; desde ahí, venta abierta ha
 |---|---|---|
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
 | Landing en Shopify | ✅ Publicada: ramonramirez.com.ar/pages/drop-bicapa | Tema `RR - Drop Bicapa (borrador)` (publicado) · [código y guía](shopify/README-drop-bicapa.md) |
-| Banner en la página de inicio | 🟡 Puesto en el tema `RR - Drop Bicapa + banner`, falta tocar **Publicar** | [banner-home-drop-bicapa.liquid](shopify/banner-home-drop-bicapa.liquid) |
+| Banner en la página de inicio | ✅ Publicado. Versión sin "1 por persona" en el tema `RR - Drop Bicapa (compra libre)`, falta tocar **Publicar** | [banner-home-drop-bicapa.liquid](shopify/banner-home-drop-bicapa.liquid) |
 | Producto en Shopify | 🟡 Precio cargado, todavía fuera de la tienda online. Stock en 1000: pasarlo a 100 el sáb 17 | `bicapa-edicion-especial` |
 | Fecha del drop | ✅ Domingo 18/10 00:00 hs, con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Editor del tema (sección "Drop Bicapa") |
 | Precio | ✅ $28.000 | Producto en Shopify |
@@ -20,13 +20,12 @@ Lista de espera hasta el domingo 18/10 a las 00:00; desde ahí, venta abierta ha
 
 ## Pendientes
 
-- [ ] Publicar el tema `RR - Drop Bicapa + banner` (trae el banner de la página de inicio)
+- [ ] Publicar el tema `RR - Drop Bicapa (compra libre)`: selector de cantidad en la landing, sin límite por persona
 - [ ] Nombres de los responsables de ManyChat, Email y WhatsApp
 - [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 17 antes de las 12)
 - [ ] Sáb 17, 22:00: producto activo en la tienda online con stock 100
 - [ ] Borrar de la planilla las filas de prueba
 - [ ] Opcional: pop-up de escasez en la tienda
-- [ ] Opcional: app de límite de compra (1 por persona)
 
 ## Estructura del repo
 

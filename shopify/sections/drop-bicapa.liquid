@@ -16,7 +16,7 @@
   endif
 
   assign total_units = section.settings.total_units | default: 100 | at_least: 1
-  assign max_qty = section.settings.max_per_order | default: 1 | at_least: 1
+  assign max_qty = section.settings.max_per_order | default: 0 | at_least: 0
   assign has_price = false
   if v and v.price > 0
     assign has_price = true
@@ -27,6 +27,13 @@
     if stock_left < 0
       assign stock_left = 0
     endif
+  endif
+  assign qty_max = 99
+  if stock_left > 0
+    assign qty_max = stock_left
+  endif
+  if max_qty > 0 and max_qty < qty_max
+    assign qty_max = max_qty
   endif
   assign sold = 0
   assign sold_pct = 0
@@ -220,6 +227,16 @@
   #drop-{{ section.id }} .db-btn[disabled] { opacity: .5; cursor: not-allowed; }
   #drop-{{ section.id }} .db-btn--ghost { background: transparent; color: var(--db-ink); border: 1px solid var(--db-line); box-shadow: none; }
   #drop-{{ section.id }} .db-note { font-size: 12px; color: var(--db-muted); text-align: center; margin-top: 10px; }
+  #drop-{{ section.id }} .db-qty { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 8px; }
+  #drop-{{ section.id }} .db-qty__label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--db-muted); }
+  #drop-{{ section.id }} .db-qty__ctrl { display: inline-flex; align-items: center; border: 1px solid var(--db-line); border-radius: 10px; overflow: hidden; background: rgba(0,0,0,.35); }
+  #drop-{{ section.id }} .db-qty__ctrl button { width: 46px; height: 46px; border: 0; background: transparent; color: var(--db-ink); font: 600 22px/1 var(--db-sans); cursor: pointer; }
+  #drop-{{ section.id }} .db-qty__ctrl button:hover { color: var(--db-gold); }
+  #drop-{{ section.id }} .db-qty__ctrl:focus-within { border-color: var(--db-gold); }
+  #drop-{{ section.id }} .db-qty__ctrl input:focus { outline: none; }
+  #drop-{{ section.id }} .db-qty__ctrl input { width: 58px; height: 46px; border: 0; padding: 0; background: transparent; color: var(--db-ink); font: 600 18px/1 var(--db-sans); text-align: center; font-variant-numeric: lining-nums tabular-nums; -moz-appearance: textfield; appearance: textfield; }
+  #drop-{{ section.id }} .db-qty__ctrl input::-webkit-outer-spin-button,
+  #drop-{{ section.id }} .db-qty__ctrl input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   #drop-{{ section.id }} .db-privacy { font-size: 11px; opacity: .8; }
   #drop-{{ section.id }} .db-privacy a { color: inherit; }
   #drop-{{ section.id }} .db-ok { padding: 14px; border-radius: 10px; background: rgba(76, 175, 80, .12); border: 1px solid rgba(76,175,80,.4); color: #cfe9d0; text-align: center; }
@@ -412,7 +429,7 @@
           <h3>{% if p != blank %}{{ p.title | escape }}{% else %}Bicapa Edición Especial{% endif %}</h3>
           {%- if has_price -%}
             <div class="db-price">{{ v.price | money }}</div>
-            <p>Precio por puro · máximo {{ max_qty }} por compra</p>
+            <p>Precio por puro · {% if max_qty > 0 %}máximo {{ max_qty }} por compra{% else %}llevá los que quieras hasta agotar stock{% endif %}</p>
           {%- endif -%}
 
           {%- if stock_left >= 0 -%}
@@ -432,7 +449,14 @@
           {%- if product_state == 'available' -%}
             {%- form 'product', p, id: buy_form_id, class: 'db-buy', novalidate: 'novalidate' -%}
               <input type="hidden" name="id" value="{{ v.id }}">
-              <input type="hidden" name="quantity" value="1">
+              <div class="db-qty" data-db-qty>
+                <span class="db-qty__label">Cantidad</span>
+                <div class="db-qty__ctrl">
+                  <button type="button" data-qty-step="-1" aria-label="Uno menos">−</button>
+                  <input type="number" name="quantity" value="1" min="1" max="{{ qty_max }}" step="1" inputmode="numeric" aria-label="Cantidad">
+                  <button type="button" data-qty-step="1" aria-label="Uno más">+</button>
+                </div>
+              </div>
               {%- if section.settings.direct_checkout -%}
                 <input type="hidden" name="return_to" value="/checkout">
               {%- endif -%}
@@ -549,7 +573,7 @@
       <h2 class="db-h2">Preguntas frecuentes</h2>
       <div style="margin-top: 20px;">
         <details><summary>¿Qué compro exactamente?</summary><p>Un puro bicapa de la Edición Especial: dos capas de distinto color seleccionadas a mano y seis meses de reposo en ron. Son {{ total_units }} unidades en total.</p></details>
-        <details><summary>¿Cuántos puedo comprar?</summary><p>Hasta {{ max_qty }} por compra, para que lleguen a la mayor cantidad de personas posible.</p></details>
+        <details><summary>¿Cuántos puedo comprar?</summary><p>{% if max_qty > 0 %}Hasta {{ max_qty }} por compra.{% else %}Los que quieras, hasta que se terminen los {{ total_units }}.{% endif %}</p></details>
         <details><summary>¿Anotarme me asegura un puro?</summary><p>No. La lista te da aviso prioritario. Las unidades se asignan por orden de compra durante el drop.</p></details>
         <details><summary>¿Cuándo vuelven a estar?</summary><p>No lo podemos garantizar: seleccionar las hojas y el reposo de seis meses llevan mucho más tiempo que un puro normal.</p></details>
         <details><summary>¿Tengo que ser mayor de edad?</summary><p>Sí. La venta de productos de tabaco es exclusiva para mayores de 18 años, tanto para quien compra como para quien recibe el pedido.</p></details>
@@ -836,6 +860,26 @@
       if (buy) buy.addEventListener('submit', function () { track('click_comprar'); });
     }
 
+    // Cantidad: botones − / + entre 1 y el stock disponible.
+    var qtyBox = root.querySelector('[data-db-qty]');
+    if (qtyBox) {
+      var qtyInput = qtyBox.querySelector('input[name="quantity"]');
+      var buyBtn = root.querySelector('form.db-buy button[type="submit"]');
+      var qtyMax = parseInt(qtyInput.getAttribute('max'), 10) || 99;
+      var setQty = function (n) {
+        n = parseInt(n, 10);
+        if (isNaN(n) || n < 1) n = 1;
+        if (n > qtyMax) n = qtyMax;
+        qtyInput.value = n;
+        if (buyBtn) buyBtn.textContent = n === 1 ? 'Comprar mi bicapa' : 'Comprar mis ' + n + ' bicapa';
+      };
+      qtyBox.addEventListener('click', function (e) {
+        var step = e.target.closest('[data-qty-step]');
+        if (step) setQty((parseInt(qtyInput.value, 10) || 1) + parseInt(step.getAttribute('data-qty-step'), 10));
+      });
+      qtyInput.addEventListener('change', function () { setQty(qtyInput.value); });
+    }
+
     // Barra fija en mobile cuando la caja de acción sale de pantalla.
     var panel = root.querySelector('.db-panel');
     if ('IntersectionObserver' in window && panel) {
@@ -869,7 +913,7 @@
     { "type": "checkbox", "id": "no_time_limit", "label": "Venta sin límite de tiempo (cierra solo al agotarse)", "default": true },
     { "type": "range", "id": "duration_hours", "label": "Duración de la venta (horas, si tiene límite)", "min": 1, "max": 72, "step": 1, "default": 24 },
     { "type": "number", "id": "total_units", "label": "Unidades totales de la edición", "default": 100 },
-    { "type": "number", "id": "max_per_order", "label": "Máximo por compra (texto informativo)", "default": 1 },
+    { "type": "number", "id": "max_per_order", "label": "Máximo por compra (0 = sin límite, hasta agotar stock)", "default": 0 },
     { "type": "checkbox", "id": "direct_checkout", "label": "Ir directo al checkout al comprar", "default": true },
     { "type": "header", "content": "Video y textos" },
     { "type": "video", "id": "video", "label": "Video VSL (subido a Shopify)" },

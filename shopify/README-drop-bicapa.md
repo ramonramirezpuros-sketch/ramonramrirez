@@ -10,7 +10,8 @@ Landing de Shopify basada en el VSL **"Giuliano VSL_Corregido 1.mp4"** (Drive �
 | `sections/drop-bicapa.liquid` | En el tema borrador | Sección completa de la landing |
 | `templates/page.drop-bicapa.json` | En el tema borrador | Plantilla de página que usa la sección |
 | Página `Drop Bicapa · Edición Especial` (`/pages/drop-bicapa`) | Tienda online → Páginas | **Visible** (13/10), usa la plantilla `drop-bicapa` |
-| Banner de la página de inicio ([`banner-home-drop-bicapa.liquid`](banner-home-drop-bicapa.liquid)) | Tema `RR - Drop Bicapa + banner` (copia del publicado, sección "Banner Drop Bicapa" arriba de todo) | **Falta publicar ese tema**. El tema publicado no se puede editar por API. Cambia solo el domingo 00:00 y al agotarse |
+| Banner de la página de inicio ([`banner-home-drop-bicapa.liquid`](banner-home-drop-bicapa.liquid)) | Sección "Banner Drop Bicapa" arriba de todo en la página de inicio | Publicado. Cambia solo el domingo 00:00 y al agotarse |
+| Tema `RR - Drop Bicapa (compra libre)` | Tienda online → Temas | **Falta publicar**. Copia del tema actual con el selector de cantidad (sin límite por persona) y los textos sin "1 por persona" |
 | Producto `Bicapa Edición Especial · Reposado en Ron` (`bicapa-edicion-especial`) | Productos | **Borrador**, precio $0, stock 0 (inventario controlado, no vende sin stock) |
 | Video `vsl-drop-bicapa.mp4` + fotos `bicapa-portada.jpg`, `bicapa-estuche.jpg` | Contenido → Archivos | Subidos |
 
@@ -50,6 +51,6 @@ duración, unidades, textos, video, fotos, etiquetas y mensaje sanitario.
 
 ## Notas
 
-- **Máximo 1 por compra:** el botón agrega 1 unidad, pero no impide que alguien compre dos veces. Para un límite real hace falta una app de límites de compra.
+- **Sin límite por persona:** la caja de compra tiene un selector de cantidad que va de 1 hasta el stock disponible, y Shopify no deja comprar más de lo que hay. Si algún día se quiere un tope, se carga en "Máximo por compra" (0 = sin límite).
 - **Clientes ya existentes:** si el email ya está registrado, Shopify puede no sumar la etiqueta nueva. Conviene revisar también por fecha de alta.
 - **Legal (Ley 26.687 y reglamentación):** la publicidad de tabaco solo está permitida en comunicaciones directas a mayores de 18 con consentimiento previo y edad verificada, y siempre con un mensaje sanitario (art. 7). La venta a distancia exige verificar fehacientemente que comprador y receptor son mayores de 18. La página incluye el mensaje sanitario, el check de +18 y el aviso legal, y la tienda ya tiene una app de verificación de edad. **Confirmar con un asesor legal** el mensaje sanitario exacto y cómo se verifica la edad en la entrega.

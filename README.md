@@ -8,7 +8,8 @@ Lista de espera hasta el domingo 18/10 a las 00:00; desde ahí, venta abierta ha
 | Pieza | Estado | Dónde |
 |---|---|---|
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
-| Landing en Shopify | ✅ Armada, sin publicar | Tema `RR - Drop Bicapa (borrador)` · página oculta `/pages/drop-bicapa` · [código y guía](shopify/README-drop-bicapa.md) |
+| Landing en Shopify | ✅ Publicada: ramonramirez.com.ar/pages/drop-bicapa | Tema `RR - Drop Bicapa (borrador)` (publicado) · [código y guía](shopify/README-drop-bicapa.md) |
+| Banner en la página de inicio | 🟡 Código listo, falta pegarlo en el editor | [banner-home-drop-bicapa.liquid](shopify/banner-home-drop-bicapa.liquid) |
 | Producto en Shopify | 🟡 Precio cargado, todavía fuera de la tienda online. Stock en 1000: pasarlo a 100 el sáb 17 | `bicapa-edicion-especial` |
 | Fecha del drop | ✅ Domingo 18/10 00:00 hs, con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Editor del tema (sección "Drop Bicapa") |
 | Precio | ✅ $28.000 | Producto en Shopify |
@@ -19,7 +20,7 @@ Lista de espera hasta el domingo 18/10 a las 00:00; desde ahí, venta abierta ha
 
 ## Pendientes
 
-- [ ] **Hoy martes 13, antes de las 21:** publicar el tema borrador y poner visible la página (los anuncios arrancan el miércoles a las 00:00)
+- [ ] Pegar el banner de la página de inicio (Personalizar → Página de inicio → Liquid personalizado)
 - [ ] Nombres de los responsables de ManyChat, Email y WhatsApp
 - [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 17 antes de las 12)
 - [ ] Sáb 17, 22:00: producto activo en la tienda online con stock 100
@@ -41,6 +42,7 @@ vsl/
 shopify/
   README-drop-bicapa.md           ← qué está instalado y checklist del día del drop
   sections/drop-bicapa.liquid     ← sección de la landing (tema Dawn)
+  banner-home-drop-bicapa.liquid  ← banner "Anotate a los bicapa" para pegar en la página de inicio
   templates/page.drop-bicapa.json ← plantilla de página
   preview/                        ← capturas de la landing
 estrategia/

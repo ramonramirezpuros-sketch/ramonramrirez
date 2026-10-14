@@ -95,9 +95,9 @@
 
   <table>
     <tr><th style="width:21%">Campaña</th><th style="width:16%">Anuncios</th><th style="width:19%">Objetivo</th><th style="width:20%">Cuándo</th><th>Público</th></tr>
-    <tr><td><b>1 · DROP Captación</b></td><td>9n · 11N · 13N · 14N</td><td>Clientes potenciales</td><td class="date">Mié 14 → Sáb 17 23:30</td><td>Argentina 18+, sin anotados</td></tr>
+    <tr><td><b>1 · DROP Captación</b></td><td>9n · 11N · 13N · 14N</td><td>Tráfico a la landing</td><td class="date">Mié 14 → Sáb 17 23:30</td><td>Argentina 18+, sin anotados</td></tr>
     <tr><td><b>2 · DROP Follow me</b></td><td>6n · 5n</td><td>Tráfico al perfil de Instagram</td><td class="date">Mié 14 → Jue 15</td><td>Argentina 18+</td></tr>
-    <tr><td><b>3 · DROP Calentamiento</b></td><td>3n · 1n · 6n · 5n</td><td>Reconocimiento (alcance)</td><td class="date">Vie 16 → Sáb 17 23:30</td><td>Visitantes de la landing + anotados</td></tr>
+    <tr><td><b>3 · DROP Calentamiento</b></td><td>3n · 1n · 6n · 5n</td><td>Tráfico a la landing y la tienda</td><td class="date">Vie 16 → Sáb 17 23:30</td><td>Visitantes de la landing + anotados</td></tr>
     <tr><td><b>4 · DROP Domingo</b></td><td>Estáticos</td><td>Ventas</td><td class="date">Dom 18 00:00 → agotado</td><td>50 % amplio / 50 % visitantes + anotados</td></tr>
   </table>
 
@@ -110,7 +110,7 @@
   <ol class="steps">
     <li><b>Entrá</b> a <span class="path">adsmanager.facebook.com</span> con un usuario que administre la página <b>Ramonramirezcomar</b>. Arriba a la izquierda, elegí la cuenta publicitaria de la marca.</li>
     <li><b>Revisá la cuenta</b> (⚙️ Configuración): que tenga <b>medio de pago</b> y que la <b>zona horaria</b> sea Buenos Aires. Si es otra, avisame: todos los horarios de esta guía son de Argentina.</li>
-    <li><b>Conversión "Anotado drop"</b>, para que Meta busque gente que se anota y no gente que solo hace clic: <span class="path">☰ → Administrador de eventos → Conversiones personalizadas → Crear</span>. Nombre <b>Anotado drop</b> · origen: el píxel de la tienda (ID 5245138529043861) · evento <b>Todo el tráfico de URL</b> · regla: URL contiene <span class="path">customer_posted=true</span> · categoría <b>Cliente potencial</b>.</li>
+    <li><b>Conversión "Anotado drop"</b>, para ver en Meta cuántos se anotan por anuncio: <span class="path">☰ → Administrador de eventos → Conversiones personalizadas → Crear</span>. Nombre <b>Anotado drop</b> · origen: el píxel de la tienda (ID 5245138529043861) · evento <b>Todo el tráfico de URL</b> · regla: URL contiene <span class="path">customer_posted=true</span> · categoría <b>Cliente potencial</b>.</li>
     <li><b>Dos públicos</b>: <span class="path">☰ → Públicos → Crear público → Público personalizado → Sitio web</span>, con el mismo píxel y 30 días.<br>
       · <b>Visitantes landing</b>: personas que visitaron páginas específicas → URL contiene <span class="path">drop-bicapa</span>.<br>
       · <b>Anotados web</b>: URL contiene <span class="path">customer_posted=true</span>. Se llena solo con cada persona que se anota.</li>
@@ -127,9 +127,9 @@
 
   <h3>1 · DROP Captación (9n, 11N, 13N, 14N)</h3>
   <ol class="steps">
-    <li><b>Objetivo:</b> Clientes potenciales. Si ofrece la configuración Advantage+, dejala.</li>
+    <li><b>Objetivo:</b> Tráfico. Si ofrece la configuración Advantage+, dejala.</li>
     <li><b>Campaña:</b> nombre "DROP Captación" · presupuesto diario de la campaña: 75 % del total.</li>
-    <li><b>Conjunto:</b> ubicación de la conversión <b>Sitio web</b> · objetivo de rendimiento <b>Maximizar el número de conversiones</b> · evento <b>Anotado drop</b> · inicio <b>mié 14/10 00:00</b> · fin <b>sáb 17/10 23:30</b> · público: Argentina, edad mínima 18, <b>excluir "Anotados web"</b> · ubicaciones Advantage+.</li>
+    <li><b>Conjunto:</b> ubicación de la conversión <b>Sitio web</b> · objetivo de rendimiento <b>Maximizar el número de visitas a la página de destino</b> (no "clics en el enlace") · inicio <b>mié 14/10 00:00</b> · fin <b>sáb 17/10 23:30</b> · público: Argentina, edad mínima 18, <b>excluir "Anotados web"</b> · ubicaciones Advantage+.</li>
     <li><b>Anuncio:</b> nombre "9n" · identidad: página Ramonramirezcomar + Instagram <b>@ramonramirez.arg</b> · formato <b>Imagen o video único</b> → subir 9n.mp4 · texto, título y botón de la pág. 4 · URL del sitio web:<br><span class="path">https://ramonramirez.com.ar/pages/drop-bicapa?utm_source=meta&amp;utm_medium=paid&amp;utm_campaign=drop-bicapa&amp;utm_content=9n</span></li>
     <li>En <b>Mejoras de contenido Advantage+</b>, destildá las que cambian el video (música, retoques).</li>
     <li><b>Los otros 3:</b> en el panel de la izquierda, <b>⋯</b> del anuncio → <b>Duplicar</b> → cambiá nombre, video y el final del link (<span class="path">utm_content=11N</span>, etc.) → <b>Publicar</b>.</li>
@@ -144,7 +144,7 @@
 
   <h3>3 · DROP Calentamiento (3n, 1n, 6n, 5n): se arma hoy y queda programada</h3>
   <ol class="steps">
-    <li><b>Objetivo:</b> Reconocimiento · objetivo de rendimiento <b>Maximizar el alcance</b> · límite de frecuencia <b>2 veces cada 1 día</b> · presupuesto: 25 %.</li>
+    <li><b>Objetivo:</b> Tráfico · ubicación de la conversión <b>Sitio web</b> · objetivo de rendimiento <b>Maximizar el número de visitas a la página de destino</b> · presupuesto: 25 %.</li>
     <li><b>Conjunto:</b> fecha de inicio <b>vie 16/10 00:00</b> · finalización <b>sáb 17/10 23:30</b> · público: <b>incluir</b> "Visitantes landing" y "Anotados web".</li>
     <li><b>Anuncios:</b> 3n → <span class="path">ramonramirez.com.ar/collections/accesorios</span> · 1n → <span class="path">ramonramirez.com.ar/search?q=tubo</span> · 6n y 5n → la landing con <span class="path">utm_content=6n</span> o <span class="path">5n</span> → <b>Publicar</b>.</li>
   </ol>
@@ -160,7 +160,7 @@
   <h3>Todos los días a las 10:00 (10 minutos)</h3>
   <ol class="steps">
     <li>Administrador de anuncios → pestaña <b>Anuncios</b> → período <b>Hoy</b> (y <b>Máximo</b> para ver el acumulado).</li>
-    <li>Mirá 3 columnas por anuncio: <b>Resultados</b> (anotados), <b>Costo por resultado</b> e <b>Importe gastado</b>. Mandá captura al grupo y a mí.</li>
+    <li>Mirá por anuncio <b>Importe gastado</b> y <b>Resultados</b> (visitas a la landing). Los anotados de cada anuncio salen de la planilla (columna utm_content) o de la columna "Anotado drop" si la agregás. Mandá captura al grupo y a mí.</li>
     <li>Columna <b>Entrega</b>: todo tiene que decir <b>Activo</b> o <b>Programado</b>. Si dice <b>Rechazado</b>, avisá.</li>
     <li><b>No cambies nada más.</b> Cada cambio de presupuesto o de público reinicia el aprendizaje de Meta y encarece el anotado. Solo se toca en las fechas de abajo.</li>
   </ol>
@@ -169,7 +169,7 @@
   <table>
     <tr><th style="width:19%">Cuándo</th><th>Qué hacer</th></tr>
     <tr><td class="date">Jue 15 · 10:00</td><td>Creá el público <b>Anotados lista</b> (Público personalizado → <b>Lista de clientes</b> → CSV que manda Justo) y sumalo: <b>excluido</b> en Captación, <b>incluido</b> en Calentamiento.</td></tr>
-    <tr><td class="date">Vie 16 · 10:00</td><td>En <b>DROP Captación</b>, apagá con el interruptor los 2 anuncios con mayor <b>costo por resultado</b>. El presupuesto pasa solo a los otros 2.</td></tr>
+    <tr><td class="date">Vie 16 · 10:00</td><td>En <b>DROP Captación</b>, apagá con el interruptor los 2 anuncios con mayor <b>costo por anotado</b> (importe gastado ÷ anotados de la planilla). El presupuesto pasa solo a los otros 2.</td></tr>
     <tr><td class="date">Sáb 17 · antes de 12</td><td>Armar la campaña <b>4 · DROP Domingo</b> (abajo).</td></tr>
     <tr><td class="date">Sáb 17 · 18:00</td><td>Públicos → <b>Anotados lista</b> → editar → subir la lista nueva de Justo.</td></tr>
     <tr><td class="date">Sáb 17 · 23:35</td><td>Captación y Calentamiento se apagan solas por la fecha de fin. Verificá que figuren como <b>Finalizadas</b>.</td></tr>

@@ -17,6 +17,7 @@
 
   assign total_units = section.settings.total_units | default: 100 | at_least: 1
   assign max_qty = section.settings.max_per_order | default: 0 | at_least: 0
+  assign drop_start = shop.metafields.drop_bicapa.start.value | default: section.settings.drop_start
   assign has_price = false
   if v and v.price > 0
     assign has_price = true
@@ -305,7 +306,7 @@
   id="drop-{{ section.id }}"
   class="drop-bicapa"
   data-phase="waitlist"
-  data-start="{{ section.settings.drop_start | escape }}"
+  data-start="{{ drop_start | escape }}"
   data-hours="{% if section.settings.no_time_limit %}0{% else %}{{ section.settings.duration_hours }}{% endif %}"
   data-product-state="{{ product_state }}"
   data-sheets-url="{{ section.settings.sheets_url | escape }}"
@@ -908,7 +909,7 @@
       "type": "text",
       "id": "drop_start",
       "label": "Apertura del drop",
-      "info": "Formato AAAA-MM-DDTHH:MM-03:00 (hora Argentina). Ej: 2026-10-11T20:00-03:00. Vacío = solo lista de espera."
+      "info": "Formato AAAA-MM-DDTHH:MM-03:00 (hora Argentina). Ej: 2026-10-25T00:00-03:00. Si la tienda tiene el metacampo drop_bicapa.start, se usa ese. Vacío = solo lista de espera."
     },
     { "type": "checkbox", "id": "no_time_limit", "label": "Venta sin límite de tiempo (cierra solo al agotarse)", "default": true },
     { "type": "range", "id": "duration_hours", "label": "Duración de la venta (horas, si tiene límite)", "min": 1, "max": 72, "step": 1, "default": 24 },

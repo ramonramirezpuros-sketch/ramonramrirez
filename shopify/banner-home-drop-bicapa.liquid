@@ -2,13 +2,15 @@
   Banner Drop Bicapa para la página de inicio.
   Pegar en: Personalizar → Página de inicio → Agregar sección → "Liquid personalizado",
   arrastrarla arriba de todo, relleno superior e inferior en 0.
-  Antes del domingo 18 00:00: "Anotate" + cuenta regresiva. Después: "Ya están disponibles".
+  Antes de la apertura: "Anotate" + cuenta regresiva. Después: "Ya están disponibles".
+  La fecha sale del metacampo de la tienda drop_bicapa.start (si no existe, 25/10 00:00).
   Si el producto se agota: "Se agotaron" y lleva a anotarse al próximo drop.
 {%- endcomment -%}
 {%- assign rrdb_p = all_products['bicapa-edicion-especial'] -%}
+{%- assign rrdb_start = shop.metafields.drop_bicapa.start.value | default: '2026-10-25T00:00-03:00' -%}
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
 <a class="rrdb" id="rrdb" href="/pages/drop-bicapa?utm_source=tienda&utm_medium=banner&utm_campaign=drop-bicapa"
-   data-start="2026-10-18T00:00:00-03:00"
+   data-start="{{ rrdb_start | escape }}"
    data-soldout="{% if rrdb_p != blank and rrdb_p.available == false %}1{% else %}0{% endif %}">
   <span class="rrdb__media">
     <img src="https://cdn.shopify.com/s/files/1/0739/7903/5800/files/bicapa-portada.jpg?v=1791223612&width=1200"
@@ -17,7 +19,7 @@
   <span class="rrdb__body">
     <span class="rrdb__kicker">Edición especial · Solo 100 puros</span>
     <span class="rrdb__title" data-t>Anotate a los <em>bicapa</em></span>
-    <span class="rrdb__sub" data-s>Dos capas elegidas hoja por hoja y 6 meses en ron. Abre el domingo 18 a las 00:00 y los anotados se enteran primero.</span>
+    <span class="rrdb__sub" data-s>Dos capas elegidas hoja por hoja y 6 meses en ron. Abre el <span data-when>domingo 25 a las 00:00</span> y los anotados se enteran primero.</span>
     <span class="rrdb__count" aria-hidden="true">
       <span><b data-d>0</b><i>días</i></span><span><b data-h>00</b><i>horas</i></span><span><b data-m>00</b><i>min</i></span><span><b data-x>00</b><i>seg</i></span>
     </span>
@@ -62,6 +64,15 @@
     var sold = el.getAttribute('data-soldout') === '1';
     function q(s) { return el.querySelector(s); }
     function pad(n) { return (n < 10 ? '0' : '') + n; }
+    var when = q('[data-when]');
+    if (when && !isNaN(start)) {
+      try {
+        var parts = {};
+        new Intl.DateTimeFormat('es-AR', { weekday: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'America/Argentina/Buenos_Aires' })
+          .formatToParts(new Date(start)).forEach(function (p) { parts[p.type] = p.value; });
+        when.textContent = parts.weekday + ' ' + parts.day + ' a las ' + parts.hour + ':' + parts.minute;
+      } catch (e) {}
+    }
     function tick() {
       var now = Date.now();
       if (isNaN(start) || now >= start) {

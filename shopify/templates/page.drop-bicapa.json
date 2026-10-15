@@ -13,7 +13,7 @@
       "type": "drop-bicapa",
       "settings": {
         "product": "bicapa-edicion-especial",
-        "drop_start": "2026-10-18T00:00-03:00",
+        "drop_start": "2026-10-25T00:00-03:00",
         "no_time_limit": true,
         "duration_hours": 72,
         "total_units": 100,

@@ -6,13 +6,14 @@ Landing de Shopify basada en el VSL **"Giuliano VSL_Corregido 1.mp4"** (Drive �
 
 | Qué | Dónde | Estado |
 |---|---|---|
-| Tema `RR - Drop Bicapa (borrador)` | Tienda online → Temas | **Publicado** (13/10). Es la copia del tema anterior + los 2 archivos de abajo |
-| `sections/drop-bicapa.liquid` | En el tema borrador | Sección completa de la landing |
-| `templates/page.drop-bicapa.json` | En el tema borrador | Plantilla de página que usa la sección |
+| Tema `RR - Drop Bicapa (compra libre)` | Tienda online → Temas | **Publicado** (14/10). Landing con selector de cantidad + banner de la portada, con la fecha del 18 escrita en el código |
+| Tema `RR - Drop Bicapa (domingo 25)` | Tienda online → Temas | **Falta publicar**. Copia del publicado: la landing y el banner toman la fecha del metacampo de abajo |
+| Metacampo de la tienda `drop_bicapa.start` | Se cambia por API (pedímelo) | `2026-10-25T00:00-03:00`. Si la fecha vuelve a cambiar, se cambia acá y no hace falta publicar nada |
+| `sections/drop-bicapa.liquid` | En el tema | Sección completa de la landing |
+| `templates/page.drop-bicapa.json` | En el tema | Plantilla de página que usa la sección |
 | Página `Drop Bicapa · Edición Especial` (`/pages/drop-bicapa`) | Tienda online → Páginas | **Visible** (13/10), usa la plantilla `drop-bicapa` |
-| Banner de la página de inicio ([`banner-home-drop-bicapa.liquid`](banner-home-drop-bicapa.liquid)) | Sección "Banner Drop Bicapa" arriba de todo en la página de inicio | Publicado. Cambia solo el domingo 00:00 y al agotarse |
-| Tema `RR - Drop Bicapa (compra libre)` | Tienda online → Temas | **Falta publicar**. Copia del tema actual con el selector de cantidad (sin límite por persona) y los textos sin "1 por persona" |
-| Producto `Bicapa Edición Especial · Reposado en Ron` (`bicapa-edicion-especial`) | Productos | **Borrador**, precio $0, stock 0 (inventario controlado, no vende sin stock) |
+| Banner de la página de inicio ([`banner-home-drop-bicapa.liquid`](banner-home-drop-bicapa.liquid)) | Sección "Banner Drop Bicapa" arriba de todo en la página de inicio | Publicado. Cambia solo a la hora de apertura y al agotarse |
+| Producto `Bicapa Edición Especial · Reposado en Ron` (`bicapa-edicion-especial`) | Productos | Precio $28.000, stock 1000, fuera de la tienda online. Sáb 24, 22:00: stock 100 + Activo + Tienda online |
 | Video `vsl-drop-bicapa.mp4` + fotos `bicapa-portada.jpg`, `bicapa-estuche.jpg` | Contenido → Archivos | Subidos |
 
 ## Cómo funciona la página
@@ -27,27 +28,26 @@ Una sola URL con 3 fases que cambian solas según la fecha de apertura:
 3. **Edición cerrada** (pasadas las N horas o sin stock): mensaje de agotado + formulario para el
    próximo drop (etiqueta `drop-bicapa-proximo`).
 
-Todo se edita desde el editor del tema (sección "Drop Bicapa"): producto, fecha de apertura,
-duración, unidades, textos, video, fotos, etiquetas y mensaje sanitario.
+Todo se edita desde el editor del tema (sección "Drop Bicapa"): producto, duración, unidades,
+textos, video, fotos, etiquetas y mensaje sanitario. La **fecha de apertura** sale del metacampo de la
+tienda `drop_bicapa.start`; el campo "Apertura del drop" del editor se usa solo si ese metacampo no existe.
 
 ## Checklist para salir
 
-**Para abrir la lista de espera (ya se puede):**
-1. Tienda online → Temas → `RR - Drop Bicapa (borrador)` → Personalizar → elegir la página "Drop Bicapa" y revisar.
-2. Publicar ese tema (o copiar los 2 archivos al tema actual desde "Editar código").
-   ⚠️ Si se publica la copia, cualquier cambio hecho en el tema actual después del 05/10/2026 no está en la copia.
-3. Páginas → Drop Bicapa → poner **Visible**. Link para el VSL: `https://ramonramirez.com.ar/pages/drop-bicapa`
+**Hoy jue 15 (cambio de fecha al domingo 25):**
+1. Tienda online → Temas → `RR - Drop Bicapa (domingo 25)` → **Publicar**.
+   ⚠️ Si alguien tocó el tema publicado después del 15/10 al mediodía, ese cambio no está en la copia.
+2. Abrir ramonramirez.com.ar y `/pages/drop-bicapa`: tienen que decir "domingo 25" y la cuenta regresiva marcar ~9 días.
 
-**Antes del drop:**
-- Producto: cargar **precio**, vitola/detalles si se quieren mostrar, y fotos.
-- En la sección: cargar **Apertura del drop** con formato `2026-10-11T20:00-03:00`.
+**Sáb 24, 22:00:**
+- Producto → stock **100** → estado **Activo** → canal **Tienda online** tildado. La landing sigue en lista de espera hasta las 00:00.
 
-**El día del drop (a la hora de apertura):**
-- Producto → stock **100** → estado **Activo** (publicado en Tienda online).
+**Dom 25, 00:00:**
+- Recargar la landing: precio, "Quedan 100 de 100" y botón "Comprar mi bicapa". Compra de prueba (después reembolsar).
 - Avisar a la lista: Clientes → segmento `customer_tags CONTAINS 'drop-bicapa'` → Shopify Email; y WhatsApp a las etiquetas `wa-…`.
 
-**Al cerrar (24 h):**
-- Producto → pasar a **Borrador** o stock 0. La página muestra "cerrado" sola, pero el cierre real lo hace el producto.
+**Al agotarse:**
+- La página pasa sola a "Edición cerrada" y el banner a "Se agotaron".
 
 ## Notas
 

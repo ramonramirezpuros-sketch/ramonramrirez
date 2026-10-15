@@ -35,3 +35,4 @@ Transcripción automática, revisada a mano. Los textos en pantalla del video va
 - **Antes de la venta hay una lista para anotarse.**
 
 > ⚠️ El video dice "el próximo domingo". Si se publica en otra semana, ese "domingo" puede no coincidir con la fecha real del drop.
+> Con el drop el **domingo 25/10**: hasta el sáb 17, "el próximo domingo" se puede entender como el 18. La cuenta regresiva y la fecha que muestra la landing lo aclaran.

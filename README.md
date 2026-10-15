@@ -1,29 +1,29 @@
 # Ramón Ramírez: proyecto Drop Bicapa Edición Especial
 
 Base de trabajo del lanzamiento de **100 puros bicapa reposados 6 meses en ron**.
-Lista de espera hasta el domingo 18/10 a las 00:00; desde ahí, venta abierta hasta agotar stock.
+Lista de espera hasta el **domingo 25/10 a las 00:00** (antes era el 18); desde ahí, venta abierta hasta agotar stock.
 
 ## Estado
 
 | Pieza | Estado | Dónde |
 |---|---|---|
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
-| Landing en Shopify | ✅ Publicada: ramonramirez.com.ar/pages/drop-bicapa | Tema `RR - Drop Bicapa (borrador)` (publicado) · [código y guía](shopify/README-drop-bicapa.md) |
-| Banner en la página de inicio | ✅ Publicado. Versión sin "1 por persona" en el tema `RR - Drop Bicapa (compra libre)`, falta tocar **Publicar** | [banner-home-drop-bicapa.liquid](shopify/banner-home-drop-bicapa.liquid) |
-| Producto en Shopify | 🟡 Precio cargado, todavía fuera de la tienda online. Stock en 1000: pasarlo a 100 el sáb 17 | `bicapa-edicion-especial` |
-| Fecha del drop | ✅ Domingo 18/10 00:00 hs, con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Editor del tema (sección "Drop Bicapa") |
+| Landing en Shopify | ✅ Publicada: ramonramirez.com.ar/pages/drop-bicapa. La versión con el domingo 25 está en el tema `RR - Drop Bicapa (domingo 25)`: falta tocar **Publicar** | [código y guía](shopify/README-drop-bicapa.md) |
+| Banner en la página de inicio | ✅ Publicado. La versión con el domingo 25 sale con el mismo tema `RR - Drop Bicapa (domingo 25)` | [banner-home-drop-bicapa.liquid](shopify/banner-home-drop-bicapa.liquid) |
+| Producto en Shopify | 🟡 Precio cargado, todavía fuera de la tienda online. Stock en 1000: pasarlo a 100 el sáb 24 | `bicapa-edicion-especial` |
+| Fecha del drop | ✅ Domingo 25/10 00:00 hs (antes 18/10), con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Metacampo de la tienda `drop_bicapa.start`: la landing y el banner leen la fecha de ahí |
 | Precio | ✅ $28.000 | Producto en Shopify |
 | Funnel del drop (Miro) | 🟡 Plan de ejecución en el PDF; falta armar ManyChat | [plan y mensajes](estrategia/funnel-drop.md) · [PDF](docs/Drop-Bicapa-Paso-a-paso.pdf) |
-| Anuncios (8) | ✅ Transcriptos y con fecha: arrancan el miércoles 14/10 a las 00:00 | [anuncios](estrategia/anuncios-transcripciones.md) · PDF pág. 3 |
+| Anuncios (8) | ✅ Corriendo desde el miércoles 14/10 a las 00:00. Hoy: texto de captación al 25 y fechas nuevas (captación hasta el sáb 24) | [anuncios](estrategia/anuncios-transcripciones.md) · [Meta paso a paso](docs/Meta-Ads-Paso-a-paso.pdf) |
 | Leads y visitas → Google Sheets | ✅ Conectado y probado de punta a punta | [planilla](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit) · [cómo activarlo](google-sheets/README.md) |
 | Legal (Ley 26.687) | ✅ Resuelto por el equipo | [notas legales](legal/ley-26687-tabaco.md) |
 
 ## Pendientes
 
-- [ ] Publicar el tema `RR - Drop Bicapa (compra libre)`: selector de cantidad en la landing, sin límite por persona
+- [ ] **Hoy jue 15, cambio de fecha:** publicar el tema `RR - Drop Bicapa (domingo 25)`; en Meta, texto de captación "domingo 25" y fechas nuevas; ManyChat Mensaje 1; mail de bienvenida; M0 a las 19:00 por email y WhatsApp; historia de Ramón
 - [ ] Nombres de los responsables de ManyChat, Email y WhatsApp
-- [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 17 antes de las 12)
-- [ ] Sáb 17, 22:00: producto activo en la tienda online con stock 100
+- [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 24 antes de las 12)
+- [ ] Sáb 24, 22:00: producto activo en la tienda online con stock 100
 - [ ] Borrar de la planilla las filas de prueba
 - [ ] Opcional: pop-up de escasez en la tienda
 

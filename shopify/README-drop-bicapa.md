@@ -34,7 +34,7 @@ tienda `drop_bicapa.start`; el campo "Apertura del drop" del editor se usa solo 
 
 ## Checklist para salir
 
-**Hoy jue 15 (cambio de fecha al domingo 25):**
+**Ya (cambio de fecha al domingo 25, antes de que arranquen los anuncios el lunes 19):**
 1. Tienda online → Temas → `RR - Drop Bicapa (domingo 25)` → **Publicar**.
    ⚠️ Si alguien tocó el tema publicado después del 15/10 al mediodía, ese cambio no está en la copia.
 2. Abrir ramonramirez.com.ar y `/pages/drop-bicapa`: tienen que decir "domingo 25" y la cuenta regresiva marcar ~9 días.

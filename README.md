@@ -2,6 +2,7 @@
 
 Base de trabajo del lanzamiento de **100 puros bicapa reposados 6 meses en ron**.
 Lista de espera hasta el **domingo 25/10 a las 00:00** (antes era el 18); desde ahí, venta abierta hasta agotar stock.
+Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 
 ## Estado
 
@@ -14,13 +15,15 @@ Lista de espera hasta el **domingo 25/10 a las 00:00** (antes era el 18); desde 
 | Fecha del drop | ✅ Domingo 25/10 00:00 hs (antes 18/10), con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Metacampo de la tienda `drop_bicapa.start`: la landing y el banner leen la fecha de ahí |
 | Precio | ✅ $28.000 | Producto en Shopify |
 | Funnel del drop (Miro) | 🟡 Plan de ejecución en el PDF; falta armar ManyChat | [plan y mensajes](estrategia/funnel-drop.md) · [PDF](docs/Drop-Bicapa-Paso-a-paso.pdf) |
-| Anuncios (8) | ✅ Corriendo desde el miércoles 14/10 a las 00:00. Hoy: texto de captación al 25 y fechas nuevas (captación hasta el sáb 24) | [anuncios](estrategia/anuncios-transcripciones.md) · [Meta paso a paso](docs/Meta-Ads-Paso-a-paso.pdf) |
+| Anuncios (8) | 🟡 Arrancan el lunes 19/10 a las 00:00 (captación hasta el sáb 24 23:30). Texto de captación con "domingo 25" | [anuncios](estrategia/anuncios-transcripciones.md) · [Meta paso a paso](docs/Meta-Ads-Paso-a-paso.pdf) |
 | Leads y visitas → Google Sheets | ✅ Conectado y probado de punta a punta | [planilla](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit) · [cómo activarlo](google-sheets/README.md) |
 | Legal (Ley 26.687) | ✅ Resuelto por el equipo | [notas legales](legal/ley-26687-tabaco.md) |
 
 ## Pendientes
 
-- [ ] **Hoy jue 15, cambio de fecha:** publicar el tema `RR - Drop Bicapa (domingo 25)`; en Meta, texto de captación "domingo 25" y fechas nuevas; ManyChat Mensaje 1; mail de bienvenida; M0 a las 19:00 por email y WhatsApp; historia de Ramón
+- [ ] **Ya:** publicar el tema `RR - Drop Bicapa (domingo 25)` (portada y landing con la fecha nueva) y corregir el mail de bienvenida
+- [ ] Vie 16, 19:00: M0 (cambio de fecha) por email y WhatsApp a los que ya se anotaron
+- [ ] Dom 18, antes de las 21: los 8 anuncios programados para el lunes 19 00:00, con "domingo 25" en el texto; ManyChat con "domingo 25"
 - [ ] Nombres de los responsables de ManyChat, Email y WhatsApp
 - [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 24 antes de las 12)
 - [ ] Sáb 24, 22:00: producto activo en la tienda online con stock 100

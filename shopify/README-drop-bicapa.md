@@ -6,8 +6,8 @@ Landing de Shopify basada en el VSL **"Giuliano VSL_Corregido 1.mp4"** (Drive �
 
 | Qué | Dónde | Estado |
 |---|---|---|
-| Tema `RR - Drop Bicapa (compra libre)` | Tienda online → Temas | **Publicado** (14/10). Landing con selector de cantidad + banner de la portada, con la fecha del 18 escrita en el código |
-| Tema `RR - Drop Bicapa (domingo 25)` | Tienda online → Temas | **Falta publicar**. Copia del publicado: la landing y el banner toman la fecha del metacampo de abajo |
+| Tema `WEB RAMON RAMIREZ - SHOPIFY` | Tienda online → Temas | **Tiene todo el drop** (landing, banner, fecha del metacampo) y es igual archivo por archivo al publicado. **Falta publicarlo**; después se borran los 4 temas `RR - Drop Bicapa …` |
+| Tema `RR - Drop Bicapa (domingo 25)` | Tienda online → Temas | Publicado el 15/10. Se borra cuando se publique `WEB RAMON RAMIREZ - SHOPIFY` |
 | Metacampo de la tienda `drop_bicapa.start` | Se cambia por API (pedímelo) | `2026-10-25T00:00-03:00`. Si la fecha vuelve a cambiar, se cambia acá y no hace falta publicar nada |
 | `sections/drop-bicapa.liquid` | En el tema | Sección completa de la landing |
 | `templates/page.drop-bicapa.json` | En el tema | Plantilla de página que usa la sección |
@@ -34,10 +34,10 @@ tienda `drop_bicapa.start`; el campo "Apertura del drop" del editor se usa solo 
 
 ## Checklist para salir
 
-**Ya (cambio de fecha al domingo 25, antes de que arranquen los anuncios el lunes 19):**
-1. Tienda online → Temas → `RR - Drop Bicapa (domingo 25)` → **Publicar**.
-   ⚠️ Si alguien tocó el tema publicado después del 15/10 al mediodía, ese cambio no está en la copia.
-2. Abrir ramonramirez.com.ar y `/pages/drop-bicapa`: tienen que decir "domingo 25" y la cuenta regresiva marcar ~9 días.
+**Ya (ordenar los temas):**
+1. Tienda online → Temas → `WEB RAMON RAMIREZ - SHOPIFY` → **⋯ → Publicar**.
+2. Borrar los 4 temas `RR - Drop Bicapa …` (borrador, + banner, compra libre, domingo 25). Primero publicar: Shopify no deja borrar el tema publicado.
+3. Abrir ramonramirez.com.ar y `/pages/drop-bicapa`: tienen que decir "domingo 25" y mostrar la cuenta regresiva.
 
 **Sáb 24, 22:00:**
 - Producto → stock **100** → estado **Activo** → canal **Tienda online** tildado. La landing sigue en lista de espera hasta las 00:00.

@@ -9,8 +9,8 @@ Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 | Pieza | Estado | Dónde |
 |---|---|---|
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
-| Landing en Shopify | ✅ Publicada: ramonramirez.com.ar/pages/drop-bicapa. La versión con el domingo 25 está en el tema `RR - Drop Bicapa (domingo 25)`: falta tocar **Publicar** | [código y guía](shopify/README-drop-bicapa.md) |
-| Banner en la página de inicio | ✅ Publicado. La versión con el domingo 25 sale con el mismo tema `RR - Drop Bicapa (domingo 25)` | [banner-home-drop-bicapa.liquid](shopify/banner-home-drop-bicapa.liquid) |
+| Landing en Shopify | ✅ Publicada con el domingo 25: ramonramirez.com.ar/pages/drop-bicapa. Todo el drop quedó también en el tema `WEB RAMON RAMIREZ - SHOPIFY` | [código y guía](shopify/README-drop-bicapa.md) |
+| Banner en la página de inicio | ✅ Publicado con el domingo 25 | [banner-home-drop-bicapa.liquid](shopify/banner-home-drop-bicapa.liquid) |
 | Producto en Shopify | 🟡 Precio cargado, todavía fuera de la tienda online. Stock en 1000: pasarlo a 100 el sáb 24 | `bicapa-edicion-especial` |
 | Fecha del drop | ✅ Domingo 25/10 00:00 hs (antes 18/10), con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Metacampo de la tienda `drop_bicapa.start`: la landing y el banner leen la fecha de ahí |
 | Precio | ✅ $28.000 | Producto en Shopify |
@@ -21,7 +21,7 @@ Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 
 ## Pendientes
 
-- [ ] **Ya:** publicar el tema `RR - Drop Bicapa (domingo 25)` (portada y landing con la fecha nueva) y corregir el mail de bienvenida
+- [ ] **Ya:** publicar el tema `WEB RAMON RAMIREZ - SHOPIFY` y borrar los 4 `RR - Drop Bicapa …`; corregir el mail de bienvenida
 - [ ] Vie 16, 19:00: M0 (cambio de fecha) por email y WhatsApp a los que ya se anotaron
 - [ ] Dom 18, antes de las 21: los 8 anuncios programados para el lunes 19 00:00, con "domingo 25" en el texto; ManyChat con "domingo 25"
 - [ ] Nombres de los responsables de ManyChat, Email y WhatsApp

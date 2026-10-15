@@ -10,7 +10,7 @@ Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 |---|---|---|
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
 | Landing en Shopify | ✅ Publicada con el domingo 25: ramonramirez.com.ar/pages/drop-bicapa. Todo el drop quedó también en el tema `WEB RAMON RAMIREZ - SHOPIFY` | [código y guía](shopify/README-drop-bicapa.md) |
-| Banner en la página de inicio | ✅ Publicado con el domingo 25 | [banner-home-drop-bicapa.liquid](shopify/banner-home-drop-bicapa.liquid) |
+| Banner en la página de inicio | ✅ Publicado con el domingo 25. Versión compacta para celular: falta publicar el tema nuevo | [drop-bicapa-banner.liquid](shopify/snippets/drop-bicapa-banner.liquid) |
 | Producto en Shopify | 🟡 Precio cargado, todavía fuera de la tienda online. Stock en 1000: pasarlo a 100 el sáb 24 | `bicapa-edicion-especial` |
 | Fecha del drop | ✅ Domingo 25/10 00:00 hs (antes 18/10), con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Metacampo de la tienda `drop_bicapa.start`: la landing y el banner leen la fecha de ahí |
 | Precio | ✅ $28.000 | Producto en Shopify |
@@ -45,7 +45,7 @@ vsl/
 shopify/
   README-drop-bicapa.md           ← qué está instalado y checklist del día del drop
   sections/drop-bicapa.liquid     ← sección de la landing (tema Dawn)
-  banner-home-drop-bicapa.liquid  ← banner "Anotate a los bicapa" para pegar en la página de inicio
+  snippets/drop-bicapa-banner.liquid ← banner "Anotate a los bicapa" de la portada (compacto en el celular)
   templates/page.drop-bicapa.json ← plantilla de página
   preview/                        ← capturas de la landing
 estrategia/

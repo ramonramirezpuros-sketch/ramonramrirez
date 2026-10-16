@@ -38,7 +38,8 @@ docs/
   Drop-Bicapa-Paso-a-paso.pdf     ← plan de ejecución: cronograma, historias de Ramón, ManyChat, email y WhatsApp
   Meta-Ads-Paso-a-paso.pdf        ← guía clic por clic para subir y controlar los anuncios en Meta
   WhatsApp-Drop-Bicapa.pdf        ← estrategia y mensajes día por día para quien hace WhatsApp
-  paso-a-paso/, meta-ads/, whatsapp/ ← fuentes HTML de los PDF
+  Anuncios-Lunes-a-Viernes.pdf    ← cuadro de una página: qué anuncios corren cada día y qué hay que tocar
+  paso-a-paso/, meta-ads/, whatsapp/, anuncios/ ← fuentes HTML de los PDF
 vsl/
   transcripcion-vsl-final.md      ← lo que dice el video final, con tiempos
   VSL_drop_bicapa_edicion_especial.md  ← guion de referencia inicial (estilo Davidoff) + teoría de VSL

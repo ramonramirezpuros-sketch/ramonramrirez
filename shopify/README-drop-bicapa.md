@@ -6,14 +6,13 @@ Landing de Shopify basada en el VSL **"Giuliano VSL_Corregido 1.mp4"** (Drive �
 
 | Qué | Dónde | Estado |
 |---|---|---|
-| Tema `WEB RAMON RAMIREZ - SHOPIFY` | Tienda online → Temas | **Tiene todo el drop** (landing, banner, fecha del metacampo) y es igual archivo por archivo al publicado. **Falta publicarlo**; después se borran los 4 temas `RR - Drop Bicapa …` |
-| Tema `RR - Drop Bicapa (domingo 25)` | Tienda online → Temas | Publicado el 15/10. Se borra cuando se publique `WEB RAMON RAMIREZ - SHOPIFY` |
+| Tema `WEB RAMON RAMIREZ - SHOPIFY` | Tienda online → Temas | Publicado, con todo el drop (landing, banner, fecha del metacampo). Quedan copias sin publicar con el mismo nombre: la del 20/10 suma que la landing se actualice sola a las 00:00 (publicarla es opcional); las demás se borran |
 | Metacampo de la tienda `drop_bicapa.start` | Se cambia por API (pedímelo) | `2026-10-25T00:00-03:00`. Si la fecha vuelve a cambiar, se cambia acá y no hace falta publicar nada |
 | `sections/drop-bicapa.liquid` | En el tema | Sección completa de la landing |
 | `templates/page.drop-bicapa.json` | En el tema | Plantilla de página que usa la sección |
 | Página `Drop Bicapa · Edición Especial` (`/pages/drop-bicapa`) | Tienda online → Páginas | **Visible** (13/10), usa la plantilla `drop-bicapa` |
 | Banner de la página de inicio ([`snippets/drop-bicapa-banner.liquid`](snippets/drop-bicapa-banner.liquid)) | Sección "Banner Drop Bicapa" arriba de todo en la portada: un Liquid personalizado que solo hace `{% render 'drop-bicapa-banner' %}` | Publicado. Cambia solo a la hora de apertura y al agotarse. En el celular es una franja de ~160 px |
-| Producto `Bicapa Edición Especial · Reposado en Ron` (`bicapa-edicion-especial`) | Productos | Precio $28.000, stock 1000, fuera de la tienda online. Sáb 24, 22:00: stock 100 + Activo + Tienda online |
+| Producto `Bicapa Edición Especial · Reposado en Ron` (`bicapa-edicion-especial`) | Productos | Precio $28.000, stock 100, no listado (no sale en colecciones ni en el buscador). **Programado para publicarse solo en la Tienda online el dom 25 a las 00:00**: no hace falta tocarlo |
 | Video `vsl-drop-bicapa.mp4` + fotos `bicapa-portada.jpg`, `bicapa-estuche.jpg` | Contenido → Archivos | Subidos |
 
 ## Cómo funciona la página
@@ -25,6 +24,9 @@ Una sola URL con 3 fases que cambian solas según la fecha de apertura:
    `drop-bicapa` y el WhatsApp como etiqueta `wa-<número>`. Si hay fecha cargada, muestra la cuenta regresiva.
 2. **Venta abierta** (desde la apertura durante N horas, con producto activo, precio > 0 y stock):
    precio, barra "Quedan X de 100", cuenta regresiva al cierre y botón que va directo al checkout.
+   En el código de este repo (y en la copia del tema del 20/10, no en el publicado): si a la hora de apertura el
+   producto todavía no está publicado, la página dice "Estamos abriendo el drop" y se recarga sola apenas aparece
+   (lo revisa cada ~5 s durante 30 minutos), aunque la tengan abierta desde antes.
 3. **Edición cerrada** (pasadas las N horas o sin stock): mensaje de agotado + formulario para el
    próximo drop (etiqueta `drop-bicapa-proximo`).
 
@@ -34,16 +36,16 @@ tienda `drop_bicapa.start`; el campo "Apertura del drop" del editor se usa solo 
 
 ## Checklist para salir
 
-**Ya (ordenar los temas):**
-1. Tienda online → Temas → `WEB RAMON RAMIREZ - SHOPIFY` → **⋯ → Publicar**.
-2. Borrar los 4 temas `RR - Drop Bicapa …` (borrador, + banner, compra libre, domingo 25). Primero publicar: Shopify no deja borrar el tema publicado.
+**Ya (antes del sábado):**
+1. Tienda online → Temas: dejar una sola `WEB RAMON RAMIREZ - SHOPIFY`. Opcional: antes, publicar la copia del 20/10 para que la landing se actualice sola a las 00:00.
+2. Borrar las copias de `WEB RAMON RAMIREZ - SHOPIFY` que quedan sin publicar.
 3. Abrir ramonramirez.com.ar y `/pages/drop-bicapa`: tienen que decir "domingo 25" y mostrar la cuenta regresiva.
 
-**Sáb 24, 22:00:**
-- Producto → stock **100** → estado **Activo** → canal **Tienda online** tildado. La landing sigue en lista de espera hasta las 00:00.
+**Producto:** no tocarlo. Ya tiene stock 100 y precio, y se publica solo en la Tienda online el dom 25 a las 00:00.
 
 **Dom 25, 00:00:**
 - Recargar la landing: precio, "Quedan 100 de 100" y botón "Comprar mi bicapa". Compra de prueba (después reembolsar).
+- Si a las 00:05 no aparece el botón: producto → recuadro **Publicación** → tildar **Tienda online** → Guardar y recargar.
 - Avisar a la lista: Clientes → segmento `customer_tags CONTAINS 'drop-bicapa'` → Shopify Email; y WhatsApp a las etiquetas `wa-…`.
 
 **Al agotarse:**

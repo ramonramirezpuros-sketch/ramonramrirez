@@ -9,9 +9,9 @@ Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 | Pieza | Estado | Dónde |
 |---|---|---|
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
-| Landing en Shopify | ✅ Publicada con el domingo 25: ramonramirez.com.ar/pages/drop-bicapa. Todo el drop quedó también en el tema `WEB RAMON RAMIREZ - SHOPIFY` | [código y guía](shopify/README-drop-bicapa.md) |
-| Banner en la página de inicio | ✅ Publicado con el domingo 25. Versión compacta para celular: falta publicar el tema nuevo | [drop-bicapa-banner.liquid](shopify/snippets/drop-bicapa-banner.liquid) |
-| Producto en Shopify | 🟡 Precio cargado, todavía fuera de la tienda online. Stock en 1000: pasarlo a 100 el sáb 24 | `bicapa-edicion-especial` |
+| Landing en Shopify | ✅ Publicada con el domingo 25: ramonramirez.com.ar/pages/drop-bicapa. Opcional: la copia del tema del 20/10 suma que la landing se actualice sola a las 00:00 | [código y guía](shopify/README-drop-bicapa.md) |
+| Banner en la página de inicio | ✅ Publicado con el domingo 25, con versión compacta para celular | [drop-bicapa-banner.liquid](shopify/snippets/drop-bicapa-banner.liquid) |
+| Producto en Shopify | ✅ Precio $28.000 y stock 100. Programado para publicarse solo en la tienda online el dom 25 a las 00:00 | `bicapa-edicion-especial` |
 | Fecha del drop | ✅ Domingo 25/10 00:00 hs (antes 18/10), con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Metacampo de la tienda `drop_bicapa.start`: la landing y el banner leen la fecha de ahí |
 | Precio | ✅ $28.000 | Producto en Shopify |
 | Funnel del drop (Miro) | 🟡 Plan de ejecución en el PDF; falta armar ManyChat | [plan y mensajes](estrategia/funnel-drop.md) · [PDF](docs/Drop-Bicapa-Paso-a-paso.pdf) |
@@ -21,12 +21,13 @@ Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 
 ## Pendientes
 
-- [ ] **Ya:** publicar el tema `WEB RAMON RAMIREZ - SHOPIFY` y borrar los 4 `RR - Drop Bicapa …`; corregir el mail de bienvenida
+- [ ] **Ya:** dejar una sola plantilla `WEB RAMON RAMIREZ - SHOPIFY` (borrar las copias sin publicar); corregir el mail de bienvenida
 - [ ] Vie 16, 19:00: M0 (cambio de fecha) por email y WhatsApp a los que ya se anotaron
 - [ ] Dom 18, antes de las 21: los 8 anuncios programados para el lunes 19 00:00, con "domingo 25" en el texto; ManyChat con "domingo 25"
 - [ ] Nombres de los responsables de ManyChat, Email y WhatsApp
 - [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 24 antes de las 12)
-- [ ] Sáb 24, 22:00: producto activo en la tienda online con stock 100
+- [x] Producto con stock 100 y programado para publicarse solo el dom 25 a las 00:00 (no tocarlo el sábado)
+- [ ] Dom 25, 00:05: confirmar que la landing muestra "Comprar mi bicapa"
 - [ ] Borrar de la planilla las filas de prueba
 - [ ] Opcional: pop-up de escasez en la tienda
 

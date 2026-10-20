@@ -3,6 +3,8 @@
   Fases (se calculan en el navegador con la fecha del drop):
     1. Lista de espera  → antes de la fecha de apertura (o si no hay fecha / producto activo)
     2. Venta abierta    → desde la apertura durante N horas, mientras haya stock
+                          (si a esa hora el producto todavía no está publicado, avisa "Estamos abriendo el drop"
+                          y la página se recarga sola apenas aparece)
     3. Edición cerrada  → pasadas las N horas o sin stock; vuelve a anotar para el próximo drop
 {% endcomment %}
 
@@ -465,7 +467,7 @@
               <p class="db-note">Venta exclusiva a mayores de 18 años.</p>
             {%- endform -%}
           {%- else -%}
-            <p class="db-note">Estamos abriendo el drop, actualizá la página en unos segundos.</p>
+            <p class="db-note">Estamos abriendo el drop. En unos instantes la página se actualiza sola.</p>
           {%- endif -%}
         </div>
 
@@ -629,11 +631,44 @@
 
     // Antes de la fecha: lista de espera con cuenta regresiva (no se puede comprar).
     // Desde la fecha: venta habilitada mientras el producto tenga stock; sin stock pasa a "Edición cerrada".
+    // Si a la hora el producto todavía no está publicado (por ejemplo, porque se programó para esa hora),
+    // durante la primera media hora el panel de venta dice "Estamos abriendo el drop" y la página espera al producto.
+    var OPENING_MS = 30 * 60 * 1000;
     function phaseAt(now) {
       if (isNaN(start) || now < start) return 'waitlist';
       if (now >= end || productState === 'soldout') return 'closed';
-      if (productState === 'available') return 'live';
+      if (productState === 'available' || now < start + OPENING_MS) return 'live';
       return 'waitlist';
+    }
+
+    // Pide solo esta sección cada ~5 s y recarga cuando el producto ya figura disponible (o agotado).
+    // Tope de 5 recargas por pestaña, por si la página tarda en actualizarse.
+    var waiting = false;
+    function waitForProduct() {
+      if (waiting) return;
+      waiting = true;
+      var reloads = 0;
+      try { reloads = parseInt(sessionStorage.getItem('rr_drop_reloads'), 10) || 0; } catch (e) {}
+      if (reloads >= 5) return;
+      var url = new URL(window.location.href);
+      url.hash = '';
+      url.searchParams.set('section_id', '{{ section.id }}');
+      (function check() {
+        if (Date.now() >= start + OPENING_MS) return;
+        fetch(url.toString(), { cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.text() : ''; })
+          .then(function (html) {
+            var el = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-product-state]');
+            var state = el && el.getAttribute('data-product-state');
+            if (state === 'available' || state === 'soldout') {
+              try { sessionStorage.setItem('rr_drop_reloads', String(reloads + 1)); } catch (e) {}
+              window.location.reload();
+            } else {
+              setTimeout(check, 4000 + Math.random() * 3000);
+            }
+          })
+          .catch(function () { setTimeout(check, 5000); });
+      })();
     }
 
     function fill(el, ms, withDays) {
@@ -658,12 +693,13 @@
       var now = Date.now();
       var phase = phaseAt(now);
       if (phase !== current) {
-        // Si cambia de fase con la página abierta, recargamos al abrir para traer stock actualizado.
-        if (current === 'waitlist' && phase === 'live') { window.location.reload(); return; }
+        // Si abre con la página abierta y el producto ya está publicado, recargamos para traer el stock actualizado.
+        if (current === 'waitlist' && phase === 'live' && productState === 'available') { window.location.reload(); return; }
         current = phase;
         root.dataset.phase = phase;
         root.querySelectorAll('[data-db-cta]').forEach(function (a) { a.textContent = ctaLabel[phase]; });
       }
+      if (phase === 'live' && productState !== 'available') waitForProduct();
       var top = root.querySelector('[data-topcount]');
       if (top) {
         if (phase !== 'live' && !isNaN(start) && now < start) {
@@ -903,7 +939,7 @@
       "type": "product",
       "id": "product",
       "label": "Producto del drop",
-      "info": "Mientras el producto esté en borrador o sin precio, la página solo muestra la lista de espera."
+      "info": "Sin publicar o sin precio, la página muestra la lista de espera. Si a la hora de apertura todavía no está publicado, avisa “Estamos abriendo el drop” y se actualiza sola apenas aparece (hasta 30 minutos)."
     },
     {
       "type": "text",

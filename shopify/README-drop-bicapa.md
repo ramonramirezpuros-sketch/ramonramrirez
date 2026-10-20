@@ -6,7 +6,7 @@ Landing de Shopify basada en el VSL **"Giuliano VSL_Corregido 1.mp4"** (Drive �
 
 | Qué | Dónde | Estado |
 |---|---|---|
-| Tema `WEB RAMON RAMIREZ - SHOPIFY` | Tienda online → Temas | Publicado, con todo el drop (landing, banner, fecha del metacampo). Quedan copias sin publicar con el mismo nombre: la del 20/10 suma que la landing se actualice sola a las 00:00 (publicarla es opcional); las demás se borran |
+| Tema `WEB RAMON RAMIREZ - SHOPIFY` | Tienda online → Temas | Publicado, con todo el drop (landing, banner, fecha del metacampo). La copia del 20/10 con el mismo nombre suma el máximo de 10 por compra y que la landing se actualice sola a las 00:00: **falta publicarla** y borrar las otras dos |
 | Metacampo de la tienda `drop_bicapa.start` | Se cambia por API (pedímelo) | `2026-10-25T00:00-03:00`. Si la fecha vuelve a cambiar, se cambia acá y no hace falta publicar nada |
 | `sections/drop-bicapa.liquid` | En el tema | Sección completa de la landing |
 | `templates/page.drop-bicapa.json` | En el tema | Plantilla de página que usa la sección |
@@ -24,7 +24,7 @@ Una sola URL con 3 fases que cambian solas según la fecha de apertura:
    `drop-bicapa` y el WhatsApp como etiqueta `wa-<número>`. Si hay fecha cargada, muestra la cuenta regresiva.
 2. **Venta abierta** (desde la apertura durante N horas, con producto activo, precio > 0 y stock):
    precio, barra "Quedan X de 100", cuenta regresiva al cierre y botón que va directo al checkout.
-   En el código de este repo (y en la copia del tema del 20/10, no en el publicado): si a la hora de apertura el
+   Desde la copia del tema del 20/10: si a la hora de apertura el
    producto todavía no está publicado, la página dice "Estamos abriendo el drop" y se recarga sola apenas aparece
    (lo revisa cada ~5 s durante 30 minutos), aunque la tengan abierta desde antes.
 3. **Edición cerrada** (pasadas las N horas o sin stock): mensaje de agotado + formulario para el
@@ -37,7 +37,7 @@ tienda `drop_bicapa.start`; el campo "Apertura del drop" del editor se usa solo 
 ## Checklist para salir
 
 **Ya (antes del sábado):**
-1. Tienda online → Temas: dejar una sola `WEB RAMON RAMIREZ - SHOPIFY`. Opcional: antes, publicar la copia del 20/10 para que la landing se actualice sola a las 00:00.
+1. Tienda online → Temas → la copia de `WEB RAMON RAMIREZ - SHOPIFY` agregada el 20/10 → **⋯ → Publicar**.
 2. Borrar las copias de `WEB RAMON RAMIREZ - SHOPIFY` que quedan sin publicar.
 3. Abrir ramonramirez.com.ar y `/pages/drop-bicapa`: tienen que decir "domingo 25" y mostrar la cuenta regresiva.
 
@@ -53,6 +53,6 @@ tienda `drop_bicapa.start`; el campo "Apertura del drop" del editor se usa solo 
 
 ## Notas
 
-- **Sin límite por persona:** la caja de compra tiene un selector de cantidad que va de 1 hasta el stock disponible, y Shopify no deja comprar más de lo que hay. Si algún día se quiere un tope, se carga en "Máximo por compra" (0 = sin límite).
+- **Máximo 10 por compra** (desde la copia del tema del 20/10): el selector de cantidad va de 1 a 10, o hasta el stock si quedan menos. Se cambia en "Máximo por compra" (0 = sin límite). Es un tope de la landing, no por cliente: alguien puede hacer más de una compra. El banner de la portada dice "Máximo 10 por compra" en [`snippets/drop-bicapa-banner.liquid`](snippets/drop-bicapa-banner.liquid): si cambia el tope, cambiarlo también ahí.
 - **Clientes ya existentes:** si el email ya está registrado, Shopify puede no sumar la etiqueta nueva. Conviene revisar también por fecha de alta.
 - **Legal (Ley 26.687 y reglamentación):** la publicidad de tabaco solo está permitida en comunicaciones directas a mayores de 18 con consentimiento previo y edad verificada, y siempre con un mensaje sanitario (art. 7). La venta a distancia exige verificar fehacientemente que comprador y receptor son mayores de 18. La página incluye el mensaje sanitario, el check de +18 y el aviso legal, y la tienda ya tiene una app de verificación de edad. **Confirmar con un asesor legal** el mensaje sanitario exacto y cómo se verifica la edad en la entrega.

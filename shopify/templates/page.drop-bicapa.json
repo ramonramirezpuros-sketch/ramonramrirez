@@ -17,7 +17,7 @@
         "no_time_limit": true,
         "duration_hours": 72,
         "total_units": 100,
-        "max_per_order": 0,
+        "max_per_order": 10,
         "direct_checkout": true,
         "video": "shopify://files/videos/vsl-drop-bicapa.mp4",
         "video_mp4": "",

@@ -29,7 +29,7 @@ Los anuncios abren **dos caminos**:
 4. Botón "**Quiero anotarme para la preventa**".
 5. Al final, **lleva a un WhatsApp**.
 
-**Regla de audiencias:** cuando alguien se anota, **excluirlo de los anuncios de captación** en Meta (públicos personalizados).
+**Regla de audiencias:** cuando alguien se anota, **excluirlo de los anuncios de captación** en Meta (públicos personalizados). Automático desde la planilla: [google-sheets/README-meta.md](../google-sheets/README-meta.md).
 
 ## 2. Calentamiento
 

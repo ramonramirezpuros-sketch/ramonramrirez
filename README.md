@@ -17,10 +17,12 @@ Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 | Funnel del drop (Miro) | 🟡 Plan de ejecución en el PDF; falta armar ManyChat | [plan y mensajes](estrategia/funnel-drop.md) · [PDF](docs/Drop-Bicapa-Paso-a-paso.pdf) |
 | Anuncios (8) | 🟡 Arrancan el lunes 19/10 a las 00:00 (captación hasta el sáb 24 23:30). Texto de captación con "domingo 25" | [anuncios](estrategia/anuncios-transcripciones.md) · [Meta paso a paso](docs/Meta-Ads-Paso-a-paso.pdf) |
 | Leads y visitas → Google Sheets | ✅ Conectado y probado de punta a punta | [planilla](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit) · [cómo activarlo](google-sheets/README.md) |
+| Anotados → público de Meta | 🟡 Código listo: sube solo a los anotados y los excluye de captación (incluidos en calentamiento). Falta el token de Meta | [cómo instalarlo](google-sheets/README-meta.md) |
 | Legal (Ley 26.687) | ✅ Resuelto por el equipo | [notas legales](legal/ley-26687-tabaco.md) |
 
 ## Pendientes
 
+- [ ] **Ya:** token de Meta + `configurarTodo` en el Apps Script de la planilla ([guía](google-sheets/README-meta.md)). Reemplaza el CSV "Anotados lista" del mié 21 y el sáb 24
 - [ ] **Ya:** publicar la copia de `WEB RAMON RAMIREZ - SHOPIFY` agregada el 20/10 y borrar las otras dos; corregir el mail de bienvenida
 - [ ] Vie 16, 19:00: M0 (cambio de fecha) por email y WhatsApp a los que ya se anotaron
 - [ ] Dom 18, antes de las 21: los 8 anuncios programados para el lunes 19 00:00, con "domingo 25" en el texto; ManyChat con "domingo 25"
@@ -56,6 +58,8 @@ estrategia/
 google-sheets/
   README.md                       ← cómo activar el envío de datos a la planilla
   apps-script-landing.gs          ← conector que escribe en la planilla
+  README-meta.md                  ← cómo instalar el envío de anotados a Meta
+  meta-publicos.gs                ← sube los anotados a un público de Meta y lo aplica en las campañas DROP
 legal/
   ley-26687-tabaco.md             ← publicidad, venta a distancia y plataformas
 ```

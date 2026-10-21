@@ -22,6 +22,8 @@ La landing manda todo, solo, a la planilla
 
 Para probarlo, abrí la URL `/exec` en el navegador: tiene que decir "Conector Drop Bicapa activo". Después entrá a la landing, escribí un nombre y fijate que aparezca en la pestaña Leads.
 
+Para que los anotados se excluyan solos de los anuncios de captación en Meta, ver [README-meta.md](README-meta.md).
+
 Si más adelante cambiás el código del script, hacé **Implementar → Administrar implementaciones → Editar → Nueva versión**: así la URL se mantiene.
 
 ## Datos personales

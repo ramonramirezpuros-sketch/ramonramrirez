@@ -11,7 +11,7 @@ Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 | VSL (video final) | ✅ Terminado | Drive: `RAMÓN RAMIREZ / VIDEOS CRUDOS / TERMINADOS / TERMINADO / VSL DROP BICAPA` · [transcripción](vsl/transcripcion-vsl-final.md) |
 | Landing en Shopify | ✅ Publicada con el domingo 25: ramonramirez.com.ar/pages/drop-bicapa. 🟡 Falta publicar la copia del tema del 20/10: máximo 10 por compra y la landing se actualiza sola a las 00:00 | [código y guía](shopify/README-drop-bicapa.md) |
 | Banner en la página de inicio | ✅ Publicado con el domingo 25, con versión compacta para celular | [drop-bicapa-banner.liquid](shopify/snippets/drop-bicapa-banner.liquid) |
-| Producto en Shopify | ✅ Precio $28.000 y stock 100. Programado para publicarse solo en la tienda online el dom 25 a las 00:00 | `bicapa-edicion-especial` |
+| Producto en Shopify | ✅ Precio $28.000 y stock 1000. Programado para publicarse solo en la tienda online el dom 25 a las 00:00. La landing no muestra cantidades: dice "stock limitado" y vende hasta agotar | `bicapa-edicion-especial` |
 | Fecha del drop | ✅ Domingo 25/10 00:00 hs (antes 18/10), con cuenta regresiva. Venta sin límite de tiempo, hasta agotar stock | Metacampo de la tienda `drop_bicapa.start`: la landing y el banner leen la fecha de ahí |
 | Precio | ✅ $28.000, máximo 10 por compra (desde la copia del tema del 20/10) | Producto en Shopify |
 | Funnel del drop (Miro) | 🟡 Plan de ejecución en el PDF; falta armar ManyChat | [plan y mensajes](estrategia/funnel-drop.md) · [PDF](docs/Drop-Bicapa-Paso-a-paso.pdf) |
@@ -26,7 +26,7 @@ Anuncios y estrategia desde el **lunes 19/10 a las 00:00**.
 - [ ] Dom 18, antes de las 21: los 8 anuncios programados para el lunes 19 00:00, con "domingo 25" en el texto; ManyChat con "domingo 25"
 - [ ] Nombres de los responsables de ManyChat, Email y WhatsApp
 - [ ] Crear los estáticos "YA ESTÁN DISPONIBLES" y "SOLAMENTE QUEDAN 10" (subirlos el sáb 24 antes de las 12)
-- [x] Producto con stock 100 y programado para publicarse solo el dom 25 a las 00:00 (no tocarlo el sábado)
+- [x] Producto con stock 1000 y programado para publicarse solo el dom 25 a las 00:00 (no tocarlo el sábado)
 - [ ] Dom 25, 00:05: confirmar que la landing muestra "Comprar mi bicapa"
 - [ ] Borrar de la planilla las filas de prueba
 - [ ] Opcional: pop-up de escasez en la tienda

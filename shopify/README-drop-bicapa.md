@@ -25,7 +25,7 @@ Una sola URL con 3 fases que cambian solas según la fecha de apertura:
 2. **Venta abierta** (desde la apertura durante N horas, con producto activo, precio > 0 y stock):
    precio, barra "Quedan X de 100", cuenta regresiva al cierre y botón que va directo al checkout.
    Desde la copia del tema del 20/10: si a la hora de apertura el
-   producto todavía no está publicado, la página dice "Estamos abriendo el drop" y se recarga sola apenas aparece
+   producto todavía no está publicado, la página dice "Estamos abriendo la venta" y se recarga sola apenas aparece
    (lo revisa cada ~5 s durante 30 minutos), aunque la tengan abierta desde antes.
 3. **Edición cerrada** (pasadas las N horas o sin stock): mensaje de agotado + formulario para el
    próximo drop (etiqueta `drop-bicapa-proximo`).

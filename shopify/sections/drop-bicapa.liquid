@@ -3,7 +3,7 @@
   Fases (se calculan en el navegador con la fecha del drop):
     1. Lista de espera  → antes de la fecha de apertura (o si no hay fecha / producto activo)
     2. Venta abierta    → desde la apertura durante N horas, mientras haya stock
-                          (si a esa hora el producto todavía no está publicado, avisa "Estamos abriendo el drop"
+                          (si a esa hora el producto todavía no está publicado, avisa "Estamos abriendo la venta"
                           y la página se recarga sola apenas aparece)
     3. Edición cerrada  → pasadas las N horas o sin stock; vuelve a anotar para el próximo drop
 {% endcomment %}
@@ -325,7 +325,7 @@
   </div>
 
   <div class="db-topcount" data-topcount hidden aria-live="off">
-    <span class="db-topcount-label" data-topcount-label>El drop abre en</span>
+    <span class="db-topcount-label" data-topcount-label>El lanzamiento abre en</span>
     <span class="db-topcount-time">
       <span><b data-d>00</b><small>días</small></span>
       <span><b data-h>00</b><small>hs</small></span>
@@ -380,9 +380,9 @@
           <span class="db-badge"><span class="db-dot"></span> Lista de espera abierta</span>
           <h3>Anotate y sé uno de los {{ total_units }}</h3>
           {%- if section.settings.no_time_limit -%}
-            <p>El día del drop te avisamos primero. La venta queda abierta <b>hasta que se terminen los {{ total_units }} puros</b>.</p>
+            <p>El día del lanzamiento te avisamos primero. La venta queda abierta <b>hasta que se terminen los {{ total_units }} puros</b>.</p>
           {%- else -%}
-            <p>El día del drop te avisamos primero. La venta dura <b>{{ section.settings.duration_hours }} horas</b> o hasta que se terminen los {{ total_units }} puros.</p>
+            <p>El día del lanzamiento te avisamos primero. La venta dura <b>{{ section.settings.duration_hours }} horas</b> o hasta que se terminen los {{ total_units }} puros.</p>
           {%- endif -%}
 
           <div class="db-count" data-countdown hidden aria-live="polite">
@@ -395,7 +395,7 @@
 
           {%- form 'customer', id: waitlist_form_id, class: 'db-waitlist', data-db-waitlist: 'true', data-db-form: 'lista' -%}
             {%- if form.posted_successfully? -%}
-              <div class="db-ok">¡Listo! Ya estás en la lista. Te avisamos antes que a nadie cuando abra el drop.</div>
+              <div class="db-ok">¡Listo! Ya estás en la lista. Te avisamos antes que a nadie cuando empiece el lanzamiento.</div>
             {%- else -%}
               {%- if form.errors -%}
                 <div class="db-err">{{ form.errors | default_errors }}</div>
@@ -410,7 +410,7 @@
                 <input type="email" id="{{ waitlist_form_id }}-email" name="contact[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required>
               </div>
               <div class="db-field">
-                <label for="{{ waitlist_form_id }}-wa">WhatsApp (para avisarte del drop)</label>
+                <label for="{{ waitlist_form_id }}-wa">WhatsApp (para avisarte del lanzamiento)</label>
                 <input type="tel" id="{{ waitlist_form_id }}-wa" autocomplete="tel" inputmode="tel" placeholder="Ej: 11 2345 6789" data-db-phone>
               </div>
               <label class="db-check">
@@ -428,7 +428,7 @@
 
         {%- comment -%} --- Fase 2: venta abierta --- {%- endcomment -%}
         <div data-phase-panel="live">
-          <span class="db-badge db-badge--live"><span class="db-dot"></span> Drop abierto</span>
+          <span class="db-badge db-badge--live"><span class="db-dot"></span> Lanzamiento abierto</span>
           <h3>{% if p != blank %}{{ p.title | escape }}{% else %}Bicapa Edición Especial{% endif %}</h3>
           {%- if has_price -%}
             <div class="db-price">{{ v.price | money }}</div>
@@ -467,7 +467,7 @@
               <p class="db-note">Venta exclusiva a mayores de 18 años.</p>
             {%- endform -%}
           {%- else -%}
-            <p class="db-note">Estamos abriendo el drop. En unos instantes la página se actualiza sola.</p>
+            <p class="db-note">Estamos abriendo la venta. En unos instantes la página se actualiza sola.</p>
           {%- endif -%}
         </div>
 
@@ -493,7 +493,7 @@
                 <input type="checkbox" required>
                 <span>Declaro ser mayor de 18 años y acepto recibir comunicaciones de Ramón Ramírez.</span>
               </label>
-              <button type="submit" class="db-btn db-btn--ghost">Avisarme del próximo drop</button>
+              <button type="submit" class="db-btn db-btn--ghost">Avisarme del próximo lanzamiento</button>
               {%- if section.settings.privacy_note != blank -%}
                 <p class="db-note db-privacy">{{ section.settings.privacy_note }}</p>
               {%- endif -%}
@@ -557,10 +557,10 @@
   {%- comment -%} ============ CÓMO FUNCIONA EL DROP ============ {%- endcomment -%}
   <div class="db-section">
     <div class="db-wrap db-narrow">
-      <h2 class="db-h2">Así funciona el drop</h2>
+      <h2 class="db-h2">Así funciona el lanzamiento</h2>
       <div class="db-steps">
         <div class="db-step"><div><h3>Anotate ahora</h3><p>Dejás tu nombre, email y WhatsApp. Es gratis y no te compromete a nada.</p></div></div>
-        <div class="db-step"><div><h3>Te avisamos primero</h3><p>El día del drop la lista recibe el aviso antes que nadie, con el link directo para comprar.</p></div></div>
+        <div class="db-step"><div><h3>Te avisamos primero</h3><p>El día del lanzamiento la lista recibe el aviso antes que nadie, con el link directo para comprar.</p></div></div>
         {%- if section.settings.no_time_limit -%}
           <div class="db-step"><div><h3>Hasta agotar los {{ total_units }}</h3><p>La venta queda abierta hasta que se vende el último puro. Cuando se terminan, se termina la edición.</p></div></div>
         {%- else -%}
@@ -577,7 +577,7 @@
       <div style="margin-top: 20px;">
         <details><summary>¿Qué compro exactamente?</summary><p>Un puro bicapa de la Edición Especial: dos capas de distinto color seleccionadas a mano y seis meses de reposo en ron. Son {{ total_units }} unidades en total.</p></details>
         <details><summary>¿Cuántos puedo comprar?</summary><p>{% if max_qty > 0 %}Hasta {{ max_qty }} por compra.{% else %}Los que quieras, hasta que se terminen los {{ total_units }}.{% endif %}</p></details>
-        <details><summary>¿Anotarme me asegura un puro?</summary><p>No. La lista te da aviso prioritario. Las unidades se asignan por orden de compra durante el drop.</p></details>
+        <details><summary>¿Anotarme me asegura un puro?</summary><p>No. La lista te da aviso prioritario. Las unidades se asignan por orden de compra durante el lanzamiento.</p></details>
         <details><summary>¿Cuándo vuelven a estar?</summary><p>No lo podemos garantizar: seleccionar las hojas y el reposo de seis meses llevan mucho más tiempo que un puro normal.</p></details>
         <details><summary>¿Tengo que ser mayor de edad?</summary><p>Sí. La venta de productos de tabaco es exclusiva para mayores de 18 años, tanto para quien compra como para quien recibe el pedido.</p></details>
       </div>
@@ -632,7 +632,7 @@
     // Antes de la fecha: lista de espera con cuenta regresiva (no se puede comprar).
     // Desde la fecha: venta habilitada mientras el producto tenga stock; sin stock pasa a "Edición cerrada".
     // Si a la hora el producto todavía no está publicado (por ejemplo, porque se programó para esa hora),
-    // durante la primera media hora el panel de venta dice "Estamos abriendo el drop" y la página espera al producto.
+    // durante la primera media hora el panel de venta dice "Estamos abriendo la venta" y la página espera al producto.
     var OPENING_MS = 30 * 60 * 1000;
     function phaseAt(now) {
       if (isNaN(start) || now < start) return 'waitlist';
@@ -686,7 +686,7 @@
       el.hidden = false;
     }
 
-    var ctaLabel = { waitlist: 'Anotarme ahora', live: 'Comprar mi bicapa', closed: 'Avisarme del próximo drop' };
+    var ctaLabel = { waitlist: 'Anotarme ahora', live: 'Comprar mi bicapa', closed: 'Avisarme del próximo lanzamiento' };
     var current = null;
 
     function tick() {
@@ -705,7 +705,7 @@
         if (phase !== 'live' && !isNaN(start) && now < start) {
           fill(top, start - now, true);
         } else if (phase === 'live' && end !== Infinity) {
-          root.querySelector('[data-topcount-label]').textContent = 'El drop cierra en';
+          root.querySelector('[data-topcount-label]').textContent = 'El lanzamiento cierra en';
           fill(top, end - now, true);
         } else {
           top.hidden = true;
@@ -939,7 +939,7 @@
       "type": "product",
       "id": "product",
       "label": "Producto del drop",
-      "info": "Sin publicar o sin precio, la página muestra la lista de espera. Si a la hora de apertura todavía no está publicado, avisa “Estamos abriendo el drop” y se actualiza sola apenas aparece (hasta 30 minutos)."
+      "info": "Sin publicar o sin precio, la página muestra la lista de espera. Si a la hora de apertura todavía no está publicado, avisa “Estamos abriendo la venta” y se actualiza sola apenas aparece (hasta 30 minutos)."
     },
     {
       "type": "text",
@@ -979,7 +979,7 @@
       "type": "richtext",
       "id": "privacy_note",
       "label": "Aviso de datos bajo el formulario",
-      "default": "<p>Lo que escribas en este formulario se guarda para avisarte del drop, aunque no lo envíes. Podés pedir que lo borremos cuando quieras. <a href=\"/policies/privacy-policy\">Política de privacidad</a>.</p>"
+      "default": "<p>Lo que escribas en este formulario se guarda para avisarte del lanzamiento, aunque no lo envíes. Podés pedir que lo borremos cuando quieras. <a href=\"/policies/privacy-policy\">Política de privacidad</a>.</p>"
     },
     { "type": "header", "content": "Pantalla de gracias" },
     { "type": "text", "id": "thanks_title", "label": "Título", "default": "¡Gracias por anotarte!" },
@@ -987,7 +987,7 @@
       "type": "richtext",
       "id": "thanks_text",
       "label": "Texto para los anotados al drop",
-      "default": "<p>Ya estás en la lista del <strong>Bicapa Edición Especial</strong>. Te vamos a estar contactando por WhatsApp y email con todo sobre el bicapa exclusivo, antes que a nadie, cuando abra el drop.</p><p>Mientras tanto, conocé lo que hace único a tu bicapa.</p>"
+      "default": "<p>Ya estás en la lista del <strong>Bicapa Edición Especial</strong>. Te vamos a estar contactando por WhatsApp y email con todo sobre el bicapa exclusivo, antes que a nadie, cuando empiece el lanzamiento.</p><p>Mientras tanto, conocé lo que hace único a tu bicapa.</p>"
     },
     {
       "type": "richtext",

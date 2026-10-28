@@ -33,7 +33,7 @@ ITEMS = [
     (15, "U", "Bolsas Humidoras PocketBag",  5800.00),
 ]
 AJUSTE_LABEL = "Ajuste de redondeo"
-TARGET = 1300000.00
+TARGET = None  # sin redondeo: total = suma real
 
 OUT = "Presupuesto_Tabaqueria_430.pdf"
 # -----------------------------------------------------

@@ -19,21 +19,21 @@ CONDICION = "Precios Mayoristas"
 
 # (cantidad, unidad, descripcion, precio_unitario)
 ITEMS = [
-    (15, "U", "Cigarrito I",                 1733.33),
-    (20, "U", "Petit Purito",                4160.00),
+    (10, "U", "Cigarrito I",                 1733.33),
+    ( 8, "U", "Petit Purito",                4160.00),
     (10, "U", "Mini Short Robusto",          5200.00),
-    (20, "U", "Petit Robusto",               6500.00),
-    ( 5, "U", "Super Robusto",              10313.33),
-    (12, "U", "Toro Ramirez",                9360.00),
+    (13, "U", "Petit Robusto",               6500.00),
+    (38, "U", "Super Robusto",              10313.33),
+    (10, "U", "Toro Ramirez",                9360.00),
     ( 5, "U", "Petit Corona",                7713.33),
-    ( 5, "U", "1/2 Corona Ramirez",          7366.67),
-    (12, "U", "Corona Ramirez",              8233.33),
+    (40, "U", "1/2 Corona Ramirez",          7366.67),
+    (10, "U", "Corona Ramirez",              8233.33),
     ( 3, "U", "Petit Robusto Oro",          13000.00),
-    ( 3, "U", "Maduro Ramirez",             17246.67),
-    (17, "U", "Bolsas Humidoras PocketBag",  5800.00),
+    ( 3, "U", "Don Ramon Oro",              28600.00),
+    (15, "U", "Bolsas Humidoras PocketBag",  5800.00),
 ]
 AJUSTE_LABEL = "Ajuste de redondeo"
-TARGET = None  # sin total objetivo: el total es la suma real
+TARGET = 1300000.00
 
 OUT = "Presupuesto_Tabaqueria_430.pdf"
 # -----------------------------------------------------

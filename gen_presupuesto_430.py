@@ -20,28 +20,20 @@ CONDICION = "Precios Mayoristas"
 # (cantidad, unidad, descripcion, precio_unitario)
 ITEMS = [
     (15, "U", "Cigarrito I",                 1733.33),
-    (15, "U", "Cigarrito II",                2123.33),
-    (15, "U", "Long Cigarrito",              2426.67),
     (20, "U", "Petit Purito",                4160.00),
     (10, "U", "Mini Short Robusto",          5200.00),
     (20, "U", "Petit Robusto",               6500.00),
-    (10, "U", "Robusto Ramirez",             9360.00),
     ( 5, "U", "Super Robusto",              10313.33),
     (12, "U", "Toro Ramirez",                9360.00),
     ( 5, "U", "Petit Corona",                7713.33),
     ( 5, "U", "1/2 Corona Ramirez",          7366.67),
     (12, "U", "Corona Ramirez",              8233.33),
-    ( 5, "U", "Ramon Ramirez I",            10053.33),
-    ( 6, "U", "Ramon Ramirez II",           13000.00),
-    ( 7, "U", "Churchill Ramirez",          14300.00),
-    ( 5, "U", "Petit Robusto E.M.A",         9750.00),
-    ( 3, "U", "Toro Ramirez E.M.A",         14040.00),
     ( 3, "U", "Petit Robusto Oro",          13000.00),
     ( 3, "U", "Maduro Ramirez",             17246.67),
     (17, "U", "Bolsas Humidoras PocketBag",  5800.00),
 ]
 AJUSTE_LABEL = "Ajuste de redondeo"
-TARGET = 1300000.00
+TARGET = None  # sin total objetivo: el total es la suma real
 
 OUT = "Presupuesto_Tabaqueria_430.pdf"
 # -----------------------------------------------------
@@ -129,14 +121,19 @@ c.setStrokeColor(colors.black)
 
 # ---------- SUBTOTAL / AJUSTE / TOTAL ----------
 subtotal = round(subtotal, 2)
-ajuste = round(TARGET - subtotal, 2)
-total = round(subtotal + ajuste, 2)
-yy = y - 6*mm
-c.setFont("Helvetica", 9.5)
-c.drawRightString(col_imp - 3*mm, yy, "Subtotal"); c.drawRightString(box_r - 3*mm, yy, money(subtotal))
-yy -= 5.2*mm
-c.drawRightString(col_imp - 3*mm, yy, AJUSTE_LABEL); c.drawRightString(box_r - 3*mm, yy, money(ajuste))
-ty = yy - 10*mm
+if TARGET is not None:
+    ajuste = round(TARGET - subtotal, 2)
+    total = round(subtotal + ajuste, 2)
+    yy = y - 6*mm
+    c.setFont("Helvetica", 9.5)
+    c.drawRightString(col_imp - 3*mm, yy, "Subtotal"); c.drawRightString(box_r - 3*mm, yy, money(subtotal))
+    yy -= 5.2*mm
+    c.drawRightString(col_imp - 3*mm, yy, AJUSTE_LABEL); c.drawRightString(box_r - 3*mm, yy, money(ajuste))
+    ty = yy - 10*mm
+else:
+    ajuste = 0.0
+    total = subtotal
+    ty = y - 12*mm
 c.setFillColor(NAVY)
 c.rect(col_imp - 35*mm, ty, box_r - (col_imp - 35*mm), 9*mm, fill=1, stroke=0)
 c.setFillColor(colors.white); c.setFont("Helvetica-Bold", 12)

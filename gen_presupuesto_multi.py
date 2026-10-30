@@ -137,11 +137,12 @@ def generate(out, numero, items):
     c.showPage(); c.save()
     return total
 
-# ---- 1.700.000 ----
-it17 = build_items(pp=18, bo=21, sr=8, hc=11)
-t17 = generate("Presupuesto_Mayorista_1700000.pdf", "PRES-0001-00000014", it17)
-# ---- 1.800.000 ----
-it18 = build_items(pp=18, bo=23, sr=8, hc=23)
-t18 = generate("Presupuesto_Mayorista_1800000.pdf", "PRES-0001-00000015", it18)
-print("1.7M ->", money(t17))
-print("1.8M ->", money(t18))
+if __name__ == "__main__":
+    # ---- 1.700.000 ----
+    it17 = build_items(pp=18, bo=21, sr=8, hc=11)
+    t17 = generate("Presupuesto_Mayorista_1700000.pdf", "PRES-0001-00000014", it17)
+    # ---- 1.800.000 ----
+    it18 = build_items(pp=18, bo=23, sr=8, hc=23)
+    t18 = generate("Presupuesto_Mayorista_1800000.pdf", "PRES-0001-00000015", it18)
+    print("1.7M ->", money(t17))
+    print("1.8M ->", money(t18))

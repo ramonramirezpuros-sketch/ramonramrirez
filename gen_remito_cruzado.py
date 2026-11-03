@@ -128,6 +128,19 @@ c.setFont("Helvetica-Oblique", 8)
 for ln in simpleSplit(NOTA, "Helvetica-Oblique", 8, box_r - box_l):
     c.drawString(box_l, ny, ln); ny -= 4.2*mm
 
+# Datos para transferencia
+ny -= 4*mm
+box_h = 16*mm
+c.setStrokeColor(NAVY); c.setLineWidth(0.8)
+c.rect(box_l, ny - box_h, 95*mm, box_h, fill=0, stroke=1)
+c.setStrokeColor(colors.black)
+c.setFillColor(NAVY); c.setFont("Helvetica-Bold", 9)
+c.drawString(box_l + 3*mm, ny - 5*mm, "DATOS PARA TRANSFERENCIA")
+c.setFillColor(colors.black); c.setFont("Helvetica", 9.5)
+c.drawString(box_l + 3*mm, ny - 10*mm, "Titular:  SERCOB")
+c.setFont("Helvetica-Bold", 9.5)
+c.drawString(box_l + 3*mm, ny - 14*mm, "Alias:    GATO.GAS1")
+
 # Firmas
 fy = margin + 16*mm
 c.setLineWidth(0.5)

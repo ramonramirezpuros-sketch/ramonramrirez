@@ -101,8 +101,21 @@ for xx in (col_desc, col_pu, col_imp):
     c.line(xx, head_y, xx, y)
 c.setStrokeColor(colors.black)
 
-total = round(total, 2)
-ty = y - 12*mm
+subtotal = round(total, 2)
+descuento = round(subtotal * 0.10, 2)
+total = round(subtotal - descuento, 2)
+
+yy = y - 7*mm
+c.setFont("Helvetica", 10)
+c.drawRightString(col_imp - 3*mm, yy, "Subtotal")
+c.drawRightString(box_r - 3*mm, yy, money(subtotal))
+yy -= 6*mm
+c.setFillColor(colors.HexColor("#1a7a3a"))
+c.drawRightString(col_imp - 3*mm, yy, "Descuento cortesia RAMON (10%)")
+c.drawRightString(box_r - 3*mm, yy, "- " + money(descuento))
+c.setFillColor(colors.black)
+
+ty = yy - 11*mm
 c.setFillColor(NAVY); c.rect(col_imp - 35*mm, ty, box_r - (col_imp - 35*mm), 10*mm, fill=1, stroke=0)
 c.setFillColor(colors.white); c.setFont("Helvetica-Bold", 12)
 c.drawString(col_imp - 33*mm, ty + 3*mm, "TOTAL")

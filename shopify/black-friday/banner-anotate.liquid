@@ -1,237 +1,216 @@
 {%- comment -%}
-════════════════════════════════════════════════════════════════════
-  RR · BANNER "ANOTATE" · BLACK FRIDAY + LANZAMIENTO ETIQUETA NEGRA
+============================================================
+  BANNER "LISTA DE ACCESO ANTICIPADO · BLACK FRIDAY" · Ramón Ramírez
+  Dónde va: en la home, como sección "Liquid personalizado" (Custom liquid) justo debajo del hero
+  (igual que el banner del Pre-Cyber). Pegar este bloque entero en el campo de la sección.
 
-  Dónde va: Tienda online → Temas → Personalizar → Página de inicio → Agregar sección →
-  "Custom liquid" → pegá todo este bloque en el campo → Guardar. Arrastrá la sección arriba de todo.
+  El botón "Anotarme" abre una ventana con el formulario de la lista (nombre, email, WhatsApp opcional y +18).
+   · Lo que la persona escribe va solo a la planilla "Drop Bicapa · Leads y visitas de la landing",
+     pestaña "Black Friday", aunque no termine de enviarlo (estado "parcial"). Al enviarlo queda "completo".
+   · Al enviarlo, además, queda como cliente en Shopify con la etiqueta de ETIQUETAS (abajo);
+     el WhatsApp va como etiqueta "wa-<número>". Con esa etiqueta se arma después el regalo de los anotados.
+   · Cualquier link a "#anotarme" abre el formulario (ej.: ramonramirez.com.ar/#anotarme desde un anuncio o un mail).
 
-  Lo que la persona escribe se guarda en la planilla "Drop Bicapa · Leads y visitas de la landing"
-  (pestaña "Black Friday" para ver solo esto) aunque no envíe el formulario (estado "parcial").
-  Al enviarlo queda "completo" y además se crea el cliente en Shopify con las etiquetas de abajo;
-  el WhatsApp va como etiqueta "wa-<número>".
-  En el celular es una franja chica: el formulario se abre al tocar el botón.
-  Todo lo editable está en "EDITÁ ACÁ".
-════════════════════════════════════════════════════════════════════
+  Para el programador:
+   · La cuenta regresiva corre sola hasta el viernes 27/11/2026 00:00 (hora Argentina): BF_START en el <script>.
+     Para probar otra fecha/hora: window.RRBF_NOW = Date.UTC(...) antes de que corra el script.
+   · Si el banner tiene que desaparecer solo al arrancar el Black Friday, descomentar la línea marcada
+     "// OCULTAR AL ARRANCAR" en el <script>.
+   · Textos: están en el HTML, en el orden en que se ven. El <link> de Google Fonts se puede sacar si el tema
+     ya carga Sofia Sans (en Ramón Ramírez ya la carga).
+   · No pisa estilos del tema (todo con prefijo .rrbf).
+============================================================
 {%- endcomment -%}
-
-{%- comment -%} ═══════════ EDITÁ ACÁ ═══════════ {%- endcomment -%}
 {%- liquid
-  assign sheets_url = 'https://script.google.com/macros/s/AKfycbwlrPDYiEhTENkT0NRz79ppUwyTYHwcEVi7abumozBCVa-gnty2hH-MDlkpSlELKqQy/exec'
-  assign etiquetas = 'black-friday-2026, etiqueta-negra'
-  assign formulario = 'black-friday'
-  assign fecha = '2026-11-27T00:00-03:00'
-  assign volanta = 'Black Friday · Lanzamiento Etiqueta Negra'
-  assign titulo = 'Anotate y enterate primero'
-  assign bajada = 'Las ofertas de Black Friday y el lanzamiento de Ramón Ramírez Etiqueta Negra llegan antes a los anotados.'
-  assign boton = 'Anotarme'
-  assign gracias = '¡Listo! Ya estás anotado. Te avisamos antes que a nadie.'
-  assign aviso = 'Lo que escribas acá se guarda para avisarte, aunque no lo envíes. Podés pedir que lo borremos cuando quieras.'
+  assign SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwlrPDYiEhTENkT0NRz79ppUwyTYHwcEVi7abumozBCVa-gnty2hH-MDlkpSlELKqQy/exec'
+  assign ETIQUETAS = 'black-friday-2026'
+  assign FORMULARIO = 'black-friday'
 -%}
-{%- comment -%}
-  fecha: vacía = sin cuenta regresiva. Con fecha (formato 2026-11-27T00:00-03:00, hora Argentina)
-  muestra cuánto falta y la esconde cuando llega.
-{%- endcomment -%}
-{%- comment -%} ═══════════ FIN DE LO EDITABLE ═══════════ {%- endcomment -%}
-
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
-<div class="rrbf" id="rrbf" data-url="{{ sheets_url | strip | escape }}" data-form="{{ formulario | escape }}" data-start="{{ fecha | strip | escape }}">
-  <div class="rrbf__in">
-    <div class="rrbf__copy">
-      <p class="rrbf__kicker">{{ volanta | escape }}</p>
-      <h2 class="rrbf__title">{{ titulo | escape }}</h2>
-      <p class="rrbf__text">{{ bajada | escape }}</p>
-      {%- if fecha != blank -%}
-        <div class="rrbf__count" data-count hidden aria-hidden="true">
-          <span><b data-d>0</b><i>días</i></span><span><b data-h>00</b><i>horas</i></span><span><b data-m>00</b><i>min</i></span><span><b data-s>00</b><i>seg</i></span>
-        </div>
-      {%- endif -%}
-      <button type="button" class="rrbf__open" data-open>{{ boton | escape }} →</button>
-    </div>
-    {%- form 'customer', id: 'RRBF-form', class: 'rrbf__form', data-rrbf: 'true' -%}
-      {%- if form.posted_successfully? -%}
-        <p class="rrbf__ok" data-done>{{ gracias | escape }}</p>
-      {%- else -%}
-        {%- if form.errors -%}
-          <p class="rrbf__err" data-done>{{ form.errors | default_errors }}</p>
-        {%- endif -%}
-        <input type="hidden" name="contact[tags]" value="{{ etiquetas | escape }}" data-tags data-base="{{ etiquetas | escape }}">
-        <label class="rrbf__field"><span>Nombre</span><input type="text" name="contact[first_name]" autocomplete="given-name" required data-name></label>
-        <label class="rrbf__field"><span>Email</span><input type="email" name="contact[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required data-email></label>
-        <label class="rrbf__field"><span>WhatsApp</span><input type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 11 2345 6789" data-phone></label>
-        <label class="rrbf__check"><input type="checkbox" required><span>Soy mayor de 18 años y acepto recibir comunicaciones de Ramón Ramírez.</span></label>
-        <button type="submit" class="rrbf__btn">{{ boton | escape }}</button>
-        <p class="rrbf__note">{{ aviso | escape }} <a href="/policies/privacy-policy">Política de privacidad</a>.</p>
-      {%- endif -%}
-    {%- endform -%}
-  </div>
-  <p class="rrbf__legal">Fumar causa cáncer. Prohibida su venta a menores de 18 años.</p>
-</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@300;400;500;600;700;800&display=swap">
 <style>
-  .rrbf{--g:#c9a35a;--ink:#f5f1e8;--mut:#b5afa4;width:calc(100% - 32px);max-width:1200px;margin:16px auto;border:1px solid rgba(201,163,90,.5);border-radius:16px;overflow:hidden;color:var(--ink);background:radial-gradient(80% 140% at 0% 0%,#26221b 0%,#0b0b0c 60%) #0b0b0c}
-  .rrbf__in{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,48px);align-items:center;padding:clamp(22px,4vw,44px) clamp(22px,4vw,44px) 12px}
-  .rrbf__kicker{margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--g)}
-  .rrbf__title{margin:0 0 12px;font:600 clamp(30px,4vw,48px)/1.05 'Cormorant Garamond',Georgia,serif;color:var(--ink)}
-  .rrbf__text{margin:0;max-width:46ch;font-size:15px;line-height:1.55;color:var(--mut)}
-  .rrbf__count{display:flex;gap:8px;margin-top:16px}
-  .rrbf__count[hidden]{display:none}
-  .rrbf__count>span{min-width:56px;padding:8px 6px 6px;border:1px solid rgba(201,163,90,.6);border-radius:10px;text-align:center}
-  .rrbf__count b{display:block;font:700 26px/1 'Cormorant Garamond',Georgia,serif;font-variant-numeric:lining-nums tabular-nums;color:var(--ink)}
-  .rrbf__count i{display:block;margin-top:4px;font-size:9px;font-style:normal;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--g)}
-  .rrbf__open{display:none}
-  .rrbf__form{display:grid;gap:10px;margin:0}
-  .rrbf__field{display:grid;gap:4px;margin:0}
-  .rrbf__field span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
-  .rrbf__field input{width:100%;box-sizing:border-box;padding:12px 14px;font-size:16px;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid rgba(245,241,232,.25);border-radius:10px;outline:none}
-  .rrbf__field input:focus{border-color:var(--g)}
-  .rrbf__check{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.4;letter-spacing:normal;text-transform:none;color:var(--mut)}
-  .rrbf__check input{margin-top:2px;accent-color:var(--g)}
-  .rrbf__btn,.rrbf__open{padding:14px 22px;border:0;border-radius:999px;background:var(--g);color:#0b0b0c;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
-  .rrbf__btn:hover,.rrbf__open:hover{background:#d9b56a}
-  .rrbf__note{margin:0;font-size:11.5px;line-height:1.4;color:var(--mut)}
-  .rrbf__note a{color:var(--mut);text-decoration:underline}
-  .rrbf__ok{margin:0;padding:16px;border:1px solid var(--g);border-radius:12px;font-size:16px;line-height:1.5;color:var(--ink)}
-  .rrbf__err{margin:0;font-size:13px;color:#ff9b8f}
-  .rrbf__legal{margin:0;padding:0 clamp(22px,4vw,44px) 14px;font-size:11px;color:var(--mut)}
-  /* Celular: franja chica; el formulario se abre con el botón */
-  @media (max-width:749px){
-    .rrbf{width:calc(100% - 24px);margin:10px auto;border-radius:14px}
-    .rrbf__in{display:block;padding:16px 16px 8px}
-    .rrbf__kicker{margin-bottom:6px;font-size:10px;letter-spacing:.14em}
-    .rrbf__title{margin-bottom:6px;font-size:28px}
-    .rrbf__text{font-size:13.5px}
-    .rrbf__count{gap:6px;margin-top:10px}
-    .rrbf__count>span{flex:1;min-width:0;padding:6px 2px 4px}
-    .rrbf__count b{font-size:20px}
-    .rrbf__open{display:inline-block;margin-top:12px}
-    .rrbf__form{display:none;margin-top:14px}
-    .rrbf.is-open .rrbf__form{display:grid}
-    .rrbf.is-open .rrbf__open{display:none}
-    .rrbf__legal{padding:0 16px 12px}
-  }
+/* ===== Black Friday · lista de acceso anticipado · Ramón Ramírez =====
+   Misma estética que la franja del Pre-Cyber (azul marino → azul de marca, Sofia Sans).
+   Variables: textos en el HTML; fecha de apertura en el <script> (BF_START). */
+.rrbf{--ink:#070a14;--blue:#0a3087;font-family:'Sofia Sans',system-ui,sans-serif;position:relative;overflow:hidden;background:var(--ink);color:#fff;-webkit-font-smoothing:antialiased}
+.rrbf *{box-sizing:border-box}
+.rrbf[hidden]{display:none}
+:where(.rrbf) a{text-decoration:none;color:inherit}
+.rrbf:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(820px 380px at 92% -20%,rgba(10,48,135,.85),transparent 65%),repeating-linear-gradient(135deg,rgba(255,255,255,.04) 0 1px,transparent 1px 16px)}
+.rrbf__in{position:relative;max-width:1320px;margin:0 auto;padding:clamp(28px,3.4vw,44px) clamp(20px,4vw,56px);display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center}
+.rrbf__top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.rrbf__pill{display:inline-block;padding:7px 14px;background:#fff;color:var(--ink);font-size:13px;font-weight:800;letter-spacing:.24em;text-transform:uppercase;line-height:1.2}
+.rrbf__k{margin:0;font-size:13px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;opacity:.9}
+.rrbf__h{margin:14px 0 0;color:#fff;font-weight:800;font-size:clamp(34px,3.6vw,52px);line-height:1;letter-spacing:-.01em;text-transform:none}
+.rrbf__h strong{font-weight:800;color:#fff}
+.rrbf__h span{display:block;color:#fff;font-weight:400;font-size:clamp(22px,2.2vw,32px);line-height:1.15;margin-top:6px;opacity:.95}
+.rrbf__gift{margin:18px 0 0;display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px;padding:12px 16px;border:1.5px solid rgba(255,255,255,.55);width:fit-content;max-width:100%}
+.rrbf__gift b{font-size:clamp(22px,2.2vw,30px);font-weight:800;line-height:1;letter-spacing:-.01em}
+.rrbf__gift span{font-size:clamp(14px,1.2vw,16px);font-weight:400;opacity:.9}
+.rrbf__s{margin:16px 0 0;max-width:620px;font-size:clamp(15px,1.25vw,17px);font-weight:300;line-height:1.4;opacity:.9}
+.rrbf__r{display:flex;flex-direction:column;gap:14px}
+.rrbf__lab{margin:0;font-size:13px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;opacity:.9}
+.rrbf__cd{display:flex;align-items:stretch;gap:8px}
+.rrbf__cd div{flex:1;min-width:0;background:#fff;color:var(--ink);padding:10px 4px 8px;text-align:center}
+.rrbf__cd b{display:block;font-size:clamp(28px,2.8vw,40px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.rrbf__cd span{display:block;margin-top:5px;font-size:10.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:#6a6a66}
+.rrbf__cd em{align-self:center;font-style:normal;font-size:20px;line-height:1;opacity:.55}
+.rrbf__btn{display:flex;align-items:center;justify-content:center;gap:12px;height:52px;background:#fff;color:var(--ink);font-weight:800;font-size:15px;letter-spacing:.18em;text-transform:uppercase;transition:background .2s,color .2s;cursor:pointer;border:0;width:100%;font-family:inherit}
+.rrbf__btn:hover{background:var(--blue);color:#fff}
+.rrbf__note{margin:0;font-size:12.5px;font-weight:400;letter-spacing:.04em;opacity:.75;text-align:center}
+@media(max-width:989px){.rrbf__in{grid-template-columns:1fr}}
+@media(max-width:560px){.rrbf__k{font-size:11.5px;letter-spacing:.14em}.rrbf__cd span{font-size:9.5px;letter-spacing:.12em}}
+/* Ventana del formulario */
+.rrbf__dlg{width:min(460px,calc(100% - 24px));max-height:calc(100% - 24px);margin:auto;padding:0;border:0;background:var(--ink);color:#fff;font-family:'Sofia Sans',system-ui,sans-serif;overflow:auto;-webkit-font-smoothing:antialiased}
+.rrbf__dlg:not([open]){display:none}
+.rrbf__dlg::backdrop{background:rgba(7,10,20,.75)}
+.rrbf__dlg.is-fallback{position:fixed;inset:0;z-index:2147483000;box-shadow:0 0 0 100vmax rgba(7,10,20,.75)}
+.rrbf__dlg-in{position:relative;padding:30px 24px 22px;background:radial-gradient(520px 260px at 100% -10%,rgba(10,48,135,.85),transparent 65%) var(--ink)}
+.rrbf__x{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;background:transparent;color:#fff;font-size:28px;line-height:1;cursor:pointer;opacity:.8}
+.rrbf__dlg-t{margin:0 0 6px;padding-right:32px;color:#fff;font-size:28px;font-weight:800;line-height:1.05;letter-spacing:-.01em;text-transform:none}
+.rrbf__dlg-s{margin:0 0 18px;font-size:15px;font-weight:300;line-height:1.4;opacity:.9}
+.rrbf__f{display:grid;gap:12px;margin:0}
+.rrbf__fl{display:grid;gap:6px;margin:0;font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.rrbf__fl input{width:100%;height:48px;padding:0 14px;border:0;border-radius:0;background:#fff;color:var(--ink);font:500 16px/1 'Sofia Sans',system-ui,sans-serif;letter-spacing:normal;text-transform:none}
+.rrbf__fl small{font-weight:400;letter-spacing:.04em;text-transform:none;opacity:.7}
+.rrbf__chk{display:flex;gap:10px;align-items:flex-start;margin:2px 0 0;font-size:13px;font-weight:400;line-height:1.4;letter-spacing:normal;text-transform:none;opacity:.9;cursor:pointer}
+.rrbf__chk input{width:18px;height:18px;margin:1px 0 0;flex:none;accent-color:#fff}
+.rrbf__f .rrbf__btn{margin-top:4px}
+.rrbf__fine{margin:2px 0 0;font-size:11.5px;line-height:1.45;opacity:.72}
+.rrbf__fine a{text-decoration:underline}
+.rrbf__ok{margin:0;padding:18px 16px;border:1.5px solid rgba(255,255,255,.55);font-size:17px;line-height:1.45}
+.rrbf__err{margin:0;font-size:13px;color:#ffb4a8}
 </style>
+<section class="rrbf" id="rrbf" aria-label="Black Friday Ramón Ramírez · lista de acceso anticipado" data-rrbf-url="{{ SHEETS_URL | escape }}" data-rrbf-formname="{{ FORMULARIO | escape }}">
+  <div class="rrbf__in">
+    <div class="rrbf__l">
+      <div class="rrbf__top"><span class="rrbf__pill">Black Friday</span><p class="rrbf__k">Viernes 27 de noviembre · Se viene una mega oferta</p></div>
+      <h2 class="rrbf__h"><strong>Anotate a la lista</strong><span>y comprá antes que nadie.</span></h2>
+      <p class="rrbf__gift"><b>+ 2 puros de regalo</b><span>por compra, solo para los anotados</span></p>
+      <p class="rrbf__s">Preparamos una mega oferta para el Black Friday. Los que están en la lista la reciben antes de que salga para todos y, además, se llevan 2 puros de regalo con su compra.</p>
+    </div>
+    <div class="rrbf__r">
+      <p class="rrbf__lab">El Black Friday empieza en</p>
+      <div class="rrbf__cd" role="timer" aria-live="off">
+        <div><b data-rrbf="d">14</b><span>días</span></div><em>:</em>
+        <div><b data-rrbf="h">06</b><span>horas</span></div><em>:</em>
+        <div><b data-rrbf="m">28</b><span>min</span></div><em>:</em>
+        <div><b data-rrbf="s">41</b><span>seg</span></div>
+      </div>
+      <a class="rrbf__btn" href="#anotarme" data-rrbf-open>Anotarme <svg width="22" height="14" viewBox="0 0 22 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h19M14 1l6 6-6 6"/></svg></a>
+      <p class="rrbf__note">Te avisamos por mail. Sin spam, solo el Black Friday.</p>
+    </div>
+  </div>
+
+  <dialog class="rrbf__dlg" id="anotarme" data-rrbf-dialog aria-labelledby="rrbf-dlg-t">
+    <div class="rrbf__dlg-in">
+      <button type="button" class="rrbf__x" data-rrbf-close aria-label="Cerrar">×</button>
+      <h3 class="rrbf__dlg-t" id="rrbf-dlg-t">Anotate a la lista</h3>
+      <p class="rrbf__dlg-s">Comprá el Black Friday antes que nadie y llevate 2 puros de regalo con tu compra.</p>
+      {%- form 'customer', id: 'RRBF-form', class: 'rrbf__f', data-rrbf-form: 'true' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="rrbf__ok" data-rrbf-done>¡Listo, ya estás en la lista! Te avisamos por mail antes que a nadie.</p>
+        {%- else -%}
+          {%- if form.errors -%}
+            <p class="rrbf__err" data-rrbf-done>{{ form.errors | default_errors }}</p>
+          {%- endif -%}
+          <input type="hidden" name="contact[tags]" value="{{ ETIQUETAS | escape }}" data-rrbf-tags data-base="{{ ETIQUETAS | escape }}">
+          <label class="rrbf__fl">Nombre<input type="text" name="contact[first_name]" autocomplete="given-name" required data-rrbf-name></label>
+          <label class="rrbf__fl">Email<input type="email" name="contact[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required data-rrbf-email></label>
+          <label class="rrbf__fl"><span>WhatsApp <small>(opcional)</small></span><input type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 11 2345 6789" data-rrbf-phone></label>
+          <label class="rrbf__chk"><input type="checkbox" required><span>Soy mayor de 18 años y acepto recibir comunicaciones de Ramón Ramírez.</span></label>
+          <button type="submit" class="rrbf__btn">Anotarme</button>
+          <p class="rrbf__fine">Lo que escribas acá se guarda para avisarte, aunque no lo envíes. Podés pedir que lo borremos cuando quieras. <a href="/policies/privacy-policy">Política de privacidad</a>.</p>
+        {%- endif -%}
+      {%- endform -%}
+      <p class="rrbf__fine">Fumar causa cáncer. Prohibida su venta a menores de 18 años.</p>
+    </div>
+  </dialog>
+</section>
 <script>
-  (function () {
-    var root = document.getElementById('rrbf');
-    if (!root) return;
-    var form = root.querySelector('form[data-rrbf]');
-    var openBtn = root.querySelector('[data-open]');
-    if (root.querySelector('[data-done]')) root.classList.add('is-open');
-    if (openBtn) openBtn.addEventListener('click', function () {
-      root.classList.add('is-open');
-      var first = form && form.querySelector('[data-name]');
-      if (first) first.focus();
-    });
+(function(){
+  var root=document.getElementById('rrbf'); if(!root) return;
+  /* Hora Argentina (UTC-3): el Black Friday empieza el viernes 27/11/2026 a las 00:00 */
+  var BF_START=Date.UTC(2026,10,27,3,0,0);
+  var q=function(k){return root.querySelector('[data-rrbf="'+k+'"]')}, pad=function(n){return (n<10?'0':'')+n};
+  function tick(){
+    var n=window.RRBF_NOW||Date.now();
+    // OCULTAR AL ARRANCAR: if(n>=BF_START){root.hidden=true;return}
+    var left=Math.max(0,Math.floor((BF_START-n)/1000));
+    q('d').textContent=pad(Math.floor(left/86400)); q('h').textContent=pad(Math.floor(left%86400/3600));
+    q('m').textContent=pad(Math.floor(left%3600/60)); q('s').textContent=pad(left%60);
+  }
+  tick(); if(!window.RRBF_NOW) setInterval(tick,1000);
 
-    // Cuenta regresiva (solo si hay fecha)
-    var start = Date.parse(root.dataset.start || '');
-    var box = root.querySelector('[data-count]');
-    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
-    if (box && !isNaN(start)) {
-      var tick = function () {
-        var s = Math.floor((start - Date.now()) / 1000);
-        if (s <= 0) { box.hidden = true; clearInterval(timer); return; }
-        box.querySelector('[data-d]').textContent = Math.floor(s / 86400);
-        box.querySelector('[data-h]').textContent = pad(Math.floor((s % 86400) / 3600));
-        box.querySelector('[data-m]').textContent = pad(Math.floor((s % 3600) / 60));
-        box.querySelector('[data-s]').textContent = pad(s % 60);
-        box.hidden = false;
-      };
-      var timer = setInterval(tick, 1000);
-      tick();
-    }
+  /* Envío a la planilla (conector de Apps Script). La fase empieza con "bf-" para la pestaña "Black Friday". */
+  var url=(root.getAttribute('data-rrbf-url')||'').trim();
+  var canSend=/^https:\/\/script\.google\.com\//.test(url);
+  var store=function(kind,key,value){
+    try{var s=window[kind]; if(value===undefined) return s.getItem(key); s.setItem(key,value);}catch(e){return null}
+  };
+  var vid=store('localStorage','rr_bf_vid');
+  if(!vid){vid=Date.now().toString(36)+Math.random().toString(36).slice(2,8); store('localStorage','rr_bf_vid',vid)}
+  var params=new URLSearchParams(window.location.search), utm={};
+  ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function(k){
+    var v=params.get(k)||store('sessionStorage','rr_bf_'+k)||'';
+    if(params.get(k)) store('sessionStorage','rr_bf_'+k,v);
+    utm[k]=v;
+  });
+  var device=/Mobi|Android|iPhone/i.test(navigator.userAgent)?'celular':'compu';
+  var send=function(payload){
+    if(!canSend) return;
+    payload.vid=vid; payload.utm=utm; payload.referrer=document.referrer; payload.dispositivo=device;
+    payload.pagina=window.location.pathname; payload.fase=(window.RRBF_NOW||Date.now())<BF_START?'bf-antes':'bf-despues';
+    try{fetch(url,{method:'POST',mode:'no-cors',keepalive:true,headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).catch(function(){})}catch(e){}
+  };
+  var track=function(evento){send({tipo:'evento',evento:evento})};
 
-    // El formulario de clientes de Shopify no guarda teléfono: el WhatsApp viaja como etiqueta "wa-<número>".
-    if (form) form.addEventListener('submit', function () {
-      var tags = form.querySelector('[data-tags]');
-      var phone = form.querySelector('[data-phone]');
-      var digits = phone ? phone.value.replace(/\D/g, '') : '';
-      if (tags) tags.value = tags.dataset.base + (digits.length >= 8 ? ', wa-' + digits : '');
-    });
+  /* "Vieron el banner": una vez por sesión, cuando aparece en pantalla */
+  var seenKey='rr_bf_visto_'+window.location.pathname;
+  var markSeen=function(){ if(store('sessionStorage',seenKey)) return; store('sessionStorage',seenKey,'1'); track('visita'); };
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ markSeen(); io.disconnect(); } }); },{threshold:.4});
+    io.observe(root);
+  } else markSeen();
 
-    // Envío a la planilla de Google Sheets (conector de Apps Script)
-    var url = (root.dataset.url || '').trim();
-    if (!/^https:\/\/script\.google\.com\//.test(url)) return;
-    var store = function (kind, key, value) {
-      try {
-        var s = window[kind];
-        if (value === undefined) return s.getItem(key);
-        s.setItem(key, value);
-      } catch (e) { return null; }
-    };
-    var vid = store('localStorage', 'rr_bf_vid');
-    if (!vid) {
-      vid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-      store('localStorage', 'rr_bf_vid', vid);
-    }
-    var params = new URLSearchParams(window.location.search);
-    var utm = {};
-    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
-      var v = params.get(k) || store('sessionStorage', 'rr_bf_' + k) || '';
-      if (params.get(k)) store('sessionStorage', 'rr_bf_' + k, v);
-      utm[k] = v;
-    });
-    var device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'celular' : 'compu';
-    // La fase empieza con "bf-": así la pestaña "Black Friday" separa estas visitas de las del bicapa.
-    var phase = isNaN(start) ? 'bf' : (Date.now() < start ? 'bf-antes' : 'bf-despues');
-    var send = function (payload) {
-      payload.vid = vid;
-      payload.utm = utm;
-      payload.referrer = document.referrer;
-      payload.dispositivo = device;
-      payload.pagina = window.location.pathname;
-      payload.fase = phase;
-      try {
-        fetch(url, {
-          method: 'POST', mode: 'no-cors', keepalive: true,
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        }).catch(function () {});
-      } catch (e) {}
-    };
-    var track = function (evento) { send({ tipo: 'evento', evento: evento }); };
+  /* Ventana del formulario: se abre con "Anotarme" o con cualquier link a #anotarme */
+  var dlg=root.querySelector('[data-rrbf-dialog]'), form=root.querySelector('form[data-rrbf-form]'), opened=false;
+  var open=function(){
+    if(!dlg) return;
+    if(typeof dlg.showModal==='function'){ if(!dlg.open) dlg.showModal(); }
+    else { dlg.setAttribute('open',''); dlg.classList.add('is-fallback'); }
+    if(!opened){ opened=true; markSeen(); track('formulario_iniciado'); }
+    var first=dlg.querySelector('[data-rrbf-name]'); if(first) setTimeout(function(){first.focus()},60);
+  };
+  var close=function(){ if(!dlg) return; if(typeof dlg.close==='function'&&dlg.open) dlg.close(); else dlg.removeAttribute('open'); };
+  root.querySelectorAll('[data-rrbf-open]').forEach(function(a){ a.addEventListener('click',function(e){e.preventDefault(); open();}); });
+  root.querySelectorAll('[data-rrbf-close]').forEach(function(b){ b.addEventListener('click',close); });
+  if(dlg) dlg.addEventListener('click',function(e){ if(e.target===dlg) close(); });
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href$="#anotarme"]');
+    if(a&&!root.contains(a)&&a.pathname===window.location.pathname){ e.preventDefault(); open(); }
+  });
+  if(root.querySelector('[data-rrbf-done]')||/^#(anotarme|RRBF-form)$/.test(window.location.hash)) open();
 
-    // Una visita por sesión y por página, para no llenar la planilla con cada recarga.
-    var visitKey = 'rr_bf_visita_' + window.location.pathname;
-    if (!store('sessionStorage', visitKey)) {
-      store('sessionStorage', visitKey, '1');
-      track('visita');
-    }
-
-    if (!form || !form.querySelector('[data-name]')) return;
-    var started = false;
-    var timer2 = null;
-    var read = function () {
-      var name = form.querySelector('[data-name]');
-      var email = form.querySelector('[data-email]');
-      var phone = form.querySelector('[data-phone]');
-      return {
-        nombre: name ? name.value : '',
-        email: email ? email.value : '',
-        whatsapp: phone ? phone.value.replace(/\D/g, '') : ''
-      };
-    };
-    var sendLead = function (estado) {
-      var data = read();
-      if (estado === 'parcial' && !data.nombre && !data.email && !data.whatsapp) return;
-      data.tipo = 'lead';
-      data.formulario = root.dataset.form || 'black-friday';
-      data.estado = estado;
-      data.consentimiento = estado === 'completo';
-      send(data);
-    };
-    form.addEventListener('input', function () {
-      if (!started) { started = true; track('formulario_iniciado'); }
-      clearTimeout(timer2);
-      timer2 = setTimeout(function () { sendLead('parcial'); }, 1200);
-    });
-    form.addEventListener('focusout', function () {
-      clearTimeout(timer2);
-      sendLead('parcial');
-    });
-    form.addEventListener('submit', function () {
-      clearTimeout(timer2);
-      sendLead('completo');
-      track('formulario_enviado');
-    });
-  })();
+  if(!form||!form.querySelector('[data-rrbf-name]')) return;
+  /* El formulario de clientes de Shopify no guarda teléfono: el WhatsApp viaja como etiqueta "wa-<número>". */
+  var read=function(){
+    var p=form.querySelector('[data-rrbf-phone]');
+    return { nombre:form.querySelector('[data-rrbf-name]').value, email:form.querySelector('[data-rrbf-email]').value, whatsapp:p?p.value.replace(/\D/g,''):'' };
+  };
+  var formName=root.getAttribute('data-rrbf-formname')||'black-friday', timer=null;
+  var sendLead=function(estado){
+    var d=read();
+    if(estado==='parcial'&&!d.nombre&&!d.email&&!d.whatsapp) return;
+    d.tipo='lead'; d.formulario=formName; d.estado=estado; d.consentimiento=estado==='completo';
+    send(d);
+  };
+  form.addEventListener('input',function(){ clearTimeout(timer); timer=setTimeout(function(){sendLead('parcial')},1200); });
+  form.addEventListener('focusout',function(){ clearTimeout(timer); sendLead('parcial'); });
+  form.addEventListener('submit',function(){
+    clearTimeout(timer);
+    var tags=form.querySelector('[data-rrbf-tags]'), digits=read().whatsapp;
+    if(tags) tags.value=tags.getAttribute('data-base')+(digits.length>=8?', wa-'+digits:'');
+    sendLead('completo'); track('formulario_enviado');
+  });
+})();
 </script>

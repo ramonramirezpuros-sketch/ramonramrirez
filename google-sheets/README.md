@@ -1,12 +1,14 @@
 # Tienda → Google Sheets
 
-El mismo conector ([`apps-script-landing.gs`](apps-script-landing.gs)) sirve para cualquier planilla con las pestañas
-**Leads** y **Visitas**. Hoy hay dos:
+Todo va a una sola planilla, [Drop Bicapa · Leads y visitas de la landing](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit),
+con un solo conector ([`apps-script-landing.gs`](apps-script-landing.gs)). La alimentan:
 
-| Planilla | La alimenta |
+| Qué | Cómo se distingue en la planilla |
 |---|---|
-| [Drop Bicapa · Leads y visitas de la landing](https://docs.google.com/spreadsheets/d/1lXG7OjKNCnRWtaQDo-a_HAGtMmFgAkSOd3DNhRTJEKE/edit) | La landing `/pages/drop-bicapa` |
-| [Black Friday + Etiqueta Negra · Leads y visitas](https://docs.google.com/spreadsheets/d/1Iow4TJMFtrW5hiAN_TSZbo6l3BfTbBA88c6HLX1kQxA/edit) | El banner [`shopify/black-friday/banner-anotate.liquid`](../shopify/black-friday/banner-anotate.liquid), pegado en una sección "Custom liquid" |
+| La landing `/pages/drop-bicapa` | Leads: Formulario `lista` o `proximo-drop`. Visitas: Fase `waitlist`, `live` o `closed` |
+| El banner de Black Friday + Etiqueta Negra ([`shopify/black-friday/banner-anotate.liquid`](../shopify/black-friday/banner-anotate.liquid)) | Leads: Formulario `black-friday`. Visitas: Fase que empieza con `bf-`. Tiene su propia pestaña **Black Friday** |
+
+El **Resumen** y **Por campaña** del bicapa no cuentan lo de Black Friday.
 
 ## Drop Bicapa
 
@@ -36,13 +38,14 @@ Si más adelante cambiás el código del script, hacé **Implementar → Adminis
 
 ## Black Friday + Etiqueta Negra
 
-1. Abrí la planilla [Black Friday + Etiqueta Negra · Leads y visitas](https://docs.google.com/spreadsheets/d/1Iow4TJMFtrW5hiAN_TSZbo6l3BfTbBA88c6HLX1kQxA/edit) → **Extensiones → Apps Script**.
-2. Borrá lo que haya y pegá todo [`apps-script-landing.gs`](apps-script-landing.gs) (`ID_PLANILLA` queda vacío). Guardá (💾).
-3. **Implementar → Nueva implementación** → **Aplicación web** → Ejecutar como **Yo**, acceso **Cualquier persona** → **Implementar** → autorizá con tu cuenta de Google.
-4. Copiá la **URL de la aplicación web** (termina en `/exec`). Abierta en el navegador tiene que decir "Conector activo: Black Friday + Etiqueta Negra · Leads y visitas".
-5. En [`banner-anotate.liquid`](../shopify/black-friday/banner-anotate.liquid), bloque **EDITÁ ACÁ**: pegá esa URL en `sheets_url`.
-6. Shopify → Temas → **Personalizar** → Página de inicio → **Agregar sección → Custom liquid** → pegá el bloque entero → arrastrala arriba de todo → **Guardar**.
+El banner ya trae la URL del conector de la planilla del bicapa: no hay que implementar nada en Apps Script.
 
+1. Shopify → Temas → **Personalizar** (el tema publicado) → Página de inicio → **Agregar sección → Custom liquid**.
+2. Pegá todo [`banner-anotate.liquid`](../shopify/black-friday/banner-anotate.liquid) en el campo → arrastrá la sección arriba de todo → **Guardar**.
+3. Para cambiar textos, fecha de la cuenta regresiva o etiquetas: bloque **EDITÁ ACÁ** al principio del código.
+
+La pestaña **Black Friday** muestra visitantes, visitas, formularios empezados, leads parciales y completos, los que
+aceptaron comunicaciones y la lista de anotados. El gasto en Meta se carga a mano para ver el costo por anotado.
 El banner manda una visita por sesión (no una por recarga), los datos a medida que la persona escribe (estado `parcial`)
 y el envío (`completo`). Los clientes quedan en Shopify con las etiquetas `black-friday-2026` y `etiqueta-negra`.
 

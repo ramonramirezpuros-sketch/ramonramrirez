@@ -1,7 +1,7 @@
 /**
- * Conector landing Drop Bicapa → Google Sheets
+ * Conector tienda → Google Sheets (landing del Drop Bicapa, banner de Black Friday + Etiqueta Negra)
  *
- * Recibe los datos que manda la landing de Shopify y los guarda en esta planilla:
+ * Recibe los datos que manda la tienda de Shopify y los guarda en la planilla:
  *   - Pestaña "Visitas": cada visita y cada evento (play del VSL, video completo, clic en comprar...).
  *   - Pestaña "Leads": una fila por persona y formulario. Se crea apenas escribe algo (estado "parcial")
  *     y se completa cuando envía el formulario (estado "completo").
@@ -9,6 +9,9 @@
  * Instalación: ver google-sheets/README.md
  */
 
+// Vacío = la planilla a la que está pegado el script (Extensiones → Apps Script).
+// Si el script está suelto en Drive, va el ID de la planilla (lo que está entre /d/ y /edit en su link).
+var ID_PLANILLA = '';
 var HOJA_LEADS = 'Leads';
 var HOJA_VISITAS = 'Visitas';
 var MAX_LARGO = 300;
@@ -35,7 +38,7 @@ function doPost(e) {
   var lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
-    var libro = SpreadsheetApp.getActiveSpreadsheet();
+    var libro = planilla();
     if (datos.tipo === 'evento') {
       guardarEvento(libro.getSheetByName(HOJA_VISITAS), datos);
     } else if (datos.tipo === 'lead') {
@@ -51,7 +54,11 @@ function doPost(e) {
 
 // Permite comprobar desde el navegador que el conector está publicado.
 function doGet() {
-  return respuesta('Conector Drop Bicapa activo');
+  return respuesta('Conector activo: ' + planilla().getName());
+}
+
+function planilla() {
+  return ID_PLANILLA ? SpreadsheetApp.openById(ID_PLANILLA) : SpreadsheetApp.getActiveSpreadsheet();
 }
 
 function guardarEvento(hoja, d) {

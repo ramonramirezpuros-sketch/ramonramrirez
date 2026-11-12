@@ -1,0 +1,235 @@
+{%- comment -%}
+════════════════════════════════════════════════════════════════════
+  RR · BANNER "ANOTATE" · BLACK FRIDAY + LANZAMIENTO ETIQUETA NEGRA
+
+  Dónde va: Tienda online → Temas → Personalizar → Página de inicio → Agregar sección →
+  "Custom liquid" → pegá todo este bloque en el campo → Guardar. Arrastrá la sección arriba de todo.
+
+  Lo que la persona escribe se guarda en la planilla "Black Friday + Etiqueta Negra · Leads y visitas"
+  aunque no envíe el formulario (estado "parcial"). Al enviarlo queda "completo" y además se crea el
+  cliente en Shopify con las etiquetas de abajo; el WhatsApp va como etiqueta "wa-<número>".
+  En el celular es una franja chica: el formulario se abre al tocar el botón.
+  Todo lo editable está en "EDITÁ ACÁ".
+════════════════════════════════════════════════════════════════════
+{%- endcomment -%}
+
+{%- comment -%} ═══════════ EDITÁ ACÁ ═══════════ {%- endcomment -%}
+{%- liquid
+  assign sheets_url = 'PEGAR_ACA_LA_URL_DEL_CONECTOR'
+  assign etiquetas = 'black-friday-2026, etiqueta-negra'
+  assign formulario = 'black-friday'
+  assign fecha = ''
+  assign volanta = 'Black Friday · Lanzamiento Etiqueta Negra'
+  assign titulo = 'Anotate y enterate primero'
+  assign bajada = 'Las ofertas de Black Friday y el lanzamiento de Ramón Ramírez Etiqueta Negra llegan antes a los anotados.'
+  assign boton = 'Anotarme'
+  assign gracias = '¡Listo! Ya estás anotado. Te avisamos antes que a nadie.'
+  assign aviso = 'Lo que escribas acá se guarda para avisarte, aunque no lo envíes. Podés pedir que lo borremos cuando quieras.'
+-%}
+{%- comment -%}
+  fecha: vacía = sin cuenta regresiva. Con fecha (formato 2026-11-27T00:00-03:00, hora Argentina)
+  muestra cuánto falta y la esconde cuando llega.
+{%- endcomment -%}
+{%- comment -%} ═══════════ FIN DE LO EDITABLE ═══════════ {%- endcomment -%}
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<div class="rrbf" id="rrbf" data-url="{{ sheets_url | strip | escape }}" data-form="{{ formulario | escape }}" data-start="{{ fecha | strip | escape }}">
+  <div class="rrbf__in">
+    <div class="rrbf__copy">
+      <p class="rrbf__kicker">{{ volanta | escape }}</p>
+      <h2 class="rrbf__title">{{ titulo | escape }}</h2>
+      <p class="rrbf__text">{{ bajada | escape }}</p>
+      {%- if fecha != blank -%}
+        <div class="rrbf__count" data-count hidden aria-hidden="true">
+          <span><b data-d>0</b><i>días</i></span><span><b data-h>00</b><i>horas</i></span><span><b data-m>00</b><i>min</i></span><span><b data-s>00</b><i>seg</i></span>
+        </div>
+      {%- endif -%}
+      <button type="button" class="rrbf__open" data-open>{{ boton | escape }} →</button>
+    </div>
+    {%- form 'customer', id: 'RRBF-form', class: 'rrbf__form', data-rrbf: 'true' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="rrbf__ok" data-done>{{ gracias | escape }}</p>
+      {%- else -%}
+        {%- if form.errors -%}
+          <p class="rrbf__err" data-done>{{ form.errors | default_errors }}</p>
+        {%- endif -%}
+        <input type="hidden" name="contact[tags]" value="{{ etiquetas | escape }}" data-tags data-base="{{ etiquetas | escape }}">
+        <label class="rrbf__field"><span>Nombre</span><input type="text" name="contact[first_name]" autocomplete="given-name" required data-name></label>
+        <label class="rrbf__field"><span>Email</span><input type="email" name="contact[email]" autocomplete="email" autocapitalize="off" spellcheck="false" required data-email></label>
+        <label class="rrbf__field"><span>WhatsApp</span><input type="tel" inputmode="tel" autocomplete="tel" placeholder="Ej: 11 2345 6789" data-phone></label>
+        <label class="rrbf__check"><input type="checkbox" required><span>Soy mayor de 18 años y acepto recibir comunicaciones de Ramón Ramírez.</span></label>
+        <button type="submit" class="rrbf__btn">{{ boton | escape }}</button>
+        <p class="rrbf__note">{{ aviso | escape }} <a href="/policies/privacy-policy">Política de privacidad</a>.</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+  <p class="rrbf__legal">Fumar causa cáncer. Prohibida su venta a menores de 18 años.</p>
+</div>
+<style>
+  .rrbf{--g:#c9a35a;--ink:#f5f1e8;--mut:#b5afa4;width:calc(100% - 32px);max-width:1200px;margin:16px auto;border:1px solid rgba(201,163,90,.5);border-radius:16px;overflow:hidden;color:var(--ink);background:radial-gradient(80% 140% at 0% 0%,#26221b 0%,#0b0b0c 60%) #0b0b0c}
+  .rrbf__in{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,48px);align-items:center;padding:clamp(22px,4vw,44px) clamp(22px,4vw,44px) 12px}
+  .rrbf__kicker{margin:0 0 10px;font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--g)}
+  .rrbf__title{margin:0 0 12px;font:600 clamp(30px,4vw,48px)/1.05 'Cormorant Garamond',Georgia,serif;color:var(--ink)}
+  .rrbf__text{margin:0;max-width:46ch;font-size:15px;line-height:1.55;color:var(--mut)}
+  .rrbf__count{display:flex;gap:8px;margin-top:16px}
+  .rrbf__count[hidden]{display:none}
+  .rrbf__count>span{min-width:56px;padding:8px 6px 6px;border:1px solid rgba(201,163,90,.6);border-radius:10px;text-align:center}
+  .rrbf__count b{display:block;font:700 26px/1 'Cormorant Garamond',Georgia,serif;font-variant-numeric:lining-nums tabular-nums;color:var(--ink)}
+  .rrbf__count i{display:block;margin-top:4px;font-size:9px;font-style:normal;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--g)}
+  .rrbf__open{display:none}
+  .rrbf__form{display:grid;gap:10px;margin:0}
+  .rrbf__field{display:grid;gap:4px;margin:0}
+  .rrbf__field span{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+  .rrbf__field input{width:100%;box-sizing:border-box;padding:12px 14px;font-size:16px;color:var(--ink);background:rgba(255,255,255,.06);border:1px solid rgba(245,241,232,.25);border-radius:10px;outline:none}
+  .rrbf__field input:focus{border-color:var(--g)}
+  .rrbf__check{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.4;color:var(--mut)}
+  .rrbf__check input{margin-top:2px;accent-color:var(--g)}
+  .rrbf__btn,.rrbf__open{padding:14px 22px;border:0;border-radius:999px;background:var(--g);color:#0b0b0c;font-size:14px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+  .rrbf__btn:hover,.rrbf__open:hover{background:#d9b56a}
+  .rrbf__note{margin:0;font-size:11.5px;line-height:1.4;color:var(--mut)}
+  .rrbf__note a{color:var(--mut);text-decoration:underline}
+  .rrbf__ok{margin:0;padding:16px;border:1px solid var(--g);border-radius:12px;font-size:16px;line-height:1.5;color:var(--ink)}
+  .rrbf__err{margin:0;font-size:13px;color:#ff9b8f}
+  .rrbf__legal{margin:0;padding:0 clamp(22px,4vw,44px) 14px;font-size:11px;color:var(--mut)}
+  /* Celular: franja chica; el formulario se abre con el botón */
+  @media (max-width:749px){
+    .rrbf{width:calc(100% - 24px);margin:10px auto;border-radius:14px}
+    .rrbf__in{display:block;padding:16px 16px 8px}
+    .rrbf__kicker{margin-bottom:6px;font-size:10px;letter-spacing:.14em}
+    .rrbf__title{margin-bottom:6px;font-size:28px}
+    .rrbf__text{font-size:13.5px}
+    .rrbf__count{gap:6px;margin-top:10px}
+    .rrbf__count>span{flex:1;min-width:0;padding:6px 2px 4px}
+    .rrbf__count b{font-size:20px}
+    .rrbf__open{display:inline-block;margin-top:12px}
+    .rrbf__form{display:none;margin-top:14px}
+    .rrbf.is-open .rrbf__form{display:grid}
+    .rrbf.is-open .rrbf__open{display:none}
+    .rrbf__legal{padding:0 16px 12px}
+  }
+</style>
+<script>
+  (function () {
+    var root = document.getElementById('rrbf');
+    if (!root) return;
+    var form = root.querySelector('form[data-rrbf]');
+    var openBtn = root.querySelector('[data-open]');
+    if (root.querySelector('[data-done]')) root.classList.add('is-open');
+    if (openBtn) openBtn.addEventListener('click', function () {
+      root.classList.add('is-open');
+      var first = form && form.querySelector('[data-name]');
+      if (first) first.focus();
+    });
+
+    // Cuenta regresiva (solo si hay fecha)
+    var start = Date.parse(root.dataset.start || '');
+    var box = root.querySelector('[data-count]');
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    if (box && !isNaN(start)) {
+      var tick = function () {
+        var s = Math.floor((start - Date.now()) / 1000);
+        if (s <= 0) { box.hidden = true; clearInterval(timer); return; }
+        box.querySelector('[data-d]').textContent = Math.floor(s / 86400);
+        box.querySelector('[data-h]').textContent = pad(Math.floor((s % 86400) / 3600));
+        box.querySelector('[data-m]').textContent = pad(Math.floor((s % 3600) / 60));
+        box.querySelector('[data-s]').textContent = pad(s % 60);
+        box.hidden = false;
+      };
+      var timer = setInterval(tick, 1000);
+      tick();
+    }
+
+    // El formulario de clientes de Shopify no guarda teléfono: el WhatsApp viaja como etiqueta "wa-<número>".
+    if (form) form.addEventListener('submit', function () {
+      var tags = form.querySelector('[data-tags]');
+      var phone = form.querySelector('[data-phone]');
+      var digits = phone ? phone.value.replace(/\D/g, '') : '';
+      if (tags) tags.value = tags.dataset.base + (digits.length >= 8 ? ', wa-' + digits : '');
+    });
+
+    // Envío a la planilla de Google Sheets (conector de Apps Script)
+    var url = (root.dataset.url || '').trim();
+    if (!/^https:\/\/script\.google\.com\//.test(url)) return;
+    var store = function (kind, key, value) {
+      try {
+        var s = window[kind];
+        if (value === undefined) return s.getItem(key);
+        s.setItem(key, value);
+      } catch (e) { return null; }
+    };
+    var vid = store('localStorage', 'rr_bf_vid');
+    if (!vid) {
+      vid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      store('localStorage', 'rr_bf_vid', vid);
+    }
+    var params = new URLSearchParams(window.location.search);
+    var utm = {};
+    ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
+      var v = params.get(k) || store('sessionStorage', 'rr_bf_' + k) || '';
+      if (params.get(k)) store('sessionStorage', 'rr_bf_' + k, v);
+      utm[k] = v;
+    });
+    var device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'celular' : 'compu';
+    var phase = isNaN(start) ? 'lista' : (Date.now() < start ? 'antes' : 'despues');
+    var send = function (payload) {
+      payload.vid = vid;
+      payload.utm = utm;
+      payload.referrer = document.referrer;
+      payload.dispositivo = device;
+      payload.pagina = window.location.pathname;
+      payload.fase = phase;
+      try {
+        fetch(url, {
+          method: 'POST', mode: 'no-cors', keepalive: true,
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        }).catch(function () {});
+      } catch (e) {}
+    };
+    var track = function (evento) { send({ tipo: 'evento', evento: evento }); };
+
+    // Una visita por sesión y por página, para no llenar la planilla con cada recarga.
+    var visitKey = 'rr_bf_visita_' + window.location.pathname;
+    if (!store('sessionStorage', visitKey)) {
+      store('sessionStorage', visitKey, '1');
+      track('visita');
+    }
+
+    if (!form || !form.querySelector('[data-name]')) return;
+    var started = false;
+    var timer2 = null;
+    var read = function () {
+      var name = form.querySelector('[data-name]');
+      var email = form.querySelector('[data-email]');
+      var phone = form.querySelector('[data-phone]');
+      return {
+        nombre: name ? name.value : '',
+        email: email ? email.value : '',
+        whatsapp: phone ? phone.value.replace(/\D/g, '') : ''
+      };
+    };
+    var sendLead = function (estado) {
+      var data = read();
+      if (estado === 'parcial' && !data.nombre && !data.email && !data.whatsapp) return;
+      data.tipo = 'lead';
+      data.formulario = root.dataset.form || 'black-friday';
+      data.estado = estado;
+      data.consentimiento = estado === 'completo';
+      send(data);
+    };
+    form.addEventListener('input', function () {
+      if (!started) { started = true; track('formulario_iniciado'); }
+      clearTimeout(timer2);
+      timer2 = setTimeout(function () { sendLead('parcial'); }, 1200);
+    });
+    form.addEventListener('focusout', function () {
+      clearTimeout(timer2);
+      sendLead('parcial');
+    });
+    form.addEventListener('submit', function () {
+      clearTimeout(timer2);
+      sendLead('completo');
+      track('formulario_enviado');
+    });
+  })();
+</script>

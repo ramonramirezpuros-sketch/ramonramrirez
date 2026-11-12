@@ -5,9 +5,10 @@
   Dónde va: Tienda online → Temas → Personalizar → Página de inicio → Agregar sección →
   "Custom liquid" → pegá todo este bloque en el campo → Guardar. Arrastrá la sección arriba de todo.
 
-  Lo que la persona escribe se guarda en la planilla "Black Friday + Etiqueta Negra · Leads y visitas"
-  aunque no envíe el formulario (estado "parcial"). Al enviarlo queda "completo" y además se crea el
-  cliente en Shopify con las etiquetas de abajo; el WhatsApp va como etiqueta "wa-<número>".
+  Lo que la persona escribe se guarda en la planilla "Drop Bicapa · Leads y visitas de la landing"
+  (pestaña "Black Friday" para ver solo esto) aunque no envíe el formulario (estado "parcial").
+  Al enviarlo queda "completo" y además se crea el cliente en Shopify con las etiquetas de abajo;
+  el WhatsApp va como etiqueta "wa-<número>".
   En el celular es una franja chica: el formulario se abre al tocar el botón.
   Todo lo editable está en "EDITÁ ACÁ".
 ════════════════════════════════════════════════════════════════════
@@ -15,7 +16,7 @@
 
 {%- comment -%} ═══════════ EDITÁ ACÁ ═══════════ {%- endcomment -%}
 {%- liquid
-  assign sheets_url = 'PEGAR_ACA_LA_URL_DEL_CONECTOR'
+  assign sheets_url = 'https://script.google.com/macros/s/AKfycbwlrPDYiEhTENkT0NRz79ppUwyTYHwcEVi7abumozBCVa-gnty2hH-MDlkpSlELKqQy/exec'
   assign etiquetas = 'black-friday-2026, etiqueta-negra'
   assign formulario = 'black-friday'
   assign fecha = '2026-11-27T00:00-03:00'
@@ -170,7 +171,8 @@
       utm[k] = v;
     });
     var device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'celular' : 'compu';
-    var phase = isNaN(start) ? 'lista' : (Date.now() < start ? 'antes' : 'despues');
+    // La fase empieza con "bf-": así la pestaña "Black Friday" separa estas visitas de las del bicapa.
+    var phase = isNaN(start) ? 'bf' : (Date.now() < start ? 'bf-antes' : 'bf-despues');
     var send = function (payload) {
       payload.vid = vid;
       payload.utm = utm;

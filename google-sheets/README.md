@@ -36,18 +36,19 @@ Para probarlo, abrí la URL `/exec` en el navegador: tiene que decir "Conector D
 
 Si más adelante cambiás el código del script, hacé **Implementar → Administrar implementaciones → Editar → Nueva versión**: así la URL se mantiene.
 
-## Black Friday + Etiqueta Negra
+## Black Friday
 
-El banner ya trae la URL del conector de la planilla del bicapa: no hay que implementar nada en Apps Script.
+[`banner-anotate.liquid`](../shopify/black-friday/banner-anotate.liquid) es el banner del equipo ("Lista de acceso
+anticipado", cuenta regresiva al 27/11, 2 puros de regalo) con el formulario conectado: "Anotarme" abre una ventana
+con nombre, email, WhatsApp (opcional) y el check de +18. Ya trae la URL del conector de esta planilla.
 
-1. Shopify → Temas → **Personalizar** (el tema publicado) → Página de inicio → **Agregar sección → Custom liquid**.
-2. Pegá todo [`banner-anotate.liquid`](../shopify/black-friday/banner-anotate.liquid) en el campo → arrastrá la sección arriba de todo → **Guardar**.
-3. Para cambiar textos, fecha de la cuenta regresiva o etiquetas: bloque **EDITÁ ACÁ** al principio del código.
+1. Shopify → Temas → **Personalizar** (el tema publicado) → Página de inicio → sección **Liquid personalizado** (Custom liquid) debajo del hero.
+2. Pegá todo el bloque en el campo → **Guardar**.
 
-La pestaña **Black Friday** muestra visitantes, visitas, formularios empezados, leads parciales y completos, los que
-aceptaron comunicaciones y la lista de anotados. El gasto en Meta se carga a mano para ver el costo por anotado.
-El banner manda una visita por sesión (no una por recarga), los datos a medida que la persona escribe (estado `parcial`)
-y el envío (`completo`). Los clientes quedan en Shopify con las etiquetas `black-friday-2026` y `etiqueta-negra`.
+Cualquier link a `#anotarme` abre el formulario (por ejemplo `ramonramirez.com.ar/#anotarme` en un anuncio o un mail).
+La pestaña **Black Friday** muestra cuántos vieron el banner, cuántos tocaron "Anotarme", leads parciales y completos,
+los que aceptaron comunicaciones y la lista de anotados. El gasto en Meta se carga a mano para ver el costo por anotado.
+Los anotados quedan en Shopify con la etiqueta `black-friday-2026` (y `wa-<número>` si dejaron WhatsApp).
 
 ## Datos personales
 

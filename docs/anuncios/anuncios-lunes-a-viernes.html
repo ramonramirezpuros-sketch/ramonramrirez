@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Anuncios de lunes a viernes · Drop Bicapa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 16mm 15mm 18mm; }
+  :root { --navy: #0c1528; --navy2: #142443; --gold: #b8913f; --gold-l: #f4ead3; --ink: #1d2433; --muted: #5d6474; --line: #dfe2e8; --red: #b3122b; --red-l: #fdecee; --green: #1f7a45; --green-l: #e7f5ec; --blue-l: #eaf0fb; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #fff; color: var(--ink); font: 9.3pt/1.45 'Poppins', Arial, sans-serif; }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--navy); margin: 0; }
+  h2 { font-size: 23pt; line-height: 1.05; margin: 0 0 3mm; padding-bottom: 2mm; border-bottom: 1.5px solid var(--gold); }
+  h3 { font-size: 13.5pt; margin: 4mm 0 1.5mm; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 5.5mm; }
+  li { margin-bottom: .8mm; }
+  a { color: #1b4fa8; text-decoration: none; word-break: break-all; }
+  b, strong { font-weight: 600; }
+  .page { page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .kicker { font-size: 8pt; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 1.5mm; }
+  .lead { font-size: 10pt; color: var(--muted); margin-bottom: 3.5mm; }
+
+  /* Portada */
+  .cover { height: 263mm; margin: -16mm -15mm 0; padding: 26mm 20mm 18mm; color: #f4efe6;
+    background: radial-gradient(120% 70% at 50% 0%, #1c3260 0%, #0c1528 60%) #0c1528; display: flex; flex-direction: column; }
+  .cover .kicker { color: #d9b56a; }
+  .cover h1 { color: #f4efe6; font-size: 50pt; line-height: .95; margin: 3mm 0 5mm; }
+  .cover h1 em { color: #d9b56a; font-style: italic; }
+  .cover .sub { font-size: 13pt; color: #c9c3b8; max-width: 140mm; }
+  .cover-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 12mm 0 10mm; }
+  .cover-facts div { border: 1px solid rgba(217,181,106,.55); border-radius: 3mm; padding: 4mm; background: rgba(255,255,255,.04); }
+  .cover-facts b { display: block; font: 700 22pt/1 'Cormorant Garamond', serif; color: #fff; margin-bottom: 1.5mm; }
+  .cover-facts span { font-size: 8.5pt; color: #c9c3b8; }
+  .cover img { width: 100%; border-radius: 3mm; border: 1px solid rgba(217,181,106,.4); }
+  .cover .foot { margin-top: auto; font-size: 8.5pt; color: #9aa3b5; display: flex; justify-content: space-between; }
+  .health { background: #fff; color: #000; text-align: center; font: 700 9pt/1.3 Arial, sans-serif; padding: 2mm; border-radius: 1.5mm; margin-top: 5mm; }
+
+  /* Bloques */
+  .box { border: 1px solid var(--line); border-radius: 2.5mm; padding: 2.6mm 3.4mm; margin: 0 0 2.8mm; break-inside: avoid; }
+  .warn { background: var(--red-l); border-color: #f2b8c1; }
+  .warn .t { color: var(--red); }
+  .ok { background: var(--green-l); border-color: #b5dfc5; }
+  .ok .t { color: var(--green); }
+  .info { background: var(--blue-l); border-color: #c9d7f2; }
+  .gold { background: var(--gold-l); border-color: #e6d3a6; }
+  .t { font-weight: 700; font-size: 9pt; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.2mm; display: block; }
+
+  .steps { counter-reset: st; list-style: none; padding: 0; margin: 0 0 3mm; }
+  .steps > li { counter-increment: st; position: relative; padding: 0 0 0 9mm; margin-bottom: 1.6mm; min-height: 6.6mm; break-inside: avoid; }
+  .steps > li::before { content: counter(st); position: absolute; left: 0; top: .2mm; width: 6.5mm; height: 6.5mm; border-radius: 50%;
+    background: var(--navy); color: #fff; font: 700 8.5pt/6.5mm 'Poppins', sans-serif; text-align: center; }
+  .path { display: inline-block; background: #f1f3f7; border: 1px solid var(--line); border-radius: 1.2mm; padding: 0 1.6mm; font-size: 8.8pt; font-weight: 500; }
+  .check { list-style: none; padding: 0; }
+  .check li { padding-left: 7mm; position: relative; break-inside: avoid; }
+  .check li::before { content: ''; position: absolute; left: 0; top: .9mm; width: 3.6mm; height: 3.6mm; border: 1.3px solid var(--navy); border-radius: .8mm; }
+
+  table { width: 100%; border-collapse: collapse; margin: 0 0 3mm; font-size: 8.5pt; break-inside: auto; }
+  th { background: var(--navy); color: #fff; text-align: left; font-weight: 600; padding: 1.6mm 2.2mm; }
+  td { border-bottom: 1px solid var(--line); padding: 1.5mm 2.2mm; vertical-align: top; }
+  tr { break-inside: avoid; }
+  tr:nth-child(even) td { background: #fafbfc; }
+  .who { display: inline-block; font-size: 7.8pt; font-weight: 600; padding: .3mm 1.8mm; border-radius: 10mm; background: var(--gold-l); color: #7a5b16; white-space: nowrap; }
+  .date { font-weight: 700; color: var(--navy); white-space: nowrap; }
+
+  .msg { border-left: 3px solid var(--gold); background: #fbfaf6; padding: 2.2mm 3.2mm; margin: 0 0 2.4mm; break-inside: avoid; font-size: 9pt; }
+  .msg .meta { font-size: 7.8pt; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 1mm; }
+  .msg .san { display: block; margin-top: 1.5mm; font-size: 8.5pt; font-style: italic; color: var(--muted); }
+
+  .flow { display: grid; grid-template-columns: 1fr; gap: 0; margin: 0 0 4mm; }
+  .node { border: 1px solid var(--line); border-radius: 2mm; padding: 1.8mm 2.8mm; background: #fff; position: relative; break-inside: avoid; }
+  .node + .node { margin-top: 4.2mm; }
+  .node + .node::before { content: '↓'; position: absolute; top: -4.4mm; left: 50%; transform: translateX(-50%); color: var(--gold); font-weight: 700; font-size: 11pt; line-height: 5mm; }
+  .node .k { font-size: 7.6pt; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+  .small { font-size: 8.6pt; color: var(--muted); }
+  .toc { columns: 2; column-gap: 8mm; font-size: 10pt; }
+  .toc li { margin-bottom: 1.6mm; }
+  .compact table { font-size: 7.9pt; }
+  .compact td { padding: 1.1mm 1.8mm; }
+  .compact .steps > li { margin-bottom: 1mm; font-size: 8.8pt; min-height: 5mm; padding-left: 7mm; }
+  .compact .steps > li::before { width: 4.8mm; height: 4.8mm; font-size: 7.5pt; line-height: 4.8mm; }
+  .compact h3 { margin-top: 2.5mm; }
+</style>
+
+</head>
+<body>
+<section class="page">
+  <div class="kicker">Meta Ads · Drop Bicapa</div>
+  <h2>Anuncios de lunes a viernes</h2>
+  <p class="lead">Drop: <b>domingo 25/10, 00:00</b>. Todo se sube <b>el domingo 18 antes de las 21</b>, con fecha de inicio y de fin: Meta los prende y los apaga solo. Todos los días a las 10:00: cuánto gastó cada anuncio y cuántos anotados trajo (planilla).</p>
+
+  <table>
+    <tr><th style="width:12%">Día</th><th style="width:34%">Qué corre</th><th>Qué hay que hacer</th></tr>
+    <tr><td class="date">Lun 19</td><td><b>Captación:</b> 9n · 11N · 13N · 14N<br><b>Follow me:</b> 6n · 5n</td><td>00:00 arrancan solos. 10:00 control.</td></tr>
+    <tr><td class="date">Mar 20</td><td>Lo mismo</td><td>Solo control. No tocar nada.</td></tr>
+    <tr><td class="date">Mié 21</td><td>Lo mismo · follow me termina a las 23:59</td><td><b>10:00:</b> apagar los 2 de captación con mayor costo por anotado · crear el público <b>Anotados lista</b> con el archivo de anotados que pasa Justo (excluido en captación, incluido en calentamiento).</td></tr>
+    <tr><td class="date">Jue 22</td><td><b>Captación:</b> los 2 mejores<br><b>Calentamiento:</b> 3n · 1n · 6n · 5n</td><td>00:00 arranca calentamiento solo. 10:00 control.</td></tr>
+    <tr><td class="date">Vie 23</td><td>Lo mismo</td><td>Control. Dejar listos los estáticos <b>"YA ESTÁN DISPONIBLES"</b> y <b>"SOLAMENTE QUEDAN 10"</b>.</td></tr>
+  </table>
+
+  <h3>A quién y adónde va cada uno</h3>
+  <table>
+    <tr><th style="width:24%">Campaña</th><th style="width:36%">Público</th><th>Destino</th></tr>
+    <tr><td><b>Captación</b><br>9n · 11N · 13N · 14N</td><td>Argentina 18+, <b>sin</b> los anotados</td><td>Landing. Texto: "Salen el domingo 25 a las 00:00"</td></tr>
+    <tr><td><b>Follow me</b><br>6n · 5n</td><td>Argentina 18+</td><td>Perfil de Instagram</td></tr>
+    <tr><td><b>Calentamiento</b><br>3n · 1n · 6n · 5n</td><td>Solo visitantes de la landing y anotados</td><td>3n (guillotina) y 1n (tubo) → tienda · 6n y 5n → landing</td></tr>
+  </table>
+
+  <div class="box gold">
+    <span class="t">Presupuesto</span>
+    <b>75 %</b> para captación toda la semana. El otro <b>25 %</b> va a follow me de lunes a miércoles y a calentamiento de jueves a sábado: se pasan la posta solos por las fechas.
+  </div>
+
+  <div class="box info">
+    <span class="t">Fin de semana</span>
+    <b>Sáb 24:</b> antes de las 12, armar la campaña de ventas del domingo con los estáticos · 18:00, actualizar la lista de anotados · 23:30, se apaga todo solo.<br>
+    <b>Dom 25, 00:00:</b> abre la venta.
+  </div>
+
+  <p class="small">Paso a paso clic por clic: Meta-Ads-Paso-a-paso.pdf</p>
+</section>
+</body>
+</html>
